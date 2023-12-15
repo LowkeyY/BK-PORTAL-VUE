@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-15 13:48:07
+ * @LastEditTime: 2023-12-15 14:22:19
  * @FilePath: \BK-Portal-VUE\src\services\login.ts
  * @Description: 
  */
@@ -10,7 +10,6 @@
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
-
 
 const {SSO_SERVER,PORTAL_SERVER} =getBaseUrl();
 

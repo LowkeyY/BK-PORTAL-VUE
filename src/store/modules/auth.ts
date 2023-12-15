@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-15 13:34:33
+ * @LastEditTime: 2023-12-15 14:22:26
  * @FilePath: \BK-Portal-VUE\src\store\modules\auth.ts
  * @Description: 
  */
@@ -19,6 +19,7 @@ const encryptSHA1 = (word:string) => {
     return CryptoJS.SHA1(word).toString();
        
 };
+
 const encryptMD5 = (word:string) => {
     return CryptoJS.MD5(word).toString();
 };
