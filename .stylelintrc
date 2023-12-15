@@ -1,0 +1,48 @@
+{
+    "extends": ["stylelint-stylistic/config", "stylelint-config-standard", "stylelint-config-standard-scss", "stylelint-config-standard-vue/scss"],
+    "overrides": [
+        {
+            "files": ["*.vue", "**/*.vue"],
+            "customSyntax": "postcss-html"
+        }
+    ],
+    "plugins": ["stylelint-scss"],
+    "rules": {
+        "stylistic/max-line-length": null,
+        "string-quotes": "single",
+        "stylistic/block-closing-brace-newline-after": [
+            "always",
+            {
+                "ignoreAtRules": ["if", "else"]
+            }
+        ],
+        "rule-empty-line-before": "never",
+        "at-rule-empty-line-before": "never",
+        "at-rule-no-unknown": null,
+        "no-descending-specificity": null,
+        "property-no-unknown": null,
+        "font-family-no-missing-generic-family-keyword": null,
+        "selector-class-pattern": null,
+        "unit-no-unknown": [
+            true,
+            {
+                "ignoreUnits": ["rpx"]
+            }
+        ],
+        "function-no-unknown": [
+            true,
+            {
+                "ignoreFunctions": ["v-bind", "map-get", "lighten", "darken"]
+            }
+        ],
+        "selector-pseudo-element-no-unknown": [
+            true,
+            {
+                "ignorePseudoElements": ["/^view-transition/", "v-deep"]
+            }
+        ],
+        "scss/double-slash-comment-empty-line-before": null,
+        "scss/no-global-function-names": null,
+        "scss/at-import-partial-extension": "always"
+    }
+}
