@@ -1,62 +1,62 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2023-12-14 14:43:01
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2023-12-20 12:35:12
+ * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
+ * @Description: 
+-->
+
+<template>
+    <view class="constainer">
+        <view class="header">
+            <image class="logo" src="/static/images/logos/logo.png" mode="heightFix" />
+        </view>
+        <view class="grid-container">
+        </view>
+    </view>
+</template>
 <script setup lang="ts">
 
-import AppProvider from '@/components/AppProvider/index.vue';
-import { CURRENT_PLATFORM, PLATFORMS } from '@/enums/platformEnum';
-import { judgePlatform } from '@/utils/platform';
-import Iconify from '@/components/Iconify/index.vue';
-import { getEnvValue } from '@/utils/env';
+import { useUserStore } from '@/store/modules/user';
+import { useAuthStore } from '@/store/modules/auth';
+import { useAppStore } from '@/store/app';
 
-const appTitle = getEnvValue<string>('VITE_APP_TITLE');
+import {isBjouUser} from '@/utils';
 
-const title = ref(appTitle);
-
-const platform = CURRENT_PLATFORM;
-
-const isVue3 = judgePlatform(PLATFORMS.VUE3);
-
+const useUser = useUserStore();
+const useAuth = useAuthStore();
+const useApp = useAppStore();
 const router = useRouter();
-const handleGetStarted = () => {
-    router.pushTab({ path: '/pages/demo/index' });
+
+const init =async ()=>{
+    await useUser.queryPortalUserInfoApi();
+    if(isBjouUser()&&!useAuth.moodleToken){
+        // 北开用户请求学习平台Token
+        await useAuth.queryMoodleToken();
+    }
+    await useApp.queryMoodleBaseInfo();
 };
+
+onMounted(()=>{
+    init();
+});
 </script>
-<template>
-    <AppProvider>
-        <view class="content">
-            <image class="logo" src="/static/svg/LOGO.svg" />
-            <view class="text-area">
-                <text class="">{{ title }}</text>
-            </view>
-            <view class="text-area">
-                <text class="">Vue3: {{ isVue3 }}</text>
-            </view>
-            <view class="text-area">
-                <text class="_u_text-red">当前平台: {{ platform }}</text>
-            </view>
-            <BasicButton @click="handleGetStarted">按钮</BasicButton>
-            <view class="_u_text-red">uno css</view>
-            <Iconify icon="i-ph-anchor-simple-thin" size="65" />
-        </view>
-    </AppProvider>
-</template>
 <style lang="scss">
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.constainer {
+  .header {
+    padding: 10rpx 40rpx 40rpx;
+    background-color: #2b83d7;
+    .logo {
+      height: 100rpx;
+    }
+  }
+  .grid-container {
+    height: 600rpx;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    margin-top: -30rpx;
+  }
 }
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin: 280rpx auto 50rpx;
-}
-.text-area {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 60rpx;
-}
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
-}
+
 </style>

@@ -1,5 +1,15 @@
+/*
+ * @Author: Lowkey
+ * @Date: 2023-12-13 18:09:46
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2023-12-20 14:28:04
+ * @FilePath: \BK-Portal-VUE\src\utils\index.ts
+ * @Description: 
+ */
 import { isObject } from '@/utils/is';
 import storage from './storage';
+import { StorageEnum } from '@/enums/storageEnum';
+
 /**
  * 深度合并
  * @param src
@@ -12,13 +22,22 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
     }
     return src;
 }
+
 /**
  * @description: 登录后写入信息
  * @param {*}
  * @return {*}
  */
-export function setUserStorage(obj: any) {
+export function setStorage(obj: any) {
     Object.keys(obj).map((item) => {
         storage.set(item, obj[item]);
     });
+}
+
+/**
+ * @description: 是否是北开用户
+ * @return {*}
+ */
+export function isBjouUser():boolean {
+    return storage.get(StorageEnum.ORG_CODE) === 'bjou_student';
 }

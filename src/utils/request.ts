@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-11 13:35:43
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-15 11:41:47
+ * @LastEditTime: 2023-12-20 14:10:14
  * @FilePath: \BK-Portal-VUE\src\utils\request.ts
  * @Description:
  */
@@ -28,10 +28,17 @@ const toLogin = () => {
     // useUserStore()
     // .logout()
     // .then(() => {
-    //     router.push({ name: 'Visitor' });
+    //     router.push({ name: 'Login' });
     // });
+    router.push({ name: 'Login' });
 };
-
+const doDecode = (json:string) => {
+    try {
+        return eval(`(${json})`);
+    } catch (e) {
+        return json;
+    }
+};
 const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FORM_URLENCODED,XMLHttpRequest=false }:RequestOptions):Promise<any> => {
    
     return new Promise((reslove, reject) => {
@@ -49,24 +56,26 @@ const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FOR
             withCredentials:true,
             data: data,
             success: successData => {
-              
-                const { data: responseData = {}, header = {}, statusCode } = successData;
+                // eslint-disable-next-line prefer-const
+                let { data: responseData, statusCode } = successData as {data:any,statusCode:number};
                 if (statusCode === 200) {
-                    if (header['Set-Cookie']) {
-                        const sessionid = header['Set-Cookie'].split(';')[0];
-                        storage.set('sessionid', sessionid);
-                    }
-                    reslove(responseData);
+                    typeof (responseData) === 'string' && (responseData = doDecode(responseData));
+                    reslove({
+                        success:true, // 部分接口没有success状态，手动添加
+                        statusCode,
+                        ...responseData
+                    });
                 } else if (statusCode === 401) {
+                  
                     toLogin();
                 } else {
-                    const { msg = '网络连接失败，请稍后重试' } = responseData as {msg?:string};
-                    Toast(msg);
+                    const { message = '网络连接失败，请稍后重试' } = responseData as {message?:string};
+                    Toast(message);
                     reject(data);
                 }
             },
             fail: msg => {
-               
+                debugger;
                 Toast('网络连接失败，请稍后重试');
                 reject(msg);
             }

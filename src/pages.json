@@ -50,30 +50,42 @@
     ],
     "globalStyle": {
         "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uni-app",
+        "navigationBarTitleText": "BK-app",
         "navigationBarBackgroundColor": "#F2F2F2",
-        "backgroundColor": "#F2F2F2",
+        "backgroundColor": "#F6F6F6",
         "navigationStyle": "default",
         "renderingMode": "seperated",
         "pageOrientation": "portrait"
     },
     "tabBar": {
-        "color": "#474747",
-        "selectedColor": "#9BC6FC",
-        "backgroundColor": "#F2F2F2",
+        "color": "#949494",
+        "selectedColor": "#2B83D7",
+        "backgroundColor": "#FFF",
+        "borderStyle": "#e0e0e0",
         "list": [
             {
                 "pagePath": "pages/index/index",
                 "text": "首页",
-                "iconPath": "static/images/tabBar/home.png",
-                "selectedIconPath": "static/images/tabBar/selectedHome.png"
+                "iconPath": "static/images/tabBar/homePage.png",
+                "selectedIconPath": "static/images/tabBar/homePage-o.png"
             },
-
+            {
+                "pagePath": "pages/index/index",
+                "text": "课程",
+                "iconPath": "static/images/tabBar/lesson.png",
+                "selectedIconPath": "static/images/tabBar/lesson-o.png"
+            },
+            {
+                "pagePath": "pages/index/index",
+                "text": "通知·制度",
+                "iconPath": "static/images/tabBar/notice.png",
+                "selectedIconPath": "static/images/tabBar/notice-o.png"
+            },
             {
                 "pagePath": "pages/mine/index",
                 "text": "我的",
-                "iconPath": "static/images/tabBar/about.png",
-                "selectedIconPath": "static/images/tabBar/selectedAbout.png"
+                "iconPath": "static/images/tabBar/mine.png",
+                "selectedIconPath": "static/images/tabBar/mine-o.png"
             }
         ]
     },

@@ -41,14 +41,14 @@
                 <a>登录提示</a>
                 <a>忘记密码？</a>
             </view>
-            <button type="primary" @click="submit">登录</button>
+            <button :loading="userStore.loadingState" type="primary" @click="submit">登录</button>
             <view class="tip-box"></view>
         </view>
     </view>
 </template>
 
 <script setup>
-import { useUserStore } from '@/store/modules/user';
+
 import { useAuthStore } from '@/store/modules/auth';
 
 import storage from '@/utils/storage';
