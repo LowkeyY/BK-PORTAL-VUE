@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:28:22
+ * @LastEditTime: 2023-12-21 14:21:50
  * @FilePath: \BK-Portal-VUE\src\store\modules\user.ts
  * @Description: 
  */
@@ -12,15 +12,22 @@ import { userRoleApi,userInfoApi,portalUserInfoApi } from '@/services/user';
 import {setStorage} from '@/utils';
 import { StorageEnum } from '@/enums/storageEnum';
 import { Toast } from '@/utils/uniapi/prompt';
+import storage from '@/utils/storage';
 
 interface UserState {
-    id?: string | number;
+    moodleUserId?: string | number;
+    portalUserId?: string | number;
+    userCode?:string
 }
 
-const useStore = useAuthStore();
+
 export const useUserStore = defineStore({
     id: 'user',
-    state: (): UserState => ({}),
+    state: (): UserState => ({
+        moodleUserId:storage.get(StorageEnum.MOODLE_USER_ID)||'',
+        portalUserId:storage.get(StorageEnum.PORTAL_USER_ID)||'',
+        userCode:storage.get(StorageEnum.USER_CODE)||''
+    }),
     getters: {},
     actions: {
         /**
@@ -28,7 +35,7 @@ export const useUserStore = defineStore({
          * @return {*}
          */        
         async queryUserRoleApi(): Promise<any> {
-          
+            const useStore = useAuthStore();
             try {
                 const { data=[], message= '请稍后再试', code } = await userRoleApi();
                 if(code===0){
@@ -52,6 +59,7 @@ export const useUserStore = defineStore({
         },
        
         async queryPortalUserInfoApi(): Promise<any> {
+            const useStore = useAuthStore();
             const params = {
                 // eslint-disable-next-line camelcase
                 access_token:useStore.portalToken
@@ -65,6 +73,7 @@ export const useUserStore = defineStore({
                         [StorageEnum.USER_CODE]:userCode,
                         [StorageEnum.MOODLE_USER_ID]:eduUserId,
                     };
+                    this.updateState(infos);
                     setStorage(infos);              
                 }else {
                     Toast(message);
@@ -73,5 +82,11 @@ export const useUserStore = defineStore({
                 return Promise.reject(err);
             }
         },
+        updateState(payload:Record<string,any>):void{
+            this.$state={
+                ...this.$state,
+                ...payload
+            };
+        }
     },
 });

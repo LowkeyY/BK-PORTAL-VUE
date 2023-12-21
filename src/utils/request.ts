@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-11 13:35:43
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:10:14
+ * @LastEditTime: 2023-12-20 16:01:50
  * @FilePath: \BK-Portal-VUE\src\utils\request.ts
  * @Description:
  */
@@ -75,7 +75,6 @@ const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FOR
                 }
             },
             fail: msg => {
-                debugger;
                 Toast('网络连接失败，请稍后重试');
                 reject(msg);
             }

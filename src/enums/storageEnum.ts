@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-18 16:27:54
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:28:48
+ * @LastEditTime: 2023-12-20 15:05:32
  * @FilePath: \BK-Portal-VUE\src\enums\storageEnum.ts
  * @Description: 
  */

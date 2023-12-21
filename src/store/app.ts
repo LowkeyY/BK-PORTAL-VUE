@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:31:23
+ * @LastEditTime: 2023-12-20 16:25:10
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
@@ -28,8 +28,8 @@ const getCourseId = (arr: any[]) => {
     return res.join(',');
 };
 const getGroups = (arr = [], course: any[]) => {
-    let obj = {};
-    arr.map((item, i) => {
+    let obj:any = {};
+    arr.map((item:any, i) => {
         obj = course.find(data => {
             return data.id === item.courseid;
         });
@@ -38,7 +38,7 @@ const getGroups = (arr = [], course: any[]) => {
     return arr;
 };
 
-const  getContats = (obj = {}) => [...obj.online, ...obj.offline];
+const  getContats = (obj:any = {}) => [...obj.online, ...obj.offline];
 export const useAppStore = defineStore({
     id: 'app-store',
     state: (): AppState => ({
@@ -72,7 +72,7 @@ export const useAppStore = defineStore({
                         info: '该门课程部分内容不支持app访问，如遇提示请换用电脑登录elearning.bjou.edu.cn。',
                         warn: ':该内容暂不支持移动端显示，请在电脑端完成学习。'
                     };
-                  
+                    // appendConfig !!!未更新到state 见react项目源码
                 }else {
                    
                     Toast(message);

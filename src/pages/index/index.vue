@@ -2,17 +2,18 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 12:35:12
+ * @LastEditTime: 2023-12-21 14:27:37
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
 
 <template>
     <view class="constainer">
-        <view class="header">
-            <image class="logo" src="/static/images/logos/logo.png" mode="heightFix" />
-        </view>
+        <logo-header />  
         <view class="grid-container">
+        </view>
+        <view class="notice-bar">
+            <uni-list-item :show-extra-icon="true" show-arrow thumb="/static/images/spirit/bell.png" :title="`您有${noticeCont}条未读消息`" />
         </view>
     </view>
 </template>
@@ -21,21 +22,32 @@
 import { useUserStore } from '@/store/modules/user';
 import { useAuthStore } from '@/store/modules/auth';
 import { useAppStore } from '@/store/app';
-
 import {isBjouUser} from '@/utils';
+import {messageCountsApi} from '@/services/app';
 
 const useUser = useUserStore();
 const useAuth = useAuthStore();
 const useApp = useAppStore();
-const router = useRouter();
 
+const noticeCont = ref(0);
+
+const queryMessageCounts =async ()=>{
+    const params = {
+        userId:useUser.moodleUserId
+    };
+    const {success,messageCount=0} = messageCountsApi(params as MessageCountsParams);
+    if(success){
+        noticeCont.value=messageCount;
+    }
+};
 const init =async ()=>{
     await useUser.queryPortalUserInfoApi();
     if(isBjouUser()&&!useAuth.moodleToken){
         // 北开用户请求学习平台Token
         await useAuth.queryMoodleToken();
     }
-    await useApp.queryMoodleBaseInfo();
+    useApp.queryMoodleBaseInfo();
+    queryMessageCounts();
 };
 
 onMounted(()=>{
@@ -44,18 +56,12 @@ onMounted(()=>{
 </script>
 <style lang="scss">
 .constainer {
-  .header {
-    padding: 10rpx 40rpx 40rpx;
-    background-color: #2b83d7;
-    .logo {
-      height: 100rpx;
-    }
-  }
   .grid-container {
-    height: 600rpx;
+    height: 300rpx;
     background: #fff;
-    border-radius: 20px 20px 0 0;
-    margin-top: -30rpx;
+  }
+  .notice-bar {
+    margin-top: $uni-spacing-col-sm;
   }
 }
 
