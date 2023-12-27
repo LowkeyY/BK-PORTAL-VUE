@@ -15,5 +15,6 @@ export enum StorageEnum {
     USER_CODE = 'userCode', 
     MOODLE_USER_ID = 'moodleUserId', // 学习平台用户ID
     MOODLE_TOKEN= 'moodleToken', // 学习平台Token
-    USER_LOGIN_ID = 'userLoginId'
+    USER_LOGIN_ID = 'userLoginId',
+    GRIDS_SORT = 'gridsSort' // 菜单排序
 }

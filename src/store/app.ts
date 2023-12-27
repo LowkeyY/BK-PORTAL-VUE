@@ -2,15 +2,17 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 16:25:10
+ * @LastEditTime: 2023-12-27 14:55:30
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
 import { defineStore } from 'pinia';
-import { moodleBaseInfoApi } from '@/services/app';
+import { moodleBaseInfoApi,gridsSortApi } from '@/services/app';
 import { StorageEnum } from '@/enums/storageEnum';
 import { Toast } from '@/utils/uniapi/prompt';
-import {exceScript} from '@/utils/handle';
+// import {exceScript} from '@/utils/handle';
+import { isArray } from '@/utils/is';
+import { bkStudentGirds,moreGird } from '@/utils/constants';
 import storage from '@/utils/storage';
 interface AppState {
     courseid: string ;
@@ -19,7 +21,9 @@ interface AppState {
     _useJavaScriptMessage:Record<string,string>;
     groups:any[],
     contacts:any[],
+    gridsSort:string,
 }
+
 const getCourseId = (arr: any[]) => {
     const res:any[] = [];
     arr && arr.map(item => (
@@ -29,7 +33,7 @@ const getCourseId = (arr: any[]) => {
 };
 const getGroups = (arr = [], course: any[]) => {
     let obj:any = {};
-    arr.map((item:any, i) => {
+    arr.map((item:any) => {
         obj = course.find(data => {
             return data.id === item.courseid;
         });
@@ -47,9 +51,23 @@ export const useAppStore = defineStore({
         courseIdNumbers:[],
         _useJavaScriptMessage:{},
         groups:[],
-        contacts:[]
+        contacts:[],
+        gridsSort:storage.get(StorageEnum.GRIDS_SORT) || '1,2,3,4,5,6,7',
     }),
-    getters: {},
+    getters: {
+        getGrids:(state):any[]=>{
+            // 按顺序返回grids
+            const arr: any[] = [];
+            const sortStr = state.gridsSort;
+            isArray(sortStr.split(',')) && sortStr.split(',')
+                .map((item:string) => {
+                    arr.push(
+                        bkStudentGirds.find(ev => ev.id === item)
+                    );
+                });
+            return [...arr,moreGird];
+        }
+    },
     actions: {
         async queryMoodleBaseInfo(): Promise<any> {
             const params = {
@@ -79,6 +97,20 @@ export const useAppStore = defineStore({
                 }
             } catch (err: any) {
                
+                return Promise.reject(err);
+            }
+        },
+        async queryGridsSort():Promise<any>{
+            try {
+                const {data,success,msg} = await gridsSortApi();
+                if(success){
+                    const {userConfig} = data;
+                    this.gridsSort = userConfig;
+                    storage.set(StorageEnum.GRIDS_SORT,userConfig);
+                }else{
+                    Toast(msg);
+                }
+            } catch (err: any) {
                 return Promise.reject(err);
             }
         }
