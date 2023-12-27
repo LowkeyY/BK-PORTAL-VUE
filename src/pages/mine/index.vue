@@ -1,18 +1,15 @@
 <script lang="ts" setup>
-import BasicButton from '@/components/BasicButton/BasicButton.vue';
 import AppProvider from '@/components/AppProvider/index.vue';
 import { userInfoApi } from '@/services/user';
 import { Toast } from '@/utils/uniapi/prompt';
-import defaultUserIcon from '@/static/images/default/userIcon.png';
 import { bkMineGirds, bkMineInfo } from '@/utils/mineConstants';
 import LoadingIcon from '@/components/LoadingIcon/index.vue';
 import { getPortalAvatar } from '@/utils';
 import { getBaseUrl } from '@/utils/env';
 
-const isLogin = ref(false);
 const loading = ref(false);
 const router = useRouter();
-const curUserInfo = ref({});
+const curUserInfo:Record<string,any> = ref({});
 const { PORTAL_SERVER } = getBaseUrl();
 const curFileUrl = `${PORTAL_SERVER}/file/downloadFile`;
 const handleJump = (url: string) => {
@@ -48,7 +45,6 @@ onMounted(async () => {
         <view class="mypage-container">
             <view class="mypage-top-box">
                 <image src="@/static/images/bgImages/mineBg.png" class="bg" mode="scaleToFill" />
-                <h2 class="title">我的</h2>
                 <view class="mypage-top-content">
                     <view class="mypage-header">
                         <image class="avatar" :src="getPortalAvatar(curFileUrl, curUserInfo?.headImg || curUserInfo?.gkHeadImg)" mode=""></image>
@@ -104,99 +100,90 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .mypage-container {
-    font-size: $uni-font-size-base-base;
-    color: $uni-font-color-white;
-    box-sizing: border-box;
-    background-color: $uni-bg-color;
+  font-size: $uni-font-size-base-base;
+  color: $uni-font-color-white;
+  box-sizing: border-box;
+  background-color: $uni-bg-color;
 }
-
 .mypage-top-box {
-    margin: 0 auto;
-    padding: $uni-spacing-row-base;
-    background-size: cover;
+  margin: 0 auto;
+  padding: $uni-spacing-row-lg;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  .mypage-top-content {
     position: relative;
-    overflow: hidden;
-    .bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1;
-    }
-    .title {
-        position: relative;
-        width: 100%;
-        display: flex;
-        z-index: 2;
-        justify-content: center;
-        font-weight: 400;
-        padding-bottom: 20rpx;
-    }
-    .mypage-top-content {
-        position: relative;
-        width: 94%;
-        z-index: 2;
-    }
+    width: 100%;
+    z-index: 2;
+  }
 }
 .mypage-header {
-    display: flex;
-    align-items: center;
-    .avatar {
-        width: 145rpx;
-        height: 145rpx;
-        border-radius: 90rpx;
-        margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .avatar {
+    width: 145rpx;
+    height: 145rpx;
+    border-radius: 90rpx;
+    margin-right: 20rpx;
+  }
+  .userinfo {
+    flex: 1;
+    .top-text {
+      font-size: 40rpx;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .name {
+        margin-bottom: 20rpx;
+        font-weight: bold;
+      }
     }
-    .userinfo {
-        width: 73%;
-        .top-text {
-            font-size: 40rpx;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            .name {
-                margin-bottom: 20rpx;
-                font-weight: bold;
-            }
-        }
-        .bottom-text {
-            display: flex;
-            width: 100%;
-            margin-top: 20rpx;
-            justify-content: space-between;
-        }
+    .bottom-text {
+      display: flex;
+      width: 100%;
+      margin-top: 20rpx;
+      justify-content: space-between;
     }
+  }
 }
 .administrative {
-    padding: $uni-list-padding;
+  padding: $uni-list-padding;
 }
 .year {
-    display: flex;
-    width: 90%;
-    padding-left: 16px;
-    justify-content: space-between;
+  display: flex;
+  width: 90%;
+  padding-left: 16px;
+  justify-content: space-between;
 }
 .userinfo-operate {
-    position: relative;
-    z-index: 2;
-    background-color: $uni-bg-color;
-    border-radius: 40rpx 40rpx 0 0;
-    padding-top: 20rpx;
-    .grid-item-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        .icon {
-            width: 50%;
-            height: 50%;
-        }
-        .text {
-            margin-top: 20rpx;
-            font-size: 26rpx;
-            color: $uni-font-color-block;
-        }
+  position: relative;
+  z-index: 2;
+  background-color: $uni-bg-color;
+  border-radius: 40rpx 40rpx 0 0;
+  padding-top: 20rpx;
+  .grid-item-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    .icon {
+      width: 50%;
+      height: 50%;
     }
+    .text {
+      margin-top: 20rpx;
+      font-size: 26rpx;
+      color: $uni-font-color-block;
+    }
+  }
 }
 </style>

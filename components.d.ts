@@ -12,6 +12,7 @@ declare module 'vue' {
     BasicInput: typeof import('./src/components/BasicInput/index.vue')['default']
     Empty: typeof import('./src/components/Empty/Empty.vue')['default']
     Iconify: typeof import('./src/components/Iconify/index.vue')['default']
+    LoadingIcon: typeof import('./src/components/LoadingIcon/index.vue')['default']
     LogoHeader: typeof import('./src/components/LogoHeader/LogoHeader.vue')['default']
     PullRefreshList: typeof import('./src/components/PullRefreshList/PullRefreshList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
