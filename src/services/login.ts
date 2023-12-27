@@ -4,32 +4,31 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2023-12-20 11:54:05
  * @FilePath: \BK-Portal-VUE\src\services\login.ts
- * @Description: 
+ * @Description:
  */
-
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
+import storage from '@/utils/storage';
+import { StorageEnum } from '@/enums/storageEnum';
 
-const {SSO_SERVER,PORTAL_SERVER,CUNOVS_SERVER} =getBaseUrl();
-
+const { SSO_SERVER, PORTAL_SERVER, CUNOVS_SERVER } = getBaseUrl();
+const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const SSO = `${PORTAL_SERVER}/sso`; // !!!!!!!!!!!!!!!!!!!!!!!!单点登录sso接口 PORTAL_SERVER !!!!!!!!!!!!!!!
 const LOGIN = `${PORTAL_SERVER}/login`;
 const PORTAL_TOKEN = `${PORTAL_SERVER}/oauth/userToken`;
 const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`;
 const MOODLE_TOKEN = `${CUNOVS_SERVER}/config/getBkUser`;
-const LOGIN_OUT = '/logout';
-
-
+const LOGIN_OUT = `/logout/${moodleToken}`;
 
 /**
  * sso单点登录
  * @param params
  */
-export function singleSignOnApi(data:SsoParams) {
+export function singleSignOnApi(data: SsoParams) {
     return http.request({
-        url:SSO,
-        method:'post',
+        url: SSO,
+        method: 'post',
         data,
     });
 }
@@ -40,10 +39,10 @@ export function singleSignOnApi(data:SsoParams) {
  */
 export function portalLoginApi(data: LoginParams) {
     return http.request({
-        url:LOGIN,
-        method:'post',
+        url: LOGIN,
+        method: 'post',
         data,
-        XMLHttpRequest:true
+        XMLHttpRequest: true,
     });
 }
 
@@ -53,7 +52,7 @@ export function portalLoginApi(data: LoginParams) {
  */
 export function portalTokenApi() {
     return http.request({
-        url:PORTAL_TOKEN,
+        url: PORTAL_TOKEN,
     });
 }
 
@@ -61,9 +60,9 @@ export function portalTokenApi() {
  * @description: 学习平台token
  * @return {*}
  */
-export function moodleTokenApi(data:MoodleTokenParams) {
+export function moodleTokenApi(data: MoodleTokenParams) {
     return http.request({
-        url:MOODLE_TOKEN,
+        url: MOODLE_TOKEN,
         data,
     });
 }
@@ -72,9 +71,9 @@ export function moodleTokenApi(data:MoodleTokenParams) {
  * @description: 检查是否第一次登录
  * @return {*}
  */
-export function checkFirstLoginApi(data:AccessTokenParams) {
+export function checkFirstLoginApi(data: AccessTokenParams) {
     return http.request({
-        url:CHECK_FIRST_LOGIN,
+        url: CHECK_FIRST_LOGIN,
         data,
     });
 }
@@ -84,7 +83,6 @@ export function checkFirstLoginApi(data:AccessTokenParams) {
  */
 export function logout() {
     return http.request({
-        url:LOGIN_OUT,
+        url: LOGIN_OUT,
     });
 }
-

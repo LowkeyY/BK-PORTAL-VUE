@@ -12,6 +12,30 @@
             }
         },
         {
+            "name": "Lessons",
+            "path": "pages/lessons/index",
+            "style": {
+                "navigationBarTitleText": "课程",
+                "navigationBarBackgroundColor": "#2b83d7",
+                "navigationBarTextStyle": "white"
+            },
+            "meta": {
+                "ignoreAuth": true,
+                "tabBar": true
+            }
+        },
+        {
+            "name": "Notifications",
+            "path": "pages/notifications/index",
+            "style": {
+                "navigationStyle": "custom"
+            },
+            "meta": {
+                "ignoreAuth": true,
+                "tabBar": true
+            }
+        },
+        {
             "name": "Mine",
             "path": "pages/mine/index",
             "style": {
@@ -32,13 +56,26 @@
     ],
     "subPackages": [
         {
-            "root": "pageA",
+            "root": "subPage",
             "pages": [
                 {
                     "name": "Deatils",
                     "path": "details/index",
                     "style": {
                         "navigationBarTitleText": "Home"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "settings",
+                    "path": "settings/index",
+                    "style": {
+                        "navigationBarTitleText": "设置",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -70,13 +107,13 @@
                 "selectedIconPath": "static/images/tabBar/homePage-o.png"
             },
             {
-                "pagePath": "pages/index/index",
+                "pagePath": "pages/lessons/index",
                 "text": "课程",
                 "iconPath": "static/images/tabBar/lesson.png",
                 "selectedIconPath": "static/images/tabBar/lesson-o.png"
             },
             {
-                "pagePath": "pages/index/index",
+                "pagePath": "pages/notifications/index",
                 "text": "通知·制度",
                 "iconPath": "static/images/tabBar/notice.png",
                 "selectedIconPath": "static/images/tabBar/notice-o.png"
