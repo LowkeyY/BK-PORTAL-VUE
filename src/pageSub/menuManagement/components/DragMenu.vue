@@ -231,6 +231,7 @@ export default defineComponent({
             }
         };
         const setDisabled = (e: any, flag= false) => {
+            
 				 // e?.preventDefault() 
             const type = `${e.type}`.toLowerCase();
             const {handle = props.touchHandle} = e.target.dataset;
@@ -281,6 +282,7 @@ export default defineComponent({
             emit('handle-click',item);
         };
         const touchStart = (e: any) => {
+   
             if(e.target.dataset.remove) return;
             // 选中项原始下标
             const {oindex} = e.currentTarget?.dataset || e.target?.dataset || {};

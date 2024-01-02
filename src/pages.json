@@ -15,9 +15,7 @@
             "name": "Lessons",
             "path": "pages/lessons/index",
             "style": {
-                "navigationBarTitleText": "课程",
-                "navigationBarBackgroundColor": "#2b83d7",
-                "navigationBarTextStyle": "white"
+                "navigationStyle": "custom"
             },
             "meta": {
                 "ignoreAuth": true,
@@ -56,7 +54,7 @@
     ],
     "subPackages": [
         {
-            "root": "subPage",
+            "root": "pageSub",
             "pages": [
                 {
                     "name": "Deatils",

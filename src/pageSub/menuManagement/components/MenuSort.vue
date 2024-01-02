@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 16:01:54
- * @FilePath: \BK-Portal-VUE\src\subPage\menuManagement\components\MenuSort.vue
+ * @LastEditTime: 2024-01-02 17:42:30
+ * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
  * @Description: 
 -->
 <template>
     <view class="menu-container">
         <view class="tips">可以将常用的学习菜单添加到首页，拖动可调整菜单顺序</view>
-        <drag-menu ref="dragRef2" :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
+        <drag-menu :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
             <template #grid="{oindex, content, active}">
                 <view class="grid">
                     <img class="icon" :src="`../../static/images/grids/${content.icon}.svg`" alt="">

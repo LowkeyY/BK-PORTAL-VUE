@@ -1,5 +1,14 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2023-12-27 15:57:23
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-01-02 17:26:32
+ * @FilePath: \BK-Portal-VUE\src\pages\lessons\index.vue
+ * @Description: 
+-->
 <template>
     <view>
+        <logo-header />  
         <view class="uni-padding-wrap">
             <uni-segmented-control :current="current" :values="courses" style-type="button" active-color="#2b83d7" @click-item="onClickItem" />
         </view>
@@ -41,6 +50,7 @@ onShow(async ()=>{
 
 <style lang="scss" scoped>
 .uni-padding-wrap {
-  padding: 10rpx 20rpx;
+  background-color: #fff;
+  padding: 0 20rpx 10rpx;
 }
 </style>

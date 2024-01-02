@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-29 17:05:39
+ * @LastEditTime: 2024-01-02 17:49:32
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -50,7 +50,7 @@ const init =async ()=>{
     queryMessageCounts();
 };
 
-onMounted(()=>{
+onShow(()=>{
     init();
 });
 </script>

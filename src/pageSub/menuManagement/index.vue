@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2023-12-28 14:52:09
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 15:59:30
- * @FilePath: \BK-Portal-VUE\src\subPage\menuManagement\index.vue
+ * @LastEditTime: 2024-01-02 17:29:58
+ * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\index.vue
  * @Description: 
 -->
 
 <template>
     <app-provider>
-        <nav-bar />
+        <nav-bar title="全部菜单" />
         <view class="menu-container">
             <uni-section type="line" :title="state.title">
                 <template #right>
