@@ -81,6 +81,17 @@
                         "ignoreAuth": true,
                         "tabBar": true
                     }
+                },
+                {
+                    "name": "menuManagement",
+                    "path": "menuManagement/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }

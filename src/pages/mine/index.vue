@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AppProvider from '@/components/AppProvider/index.vue';
 import { userInfoApi } from '@/services/user';
 import { Toast } from '@/utils/uniapi/prompt';
 import { bkMineGirds, bkMineInfo } from '@/utils/mineConstants';
@@ -40,62 +39,60 @@ onMounted(async () => {
 </script>
 
 <template>
-    <AppProvider>
-        <LoadingIcon :loading="loading"></LoadingIcon>
-        <view class="mypage-container">
-            <view class="mypage-top-box">
-                <image src="@/static/images/bgImages/mineBg.png" class="bg" mode="scaleToFill" />
-                <view class="mypage-top-content">
-                    <view class="mypage-header">
-                        <image class="avatar" :src="getPortalAvatar(curFileUrl, curUserInfo?.headImg || curUserInfo?.gkHeadImg)" mode=""></image>
-                        <view class="userinfo">
-                            <view class="top-text">
-                                <view class="name">
-                                    {{ curUserInfo?.userName }}
-                                </view>
-                                <uni-icons type="gear-filled" color="#fff" size="30" @click="goSettings"></uni-icons>
+    <LoadingIcon :loading="loading"></LoadingIcon>
+    <view class="mypage-container">
+        <view class="mypage-top-box">
+            <image src="@/static/images/bgImages/mineBg.png" class="bg" mode="scaleToFill" />
+            <view class="mypage-top-content">
+                <view class="mypage-header">
+                    <image class="avatar" :src="getPortalAvatar(curFileUrl, curUserInfo?.headImg || curUserInfo?.gkHeadImg)" mode=""></image>
+                    <view class="userinfo">
+                        <view class="top-text">
+                            <view class="name">
+                                {{ curUserInfo?.userName }}
                             </view>
-                            <view class="bottom-text">
-                                <view class="accountName"> 学号: {{ curUserInfo?.studentNumber }} </view>
-                                <text class="text">{{ `层次：${curUserInfo?.arrangement}` }}</text>
-                            </view>
+                            <uni-icons type="gear-filled" color="#fff" size="30" @click="goSettings"></uni-icons>
                         </view>
-                    </view>
-                    <view class="administrative">
-                        {{ curUserInfo?.administrative }}
-                    </view>
-                    <view class="year">
-                        <span>
-                            {{ `招生年度：${curUserInfo?.enrollmentdate}` }}
-                        </span>
-                        <span>
-                            {{ `学制：${curUserInfo?.educational}` }}
-                        </span>
+                        <view class="bottom-text">
+                            <view class="accountName"> 学号: {{ curUserInfo?.studentNumber }} </view>
+                            <text class="text">{{ `层次：${curUserInfo?.arrangement}` }}</text>
+                        </view>
                     </view>
                 </view>
+                <view class="administrative">
+                    {{ curUserInfo?.administrative }}
+                </view>
+                <view class="year">
+                    <span>
+                        {{ `招生年度：${curUserInfo?.enrollmentdate}` }}
+                    </span>
+                    <span>
+                        {{ `学制：${curUserInfo?.educational}` }}
+                    </span>
+                </view>
             </view>
-            <view class="userinfo-operate">
-                <uni-grid :column="4" :show-border="false" :square="false" @change="change">
-                    <uni-grid-item v-for="(item, index) in bkMineGirds" :key="item.id" :index="index">
-                        <view class="grid-item-box">
-                            <img class="icon" :src="`../static/images/grids/${item.icon}.svg`" />
-                            <text class="text">{{ item.text }}</text>
-                        </view>
-                    </uni-grid-item>
-                </uni-grid>
-            </view>
-            <view class="userinfo-box">
-                <uni-section class="mb-10" type="line" title="个人信息">
-                    <template #right>
-                        <uni-icons type="compose" size="22" color="#2979ff"></uni-icons>
-                    </template>
-                </uni-section>
-            </view>
-            <uni-list v-for="(item, index) in bkMineInfo" :key="item.id" :index="index">
-                <uni-list-item :show-extra-icon="true" :right-text="curUserInfo[item.key]" :extra-icon="item.extraIcon" :title="item.text" />
-            </uni-list>
         </view>
-    </AppProvider>
+        <view class="userinfo-operate">
+            <uni-grid :column="4" :show-border="false" :square="false" @change="change">
+                <uni-grid-item v-for="(item, index) in bkMineGirds" :key="item.id" :index="index">
+                    <view class="grid-item-box">
+                        <img class="icon" :src="`../static/images/grids/${item.icon}.svg`" />
+                        <text class="text">{{ item.text }}</text>
+                    </view>
+                </uni-grid-item>
+            </uni-grid>
+        </view>
+        <view class="userinfo-box">
+            <uni-section class="mb-10" type="line" title="个人信息">
+                <template #right>
+                    <uni-icons type="compose" size="22" color="#2979ff"></uni-icons>
+                </template>
+            </uni-section>
+        </view>
+        <uni-list v-for="(item, index) in bkMineInfo" :key="item.id" :index="index">
+            <uni-list-item :show-extra-icon="true" :right-text="curUserInfo[item.key]" :extra-icon="item.extraIcon" :title="item.text" />
+        </uni-list>
+    </view>
 </template>
 
 <style lang="scss" scoped>

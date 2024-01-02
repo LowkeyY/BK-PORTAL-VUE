@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-22 16:23:00
+ * @LastEditTime: 2024-01-02 15:11:29
  * @FilePath: \BK-Portal-VUE\src\services\app.ts
  * @Description: 
  */
@@ -20,6 +20,7 @@ const moodleUserid = storage.get(StorageEnum.USER_LOGIN_ID);
 const MODDLE_BASE_INFO = `${CUNOVS_SERVER}/config`; // 学习平台配置数据
 const MESSAGE_COUNTS = `${CUNOVS_SERVER}/msg/counts/${moodleToken}`; // 未读消息数
 const  GRIDS_SORT= `${CUNOVS_SERVER}/config/module/${moodleUserid}`; // 菜单模块排序
+const  SET_GRIDS= `${CUNOVS_SERVER}/config/saveModuleConfig`; 
 /**
  * @description:学习平台基础信息
  * @return {*}
@@ -54,5 +55,11 @@ export function gridsSortApi() {
     });
 }
 
-
+export function setGridsApi(data:SetGridsParams) {
+    return http.request({
+        url:SET_GRIDS,
+        method:'post',
+        data
+    });
+}
 

@@ -2,21 +2,21 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-27 14:46:44
+ * @LastEditTime: 2023-12-28 16:01:29
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
 import storage from './storage';
 
 
-export const bkStudentGirds = [
+export const bkStudentGirds:Grids[] = [
     {
         id: '1',
         icon: 'academicProgress',
         text: '学业进度',
         appType: 'xyjd',
         // path: 'alert' // 临时弹窗
-        path: 'oauth'
+        path: 'oauth'   // 路由name oauth为单点登录集成
     },
     {
         id: '2',
@@ -36,7 +36,7 @@ export const bkStudentGirds = [
         icon: 'schoolCalendar',
         text: '校历',
         path: 'schoolCalendar',
-        queryType: 'bkxl'
+        queryKey: 'bkxl'
     },
     {
         id: '5',
@@ -103,5 +103,5 @@ export const moreGird = {
     id: '99',
     icon: 'more',
     text: '更多',
-    path: ''
+    path: 'menuManagement'
 };

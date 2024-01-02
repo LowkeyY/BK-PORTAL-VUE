@@ -1,3 +1,4 @@
+
 export enum NAVIGATE_TYPE {
     NAVIGATE_TO = 'navigateTo',
     REDIRECT_TO = 'redirectTo',
@@ -11,3 +12,4 @@ export const NAVIGATE_TYPE_LIST = ['navigateTo', 'redirectTo', 'reLaunch', 'swit
 export const HOME_PAGE = '/pages/index/index';
 export const LOGIN_PAGE = '/pages/login/index';
 export const NOT_FOUND_PAGE = '/pages/notFound/404';
+

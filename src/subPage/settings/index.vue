@@ -82,10 +82,10 @@ const dialogExit = () => {
 
 <style lang="scss" scoped>
 .btn-box {
-    padding: 40rpx 80rpx;
-    .btn {
-        background: linear-gradient(#fad25c, #f77b26);
-        border: 0;
-    }
+  padding: 40rpx 80rpx;
+  .btn {
+    background: linear-gradient(#fad25c, #f77b26);
+    border: 0;
+  }
 }
 </style>

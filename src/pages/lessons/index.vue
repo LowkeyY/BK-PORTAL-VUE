@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="uni-padding-wrap">
-            <uni-segmented-control :current="current" :values="courses" style-type="button" active-color="#2b83d7" @clickItem="onClickItem" />
+            <uni-segmented-control :current="current" :values="courses" style-type="button" active-color="#2b83d7" @click-item="onClickItem" />
         </view>
         <ComSkeleton type="list" :loading="skeletonLoading">
             <view></view>
@@ -21,10 +21,8 @@ const current = ref(0);
 const skeletonLoading = ref(false);
 const courses = ['在开课程', '已开课程'];
 const params = reactive({
-    userId:useUser.moodleUserId,
+    userid:useUser.moodleUserId,
     value:appStore.courseid,
-    nowPage:1,
-    pageSize:10
 });
 const onClickItem = (e) => {
     if (current.value !== e.currentIndex) {
@@ -43,6 +41,6 @@ onShow(async ()=>{
 
 <style lang="scss" scoped>
 .uni-padding-wrap {
-    padding: 10rpx 20rpx;
+  padding: 10rpx 20rpx;
 }
 </style>

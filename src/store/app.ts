@@ -2,12 +2,12 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-27 14:55:30
+ * @LastEditTime: 2024-01-02 15:58:32
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
 import { defineStore } from 'pinia';
-import { moodleBaseInfoApi,gridsSortApi } from '@/services/app';
+import { moodleBaseInfoApi,gridsSortApi,setGridsApi } from '@/services/app';
 import { StorageEnum } from '@/enums/storageEnum';
 import { Toast } from '@/utils/uniapi/prompt';
 // import {exceScript} from '@/utils/handle';
@@ -107,6 +107,22 @@ export const useAppStore = defineStore({
                     const {userConfig} = data;
                     this.gridsSort = userConfig;
                     storage.set(StorageEnum.GRIDS_SORT,userConfig);
+                }else{
+                    Toast(msg);
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }
+        },
+        async setGrids(params:SetGridsParams,callback:()=>void):Promise<any>{
+            try {
+                const {userConfig} = params;
+                const {success,msg} = await setGridsApi(params);
+                if(success){
+                    this.gridsSort = userConfig;
+                    storage.set(StorageEnum.GRIDS_SORT,userConfig);
+                    Toast('保存成功');
+                    callback();
                 }else{
                     Toast(msg);
                 }

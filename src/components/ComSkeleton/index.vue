@@ -232,70 +232,59 @@ watch(
 
 <style lang="scss" scoped>
 @mixin background {
-    background: linear-gradient(90deg, var(--bgColor) 25%, var(--highlightBgColor) 37%, var(--bgColor) 50%);
-    background-size: 400% 100%;
+  background: linear-gradient(90deg, var(--bgColor) 25%, var(--highlightBgColor) 37%, var(--bgColor) 50%);
+  background-size: 400% 100%;
 }
-
 .x-skeleton {
-    width: 100%;
-    box-sizing: border-box;
-
-    .x-skeleton__wrapper {
-        display: flex;
-        flex-direction: column;
-
-        &__rows {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        &__columns {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-
-        &__head {
-            width: 100%;
-            @include background;
-        }
-
-        &__text {
-            flex: 1;
-            width: 100%;
-            &__row {
-                @include background;
-            }
-        }
+  width: 100%;
+  box-sizing: border-box;
+  .x-skeleton__wrapper {
+    display: flex;
+    flex-direction: column;
+    &__rows {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .fade-out {
-        opacity: 0;
-        animation: fadeOutAnim var(--fadeOutTime);
+    &__columns {
+      display: flex;
+      align-items: center;
+      flex: 1;
     }
-
-    @keyframes fadeOutAnim {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
+    &__head {
+      width: 100%;
+      @include background;
     }
-
-    .animate {
-        animation: skeletonAnim var(--animateTime) ease infinite;
+    &__text {
+      flex: 1;
+      width: 100%;
+      &__row {
+        @include background;
+      }
     }
-
-    @keyframes skeletonAnim {
-        0% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0 50%;
-        }
+  }
+  .fade-out {
+    opacity: 0;
+    animation: fadeOutAnim var(--fadeOutTime);
+  }
+  @keyframes fadeOutAnim {
+    from {
+      opacity: 1;
     }
+    to {
+      opacity: 0;
+    }
+  }
+  .animate {
+    animation: skeletonAnim var(--animateTime) ease infinite;
+  }
+  @keyframes skeletonAnim {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
 }
 </style>
