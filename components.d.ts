@@ -10,6 +10,7 @@ declare module 'vue' {
     AppProvider: typeof import('./src/components/AppProvider/AppProvider.vue')['default']
     BasicButton: typeof import('./src/components/BasicButton/BasicButton.vue')['default']
     BasicInput: typeof import('./src/components/BasicInput/index.vue')['default']
+    ComProgressBar: typeof import('./src/components/ComProgressBar/index.vue')['default']
     ComSkeleton: typeof import('./src/components/ComSkeleton/index.vue')['default']
     Empty: typeof import('./src/components/Empty/Empty.vue')['default']
     Iconify: typeof import('./src/components/Iconify/Iconify.vue')['default']

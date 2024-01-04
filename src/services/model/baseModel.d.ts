@@ -25,3 +25,7 @@ declare interface SetGridsParams {
     userId:string|number
 }
 
+declare interface SetPageParams {
+    currentPage:number,
+    pageSize:number
+}

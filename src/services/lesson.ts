@@ -23,7 +23,6 @@ export function courseListOpenApi(data:courseListParams) {
  * @return {*}
  */
 export function courseListDueApi(data:courseListParams) {
-
     return http.request({
         url:`${CUNOVS_SERVER}/courselist/due/${moodleToken}`,
         data,

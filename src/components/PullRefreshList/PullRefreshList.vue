@@ -44,10 +44,10 @@
             </view>
             <slot v-if="listData.length&&!loading" />
             <Empty v-else-if="!pullLoading" :loading="loading" />
-            <view v-if="hasMore" class="img">
+            <view v-if="hasMoreLoading" class="hasMoreImg">
                 <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
             </view>
-            <view v-if="!!listData.length && !hasMore&&!loading" class="bottom-line">--没有更多了--</view>
+            <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--没有更多了--</view>
         </scroll-view>
     </view>
 </template>
@@ -79,6 +79,10 @@ const props = defineProps({
         default: true
     },
     loading: {
+        type: Boolean,
+        default: false
+    },
+    hasMoreLoading: {
         type: Boolean,
         default: false
     }
@@ -172,5 +176,8 @@ onMounted(() => {
   padding: 20rpx 0 60rpx;
   text-align: center;
 }
-
+.hasMoreImg {
+  width: 100%;
+  text-align: center;
+}
 </style>

@@ -1,3 +1,4 @@
+
 interface typeSearchData {
     searchData?: any;
     currentPage: number;
@@ -10,13 +11,14 @@ interface typeDataState {
     pagination: typeSearchData;
 }
 interface typeOptions {
-    searchApi: string;
+    searchApi: any;
     searchData: typeSearchData;
 }
 
 export default function useRefreshList(options: typeOptions, immediate = false) {
     const { searchApi, searchData = {} } = options;
     const loading = ref<boolean>(false);
+    const hasMoreLoading = ref<boolean>(false);
     const hasMore = ref<boolean>(false);
     const dynamApi = ref<any>(searchApi); // tab切换时动态更新API
     const searchState: typeSearchData = reactive<typeSearchData>({
@@ -35,18 +37,24 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
     async function fetchList(params: any) {
         params.currentPage = 1; // 查询始终从1开始，也可加参数与loadMore方法合并
         loading.value = true;
-        const { currentPage = 1, pageSize = 10, searchData } = params;
-
+        const { currentPage = 1, pageSize = 10, searchData ,searchApi:curSearchApi} = params;
         const query = { currentPage, pageSize };
         const newParams = searchData;
+        if(curSearchApi){
+            dynamApi.value=curSearchApi;
+        }
+        searchState.searchData=searchData;
+        searchState.currentPage=currentPage;
+        searchState.pageSize=pageSize;
         try {
-            const res = await dynamApi.value(newParams, query);
-            const { data: listData, success } = res;
+            const res =await dynamApi.value(newParams, query);
+            const { data: listData, success,currentPage, pageSize, count,maxPage } = res;
             if (success) {
-                const { nowPage, pageSize, count, data } = listData;
-                dataState.listData = data;
-                dataState.pagination = Object.assign(dataState.pagination, { nowPage, pageSize, count });
-                hasMore.value = dataState.listData.length < count;
+                if(currentPage&&pageSize&&count){
+                    dataState.pagination = Object.assign(dataState.pagination, { currentPage, pageSize, count,maxPage });
+                    hasMore.value = dataState.listData.length < count;
+                }
+                dataState.listData = listData;
             }
         } finally {
             loading.value = false;
@@ -55,23 +63,21 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
 
     async function loadMore() {
         searchState.currentPage += 1;
-        loading.value = true;
-
+        hasMoreLoading.value=true;
         const { currentPage = 1, pageSize = 10, searchData } = searchState;
-
+        console.log(searchState);
         const query = { currentPage, pageSize };
         const newParams = searchData;
         try {
-            const res = await dynamApi.value(newParams, query);
-            const { data: listData, success } = res;
+            const res = await dynamApi?.value(newParams, query);
+            const { data: listData, success,currentPage:resCurrentPage, pageSize:resPageSize, count,maxPage } = res;
             if (success) {
-                const { nowPage, pageSize, count, data } = listData;
-                dataState.listData = [...dataState.listData, ...data];
+                dataState.listData = [...dataState.listData, ...listData];
                 hasMore.value = dataState.listData.length < count;
-                dataState.pagination = Object.assign(dataState.pagination, { nowPage, pageSize, count });
+                dataState.pagination = Object.assign(dataState.pagination, { resCurrentPage, resPageSize, count,maxPage });
             }
         } finally {
-            loading.value = false;
+            hasMoreLoading.value = false;
         }
     }
 
@@ -87,6 +93,7 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         fetchList,
         searchState,
         loading,
+        hasMoreLoading,
         hasMore,
         dataState,
         loadMore,
