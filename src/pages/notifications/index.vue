@@ -7,7 +7,7 @@
         </view>
         <view>
             <uni-search-bar v-model="searchValue" placeholder="标题名称" bg-color="#FFFFFF" @confirm="search" @cancel="cancel"></uni-search-bar>
-            <pull-refresh-list :loading="loading" :has-bar="false" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" :list-data="dataState.listData" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
+            <pull-refresh-list :loading="loading" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" :list-data="dataState.listData" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
                 <view>
                     <view v-for="(notice) in dataState.listData" :key="notice.informationId" class="notice">
                         <view class="notice-date">
@@ -112,11 +112,11 @@ onShow(async ()=>{
     padding: 20rpx 10rpx;
     .notice-date-day {
       color: $uni-font-color-white;
-      font-size: $uni-font-size-base-lg;
+      font-size: $uni-font-size-lg;
     }
     .notice-date-date {
       color: $uni-font-color-white;
-      font-size: $uni-font-size-base-base;
+      font-size: $uni-font-size-base;
     }
   }
   .notice-msg {

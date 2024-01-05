@@ -97,7 +97,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .mypage-container {
-  font-size: $uni-font-size-base-base;
+  font-size: $uni-font-size-base;
   color: $uni-font-color-white;
   box-sizing: border-box;
   background-color: $uni-bg-color;

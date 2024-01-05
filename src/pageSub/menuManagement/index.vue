@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-28 14:52:09
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 17:29:58
+ * @LastEditTime: 2024-01-05 16:19:07
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\index.vue
  * @Description: 
 -->
@@ -19,7 +19,7 @@
                     </view>
                 </template>
             </uni-section>
-            <Menu v-if="!isEdit" :menu-list="bkStudentGirds" />
+            <Menu v-if="!isEdit" :menu-list="bkStudentGirds" @handle-grids-click="handleGridsClick" />
             <menu-sort v-else ref="menuSortRef" />
         </view>
     </app-provider>
@@ -30,6 +30,7 @@ import MenuSort from './components/MenuSort.vue';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/modules/user';
 import { bkStudentGirds } from '@/utils/constants';
+import {handleGridsClick} from '@/utils/handle';
 const useApp = useAppStore();
 const useUser = useUserStore();
 const isEdit = ref<boolean>(false);

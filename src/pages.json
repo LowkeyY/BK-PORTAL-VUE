@@ -101,6 +101,17 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "achievement",
+                    "path": "achievement/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }

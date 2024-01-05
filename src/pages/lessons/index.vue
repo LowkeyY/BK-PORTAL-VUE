@@ -1,11 +1,4 @@
-<!--
- * @Author: Lowkey
- * @Date: 2023-12-27 15:57:23
- * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 15:37:30
- * @FilePath: \BK-Portal-VUE\src\pages\lessons\index.vue
- * @Description:
--->
+
 <template>
     <view>
         <logo-header />
@@ -13,10 +6,10 @@
             <uni-segmented-control :current="current" :values="courses" style-type="button" active-color="#2b83d7" @click-item="onClickItem" />
         </view>
  
-        <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-bar="false" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
+        <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <view v-if="current===0">
                 <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
-                    <h4>{{ curLesson.fullname }}</h4>
+                    <h4 class="lesson-title">{{ curLesson.fullname }}</h4>
                     <view class="lesson-content">
                         <view class="lesson-img">
                             <image :src="getImages(curLesson.courseImage)" style="width: 100%;height: 100%;" mode="scaleToFill" />
@@ -27,7 +20,7 @@
                             <view>
                                 <uni-tag
                                     :text="curLesson.hasFinalExam?'终考课':'终考课'" :type="curLesson.hasFinalExam?'warning':'success'"
-                                    size="normal"
+                                    size="small"
                                 />
                             </view>
                         </view>
@@ -38,10 +31,10 @@
                             type="follow-right"
                             :texture="[curLesson.graderaw >= 60 ? '#1eb259' : '#f34e14','#e3e3e3']"
                             :disable-value="true"
-                            width="85%"
                             :value="curLesson.graderaw/100"
                         />
                         <text
+                            class=""
                             :style="{
                                 paddingLeft:'10rpx',
                                 color:curLesson.graderaw >= 60 ? '#1eb259' : '#f34e14'
@@ -135,7 +128,11 @@ onShow( () => {
 .lesson {
   background-color: #fff;
   margin-top: 20rpx;
-  padding: 20rpx;
+  padding: $uni-list-padding;
+  .lesson-title {
+    font-size: $uni-font-size-lg;
+    color: $uni-color-title;
+  }
   .lesson-content {
     padding: 10rpx 0;
     display: flex;
@@ -149,7 +146,9 @@ onShow( () => {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      margin-left: 20rpx;
+      font-size: $uni-font-size-base;
+      margin-left: $uni-spacing-col-lg;
+      color: $uni-color-subtitle;
       .lesson-msg {
         color: #717171;
         font-size: 26rpx;
@@ -158,7 +157,7 @@ onShow( () => {
   }
   .progress-box {
     display: flex;
-    height: 80rpx;
+    height: 40rpx;
     align-items: center;
   }
 }

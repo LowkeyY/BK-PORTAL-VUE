@@ -37,13 +37,6 @@ $uni-bg-color-mask: rgb(0 0 0 / 40%); //遮罩颜色
 /* 边框颜色 */
 $uni-border-color: #c8c7cc;
 
-/* 尺寸变量 */
-
-/* 文字尺寸 */
-$uni-font-size-sm: 12px;
-$uni-font-size-base: 14px;
-$uni-font-size-lg: 16px;
-
 /* 图片尺寸 */
 $uni-img-size-sm: 20px;
 $uni-img-size-base: 26px;
@@ -56,14 +49,14 @@ $uni-border-radius-lg: 6px;
 $uni-border-radius-circle: 50%;
 
 /* 水平间距 */
-$uni-spacing-row-sm: 5px;
-$uni-spacing-row-base: 10px;
-$uni-spacing-row-lg: 15px;
+$uni-spacing-row-sm: 5prx;
+$uni-spacing-row-base: 10rpx;
+$uni-spacing-row-lg: 15rpx;
 
 /* 垂直间距 */
-$uni-spacing-col-sm: 4px;
-$uni-spacing-col-base: 8px;
-$uni-spacing-col-lg: 12px;
+$uni-spacing-col-sm: 4rpx;
+$uni-spacing-col-base: 8rpx;
+$uni-spacing-col-lg: 12rpx;
 
 /* 透明度 */
 $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
@@ -77,8 +70,8 @@ $uni-color-paragraph: #3f536e; // 文章段落颜色
 $uni-font-size-paragraph: 15px;
 
 /* padding */
-$uni-list-padding: 20px 16px 16px;
-$uni-container-padding: 20px;
+$uni-list-padding: 16rpx 20rpx 20rpx;
+$uni-container-padding: 20rpx;
 
 /* 按钮类型颜色 */
 $uni-buttonT-type-info: #909399;
@@ -88,9 +81,9 @@ $uni-button-type-warning: #e6a23c;
 $uni-button-type-danger: #f56c6c;
 
 /* 文字大小颜色 */
-$uni-font-size-base-sm: 20rpx;
-$uni-font-size-base-base: 24rpx;
-$uni-font-size-base-m: 26rpx;
-$uni-font-size-base-lg: 30rpx;
+$uni-font-size-sm: 20rpx;
+$uni-font-size-base: 24rpx;
+$uni-font-size-m: 26rpx;
+$uni-font-size-lg: 30rpx;
 $uni-font-color-white: #fff;
 $uni-font-color-block: #131313;

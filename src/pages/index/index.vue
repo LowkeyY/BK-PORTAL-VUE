@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 17:49:32
+ * @LastEditTime: 2024-01-05 16:21:13
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -10,7 +10,7 @@
 <template>
     <view class="constainer">
         <logo-header />  
-        <Menu :menu-list="useApp.getGrids" @handle-grids-click="handleGridsClick" />
+        <Menu :menu-list="grids" @handle-grids-click="handleGridsClick" />
         <view class="notice-bar">
             <uni-list-item :show-extra-icon="true" show-arrow thumb="/static/images/spirit/bell.png" :title="`您有${noticeCont}条未读消息`" />
         </view>
@@ -29,7 +29,7 @@ const useAuth = useAuthStore();
 const useApp = useAppStore();
 
 const noticeCont = ref(0);
-
+const grids = computed(()=>useApp.getGrids);
 const queryMessageCounts =async ()=>{
     const params = {
         userId:useUser.moodleUserId

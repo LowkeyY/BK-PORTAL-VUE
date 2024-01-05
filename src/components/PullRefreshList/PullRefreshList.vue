@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 16:03:09
+ * @LastEditTime: 2024-01-05 18:05:31
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -29,6 +29,7 @@
                 refresher-enabled="true"
                 :refresher-triggered="triggered"
                 refresher-default-style="none"
+                refresher-background="transparent"
                 :refresher-threshold="20"
                 scroll-anchoring="true"
                 @refresherpulling="onPulling"
@@ -40,7 +41,7 @@
                 <view class="pull-loading">
                     <view v-if="showPullText" class="text"> 释放刷新 </view>
                     <view v-if="pullLoading" class="img">
-                        <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
+                        <img style="height: 60rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
                     </view>
                 </view>
                 <slot v-if="listData.length&&(!loading||isRefresh)" />
@@ -76,10 +77,7 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    hasBar: {
-        type: Boolean,
-        default: true
-    },
+
     loading: {
         type: Boolean,
         default: false
@@ -138,8 +136,7 @@ onMounted(() => {
                     .select('.scroll-container')
                     .boundingClientRect()
                     .exec(res => {
-                        console.log(res[0]);
-                        elementHeight.value = px2rpx(info.windowHeight - res[0].top - (props.hasBar ? 48 : 0)) + 'rpx';
+                        elementHeight.value = px2rpx(info.windowHeight - res[0].top) + 'rpx';
                     });
             }
         });
