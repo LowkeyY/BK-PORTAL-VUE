@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-20 13:13:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-28 15:39:12
+ * @LastEditTime: 2024-01-05 13:22:21
  * @FilePath: \BK-Portal-VUE\src\utils\handle.ts
  * @Description: 公共事件
  */
@@ -30,6 +30,7 @@ export function handleJumpToPage(path:string,params:Record<string,any>):void{
     if (isUrl(path)) {
         // webview 打开
     }else{
+        console.log(path);
         router.push({
             name:path,
             query:params

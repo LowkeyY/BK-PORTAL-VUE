@@ -90,6 +90,17 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "timetable",
+                    "path": "timetable/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }

@@ -14,7 +14,7 @@
         </view>
         <view>
             <uni-search-bar v-model="searchValue" placeholder="标题名称" bg-color="#FFFFFF" @confirm="search" @cancel="cancel"></uni-search-bar>
-            <pull-refresh-list :loading="loading" :has-more-loading="hasMoreLoading" :list-data="dataState.listData" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
+            <pull-refresh-list :loading="loading" :has-bar="false" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" :list-data="dataState.listData" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
                 <view>
                     <view v-for="(notice) in dataState.listData" :key="notice.informationId" class="notice">
                         <view class="notice-date">
@@ -49,7 +49,7 @@ const searchParams = reactive({
     },
     searchApi: informationListApi,
 });
-const { dataState,refresh,fetchList, loadMore, hasMore, loading ,hasMoreLoading} = useRefreshList(searchParams, true);
+const { dataState,refresh,fetchList, loadMore, hasMore, loading,isRefresh,hasMoreLoading} = useRefreshList(searchParams, true);
 const onClickItem =async (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;

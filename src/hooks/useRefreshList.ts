@@ -20,6 +20,7 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
     const loading = ref<boolean>(false);
     const hasMoreLoading = ref<boolean>(false);
     const hasMore = ref<boolean>(false);
+    const isRefresh = ref<boolean>(false);
     const dynamApi = ref<any>(searchApi); // tab切换时动态更新API
     const searchState: typeSearchData = reactive<typeSearchData>({
         searchData,
@@ -65,7 +66,6 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         searchState.currentPage += 1;
         hasMoreLoading.value=true;
         const { currentPage = 1, pageSize = 10, searchData } = searchState;
-        console.log(searchState);
         const query = { currentPage, pageSize };
         const newParams = searchData;
         try {
@@ -82,10 +82,12 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
     }
 
     const refresh = async (callback: () => void) => {
+        isRefresh.value=true;
         try {
             await fetchList(searchState);
         } finally {
             callback();
+            isRefresh.value=false;
         }
     };
     immediate && fetchList(searchState);
@@ -98,6 +100,7 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         dataState,
         loadMore,
         refresh,
+        isRefresh,
         dynamApi,
     };
 }
