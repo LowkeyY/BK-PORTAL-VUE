@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 14:17:00
+ * @LastEditTime: 2024-01-05 16:03:09
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -20,7 +20,7 @@
                 <slot name="extra" />
             </view>
         </view>
-        <ComSkeleton type="list" :loading="loading&&!isRefresh">
+        <ComSkeleton type="list" :loading="loading&&!isRefresh&&showSkeleton">
             <scroll-view
                 id="scroll-el"
                 enable-flex="true"
@@ -43,7 +43,7 @@
                         <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
                     </view>
                 </view>
-                <slot v-if="listData.length" />
+                <slot v-if="listData.length&&(!loading||isRefresh)" />
                 <Empty v-else-if="!pullLoading" :loading="loading" />
                 <view v-if="hasMoreLoading" class="hasMoreImg">
                     <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
@@ -90,7 +90,7 @@ const props = defineProps({
     },
     showSkeleton:{
         type: Boolean,
-        default: false
+        default: true
     },
     isRefresh:{
         type: Boolean,
