@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-20 13:13:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 16:29:21
+ * @LastEditTime: 2024-01-08 14:21:26
  * @FilePath: \BK-Portal-VUE\src\utils\handle.ts
  * @Description: 公共事件
  */
@@ -30,15 +30,11 @@ export function handleJumpToPage(path:string,params:Record<string,any>):void{
     if (isUrl(path)) {
         // webview 打开
     }else{
-        const {text=''} =params;
         router.push({
             name:path,
-            params:{
-                text
-            }
+            params
         });
     }
-  
 }
 export function handleGridsClick(item:Grids):void {
     const { path = '',...others} = item;

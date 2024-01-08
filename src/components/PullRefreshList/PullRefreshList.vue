@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 18:05:31
+ * @LastEditTime: 2024-01-08 16:29:47
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -49,7 +49,7 @@
                 <view v-if="hasMoreLoading" class="hasMoreImg">
                     <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
                 </view>
-                <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--没有更多了--</view>
+                <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--到底了--</view>
             </scroll-view>
         </ComSkeleton>
     </view>
@@ -136,7 +136,7 @@ onMounted(() => {
                     .select('.scroll-container')
                     .boundingClientRect()
                     .exec(res => {
-                        elementHeight.value = px2rpx(info.windowHeight - res[0].top) + 'rpx';
+                        elementHeight.value = px2rpx(info.windowHeight - res[0]?.top) + 'rpx';
                     });
             }
         });

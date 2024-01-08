@@ -100,7 +100,7 @@ const params = reactive({
     searchApi: courseListOpenApi,
 });
 
-const { dataState,refresh, fetchList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params, true);
+const { dataState,refresh, fetchList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params);
 const onClickItem = (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;

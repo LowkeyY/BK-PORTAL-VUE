@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-05 13:06:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 17:19:35
+ * @LastEditTime: 2024-01-08 16:20:28
  * @FilePath: \BK-Portal-VUE\src\pageSub\timeTable\index.vue
  * @Description: 
 -->
@@ -50,7 +50,7 @@ import {changeLessonDate} from '@/utils';
 const searchParams:any = reactive({
     searchApi: timetableApi,
 });
-const { dataState,refresh,loadMore, hasMore,isRefresh, loading ,hasMoreLoading} = useRefreshList(searchParams, true);
+const { dataState,refresh,loadMore, hasMore,isRefresh, loading ,hasMoreLoading} = useRefreshList(searchParams);
 
 const renderInfo = (text:string):string=>{
     return text||'-';

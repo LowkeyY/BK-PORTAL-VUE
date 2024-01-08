@@ -1,18 +1,19 @@
 <!--
  * @Author: Lowkey
- * @Date: 2024-01-05 16:11:32
+ * @Date: 2024-01-08 13:59:08
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 16:20:01
- * @FilePath: \BK-Portal-VUE\src\pageSub\achievement\index.vue
+ * @LastEditTime: 2024-01-08 16:21:02
+ * @FilePath: \BK-Portal-VUE\src\pageSub\achievement\details.vue
  * @Description: 
 -->
 
 <template>
     <view>
-        <nav-bar title="我的成绩" />
+        <nav-bar title="" />
+        <view></view>
         <pull-refresh-list :loading="loading" :has-more-loading="hasMoreLoading" :list-data="dataState.listData" :is-refresh="isRefresh" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
             <view>
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleListClick(curLesson)">
+                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
                     <h4 class="lesson-title">{{ curLesson.fullname }}</h4>
                     <view class="lesson-content">
                         <view class="lesson-img">
@@ -40,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import {gradeListApi} from '@/services/list';
+import {gradeDetailsApi} from '@/services/list';
 import {useUserStore} from '@/store/modules/user';
 import {getImages,changeLessonDate} from '@/utils';
 import {GradeEnums} from '@/enums/statusEnum';
@@ -52,16 +53,24 @@ const searchParams:any = reactive({
     searchData:{
         userid:useUser.moodleUserId,
     },
-    searchApi: gradeListApi
+    searchApi: gradeDetailsApi
 });
-const { dataState,refresh,loadMore, hasMore,isRefresh, loading ,hasMoreLoading} = useRefreshList(searchParams);
+const { searchState,dataState,fetchList,refresh,loadMore,otherData, hasMore,isRefresh, loading ,hasMoreLoading} = useRefreshList(searchParams, {immediate:false});
 
 const isPass = (grade:number):boolean => grade >= 60;
-
+console.log(otherData);
 const handleListClick = (curLesson:Record<string,any>)=>{
     const {id} = curLesson;
+    console.log(id);
     handleJumpToPage('achievementDetails',{courseid:id});
 };
+onLoad((option) => {
+    if (option) {
+        const {courseid} = option;
+        searchParams.searchData=Object.assign(searchParams.searchData,{courseid});
+        fetchList(searchState);
+    }
+});
 </script>
 
 <style lang="scss" scoped>

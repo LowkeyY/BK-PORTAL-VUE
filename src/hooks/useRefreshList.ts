@@ -14,14 +14,23 @@ interface typeOptions {
     searchApi: any;
     searchData: typeSearchData;
 }
-
-export default function useRefreshList(options: typeOptions, immediate = false) {
+interface Config {
+    immediate?: boolean;
+    dataKey?: string;
+}
+const defaultConfig:Config={
+    immediate: true,
+    dataKey: 'data'
+};
+export default function useRefreshList(options: typeOptions, config=defaultConfig) {
     const { searchApi, searchData = {} } = options;
+    const {immediate=true,dataKey='data'} = config;
     const loading = ref<boolean>(false);
     const hasMoreLoading = ref<boolean>(false);
     const hasMore = ref<boolean>(false);
     const isRefresh = ref<boolean>(false);
     const dynamApi = ref<any>(searchApi); // tab切换时动态更新API
+    const otherData = ref<Record<string,any>>({});
     const searchState: typeSearchData = reactive<typeSearchData>({
         searchData,
         currentPage: 1,
@@ -49,13 +58,14 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         searchState.pageSize=pageSize;
         try {
             const res =await dynamApi.value(newParams, query);
-            const { data: listData, success,currentPage, pageSize, count,maxPage } = res;
+            const { [dataKey]:listData, success,currentPage, pageSize, count,maxPage,...others } = res;
             if (success) {
                 if(currentPage&&pageSize&&count){
                     dataState.pagination = Object.assign(dataState.pagination, { currentPage, pageSize, count,maxPage });
                     hasMore.value = dataState.listData.length < count;
                 }
                 dataState.listData = listData;
+                otherData.value = others;
             }
         } finally {
             loading.value = false;
@@ -70,9 +80,10 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         const newParams = searchData;
         try {
             const res = await dynamApi?.value(newParams, query);
-            const { data: listData, success,currentPage:resCurrentPage, pageSize:resPageSize, count,maxPage } = res;
+            const { [dataKey]: listData, success,currentPage:resCurrentPage, pageSize:resPageSize, count,maxPage,...others } = res;
             if (success) {
                 dataState.listData = [...dataState.listData, ...listData];
+                otherData.value = others;
                 hasMore.value = dataState.listData.length < count;
                 dataState.pagination = Object.assign(dataState.pagination, { resCurrentPage, resPageSize, count,maxPage });
             }
@@ -102,5 +113,6 @@ export default function useRefreshList(options: typeOptions, immediate = false) 
         refresh,
         isRefresh,
         dynamApi,
+        otherData,
     };
 }

@@ -42,7 +42,7 @@ const searchParams = reactive({
     },
     searchApi: informationListApi,
 });
-const { dataState,refresh,fetchList, loadMore, hasMore, loading,isRefresh,hasMoreLoading} = useRefreshList(searchParams, true);
+const { dataState,refresh,fetchList, loadMore, hasMore, loading,isRefresh,hasMoreLoading} = useRefreshList(searchParams);
 const onClickItem =async (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;
