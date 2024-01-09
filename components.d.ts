@@ -20,6 +20,8 @@ declare module 'vue' {
     Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     NavBar: typeof import('./src/components/NavBar/NavBar.vue')['default']
     PullRefreshList: typeof import('./src/components/PullRefreshList/PullRefreshList.vue')['default']
+    ResourceIcon: typeof import('./src/components/ResourceIcon/ResourceIcon.vue')['default']
+    ResoureIcon: typeof import('./src/components/ResourceIcon/ResoureIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Test: typeof import('./src/components/Test/index.vue')['default']

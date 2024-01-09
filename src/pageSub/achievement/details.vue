@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-08 13:59:08
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 16:21:02
+ * @LastEditTime: 2024-01-09 17:39:51
  * @FilePath: \BK-Portal-VUE\src\pageSub\achievement\details.vue
  * @Description: 
 -->
@@ -10,41 +10,54 @@
 <template>
     <view>
         <nav-bar title="" />
-        <view></view>
-        <pull-refresh-list :loading="loading" :has-more-loading="hasMoreLoading" :list-data="dataState.listData" :is-refresh="isRefresh" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
-            <view>
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
-                    <h4 class="lesson-title">{{ curLesson.fullname }}</h4>
-                    <view class="lesson-content">
-                        <view class="lesson-img">
-                            <image :src="getImages(curLesson.courseImage)" style="width: 100%;height: 100%;" mode="scaleToFill" />
+       
+        <view class="header">
+            <view class="header-title">{{ otherData.coursename }}</view>
+            <view class="header-grade">
+                <view>
+                    <text class="name">课程总分：</text>
+                    <text>{{ `${otherData.grademax||'-'}` }}</text>
+                </view>
+                <view>
+                    <text class="name">我的总分：</text>
+                    <text>{{ `${otherData.graderaw||'-'}` }}</text>
+                </view>
+            </view>
+        </view>
+        <view class="content">
+            <pull-refresh-list :loading="loading" :has-more-loading="hasMoreLoading" :list-data="dataState.listData" :is-refresh="isRefresh" :has-more="hasMore" @on-refresh="refresh" @load-more="loadMore">
+                <view>
+                    <view v-for="(item,index) in dataState.listData" :key="item.id||`${item.type}_${index}`" class="card" @click="()=>handleListClick(item)">
+                        <view class="card-header">
+                            <view class="type-content">
+                                <resource-icon :type="item.itemType" /> 
+                                <view class="type">{{ getType(item.itemType) }}</view>
+                            </view>
+                            <view class="end-date">
+                                {{ `截止时间:${item.enddate>0?getCommonDate(item.enddate):'未设置'}` }}
+                            </view>
                         </view>
-                        <view class="lesson-info">
-                            <view>
-                                {{ curLesson.openState === '0' ? `结课日期：${changeLessonDate(curLesson.enddate) || '-'}` : '已结束' }}
+                        <view class="info">
+                            <view :class="['my-grade',item.id ===''&&'disabled']">
+                                {{ item.title }}
                             </view>
-                            <view>
-                                {{ `课程总得分：${curLesson.graderaw||'-'}` }}
-                            </view>
-                            <view v-if="curLesson.openState !== '0'">
-                                <uni-tag
-                                    :text="isPass(curLesson.graderaw)?GradeEnums.PASSED:GradeEnums.NO_PASS" :type="isPass(curLesson.graderaw)?'success':'error'"
-                                    size="small"
-                                />
+                            <view class="grade-box">
+                                <view>{{ `总分：${item.grademax}` }}</view>
+                                <view :class="['my-grade',item.id ===''&&'disabled']">{{ `我的得分${item.grade||'-'}` }}</view>
                             </view>
                         </view>
                     </view>
                 </view>
-            </view>
-        </pull-refresh-list>
+            </pull-refresh-list>
+        </view>
     </view>
 </template>
 
 <script lang="ts" setup>
 import {gradeDetailsApi} from '@/services/list';
 import {useUserStore} from '@/store/modules/user';
-import {getImages,changeLessonDate} from '@/utils';
-import {GradeEnums} from '@/enums/statusEnum';
+import {getCommonDate} from '@/utils';
+import {resourceType} from '@/utils/constants';
 import {handleJumpToPage} from '@/utils/handle';
 import useRefreshList from '@/hooks/useRefreshList';
 
@@ -57,12 +70,14 @@ const searchParams:any = reactive({
 });
 const { searchState,dataState,fetchList,refresh,loadMore,otherData, hasMore,isRefresh, loading ,hasMoreLoading} = useRefreshList(searchParams, {immediate:false});
 
-const isPass = (grade:number):boolean => grade >= 60;
-console.log(otherData);
-const handleListClick = (curLesson:Record<string,any>)=>{
-    const {id} = curLesson;
+const getType = (type:string):string => {
+    return resourceType[type]||'-';
+};
+
+const handleListClick = (cur:Record<string,any>)=>{
+    const {id} = cur;
     console.log(id);
-    handleJumpToPage('achievementDetails',{courseid:id});
+    // handleJumpToPage('achievementDetails',{courseid:id});
 };
 onLoad((option) => {
     if (option) {
@@ -74,31 +89,74 @@ onLoad((option) => {
 </script>
 
 <style lang="scss" scoped>
-.lesson {
-  background-color: #fff;
-  margin-top: 20rpx;
-  padding: $uni-list-padding;
-  .lesson-title {
+@use '@/assets/mixin.scss' as *;
+.header {
+  background-color: $uni-color-primary;
+  padding: 0 20rpx 30rpx;
+  color: $uni-font-color-white;
+  .header-title {
     font-size: $uni-font-size-lg;
-    color: $uni-color-title;
   }
-  .lesson-content {
-    padding: 10rpx 0;
+  .header-grade {
     display: flex;
-    .lesson-img {
-      width: 40%;
-      height: 160rpx;
-      border-radius: 20rpx;
-      overflow: hidden;
-    }
-    .lesson-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
+    justify-content: space-between;
+    padding-top: $uni-spacing-row-lg;
+    text-align: right;
+    font-size: $uni-font-size-lg;
+    .name {
       font-size: $uni-font-size-base;
-      margin-left: $uni-spacing-col-lg;
-      color: $uni-color-subtitle;
     }
   }
 }
+.content {
+  padding: $uni-container-padding;
+  .card {
+    padding: $uni-list-padding;
+    background-color: #fff;
+    margin-bottom: $uni-spacing-col-lg;
+    border-radius: $uni-border-radius-lg;
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: $uni-spacing-col-lg;
+      border-bottom: 1px solid $uni-border-color;
+      .type-content {
+        display: flex;
+        align-items: center;
+        .icon {
+          width: 36rpx;
+          height: 36rpx;
+        }
+        .type {
+          margin-left: 8rpx;
+          font-size: $uni-font-size-m;
+        }
+      }
+      .end-date {
+        font-size: $uni-font-size-sm;
+        color: $uni-color-subtitle;
+      }
+    }
+    .info {
+      margin-top: $uni-spacing-col-lg;
+      font-size: $uni-font-size-m;
+      .grade-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: $uni-font-size-base;
+        margin-top: $uni-spacing-col-lg;
+        color: $uni-color-subtitle;
+        .my-grade {
+          color: $uni-color-primary;
+        }
+        .disabled {
+          @include disabled ;
+        }
+      }
+    }
+  }
+}
+
 </style>

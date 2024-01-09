@@ -62,6 +62,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
                 exclude: ['node_modules/**', '/__uno.css']
            }
         },
+
         // 插件
         plugins: [
             uni(),

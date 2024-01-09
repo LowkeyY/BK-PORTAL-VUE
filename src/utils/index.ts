@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:28:04
+ * @LastEditTime: 2024-01-09 15:52:15
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -100,4 +100,29 @@ export const changeLessonDate = (date: any) => {
     } else {
         return '-';
     }
+};
+
+/**
+ * @description: 日期转换
+ * @param {*} date
+ * @param {*} details
+ * @param {*} showWeek
+ * @return {*}
+ */
+export const getCommonDate = (date:number, details = true, showWeek = true):string => {
+    if (date) {
+        const preDate = new Date(date * 1000),
+            week = '日一二三四五六'.charAt(preDate.getDay()),
+            year = preDate.getFullYear(),
+            hour = preDate.getHours() < 10 ? `0${preDate.getHours()}` : preDate.getHours(),
+            minutes = preDate.getMinutes() < 10 ? `0${preDate.getMinutes()}` : preDate.getMinutes();
+        if (details) {
+            if (!showWeek) {
+                return `${year}年${preDate.getMonth() + 1}月${preDate.getDate()}日${hour}:${minutes}`;
+            }
+            return `${year}年${preDate.getMonth() + 1}月${preDate.getDate()}日 星期${week} ${hour}:${minutes}`;
+        }
+        return `${year}年${preDate.getMonth() + 1}月${preDate.getDate()}日`;
+    }
+    return '-';
 };

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 16:57:53
+ * @LastEditTime: 2024-01-09 17:43:03
  * @FilePath: \BK-Portal-VUE\src\services\model\baseModel.d.ts
  * @Description:
  */
@@ -12,7 +12,7 @@ declare interface MoodleBaseInfoParams {
 }
 
 declare interface MessageCountsParams {
-    userId:string|number
+    userid:string|number
 }
 
 declare interface courseListParams {

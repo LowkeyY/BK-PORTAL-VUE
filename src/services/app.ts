@@ -15,11 +15,11 @@ import { StorageEnum } from '@/enums/storageEnum';
 
 const {CUNOVS_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
-const moodleUserid = storage.get(StorageEnum.USER_LOGIN_ID);
+const userLoginId = storage.get(StorageEnum.USER_LOGIN_ID);
 
 const MODDLE_BASE_INFO = `${CUNOVS_SERVER}/config`; // 学习平台配置数据
 const MESSAGE_COUNTS = `${CUNOVS_SERVER}/msg/counts/${moodleToken}`; // 未读消息数
-const  GRIDS_SORT= `${CUNOVS_SERVER}/config/module/${moodleUserid}`; // 菜单模块排序
+const  GRIDS_SORT= `${CUNOVS_SERVER}/config/module/${userLoginId}`; // 菜单模块排序
 const  SET_GRIDS= `${CUNOVS_SERVER}/config/saveModuleConfig`; 
 /**
  * @description:学习平台基础信息

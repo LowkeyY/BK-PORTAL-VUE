@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-05 16:21:13
+ * @LastEditTime: 2024-01-09 17:56:45
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -32,9 +32,9 @@ const noticeCont = ref(0);
 const grids = computed(()=>useApp.getGrids);
 const queryMessageCounts =async ()=>{
     const params = {
-        userId:useUser.moodleUserId
+        userid:useUser.moodleUserId
     };
-    const {success,messageCount=0} = messageCountsApi(params as MessageCountsParams);
+    const {success,messageCount=0} = await messageCountsApi(params as MessageCountsParams);
     if(success){
         noticeCont.value=messageCount;
     }

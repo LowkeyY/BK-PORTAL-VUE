@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 16:29:47
+ * @LastEditTime: 2024-01-08 17:56:05
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -62,7 +62,7 @@ import { px2rpx } from '@/utils/uniapi';
 const _this = getCurrentInstance();
 const pullLoading = ref(false);
 const showPullText = ref(false);
-const elementHeight = ref(0);
+const elementHeight = ref('0');
 const triggered = ref(false);
 const props = defineProps({
     listData: {
@@ -126,7 +126,7 @@ const onAbort = () => {
 const onRestore = () => {
     triggered.value = false;
 };
-onMounted(() => {
+onUpdated(() => {
     // 自适应容器高度
     setTimeout(() => {
         uni.getSystemInfo({
