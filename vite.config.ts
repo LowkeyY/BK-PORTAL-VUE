@@ -93,5 +93,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
                 dirs: ['src/components'],
              }),
         ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `@use "src/assets/mixin.scss" as *;`
+                }
+            }
+        }
     };
 };

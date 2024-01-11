@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-08 13:59:08
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-09 17:39:51
+ * @LastEditTime: 2024-01-11 12:12:59
  * @FilePath: \BK-Portal-VUE\src\pageSub\achievement\details.vue
  * @Description: 
 -->
@@ -89,7 +89,6 @@ onLoad((option) => {
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/mixin.scss' as *;
 .header {
   background-color: $uni-color-primary;
   padding: 0 20rpx 30rpx;

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-09 17:56:45
+ * @LastEditTime: 2024-01-10 13:53:16
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -12,7 +12,16 @@
         <logo-header />  
         <Menu :menu-list="grids" @handle-grids-click="handleGridsClick" />
         <view class="notice-bar">
-            <uni-list-item :show-extra-icon="true" show-arrow thumb="/static/images/spirit/bell.png" :title="`您有${noticeCont}条未读消息`" />
+            <uni-list-item show-arrow>
+                <template #body>
+                    <view class="content">
+                        <image class="icon" src="/static/images/spirit/bell.png" mode="widthFix" />
+                        <uni-badge :is-dot="true" :text="noticeCont>0?noticeCont:''" absolute="rightTop" size="small">
+                            <view> {{ `您有${noticeCont}条未读消息` }}</view>
+                        </uni-badge>
+                    </view>
+                </template>
+            </uni-list-item>
         </view>
     </view>
 </template>
@@ -30,6 +39,7 @@ const useApp = useAppStore();
 
 const noticeCont = ref(0);
 const grids = computed(()=>useApp.getGrids);
+
 const queryMessageCounts =async ()=>{
     const params = {
         userid:useUser.moodleUserId
@@ -58,6 +68,14 @@ onShow(()=>{
 .constainer {
   .notice-bar {
     margin-top: $uni-spacing-col-sm;
+    .content {
+      display: flex;
+      align-items: center;
+      .icon {
+        width: 40rpx;
+        margin-right: $uni-spacing-col-lg;
+      }
+    }
   }
 }
 
