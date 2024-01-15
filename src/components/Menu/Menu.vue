@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 13:02:52
+ * @LastEditTime: 2024-01-12 19:06:41
  * @FilePath: \BK-Portal-VUE\src\components\Menu\Menu.vue
  * @Description: 
 -->
@@ -11,7 +11,7 @@
         <uni-grid :column="column" :highlight="true" class="grid-box" :show-border="false">
             <uni-grid-item v-for="(item, index) in menuList" :key="item.id" :index="index">
                 <view class="grid-item-box" style="background-color: #fff;" @click="()=>handleClick(item)">
-                    <img class="icon" :src="`../../static/images/grids/${item.icon}.svg`" alt="">
+                    <image class="icon" :src="`/static/images/grids/${item.icon}.svg`" alt="" />
                     <text class="text">{{ item.text }}</text>
                     <view class="grid-dot">
                         <slot name="dot" />
@@ -59,8 +59,8 @@ const handleClick = (item:Record<string,any>) =>{
       justify-content: center;
       flex: 1;
       .icon {
-        width: 28px;
-        height: 28px;
+        width: 56rpx;
+        height: 56rpx;
       }
       .text {
         margin-top: 20rpx;

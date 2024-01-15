@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-09 15:52:15
+ * @LastEditTime: 2024-01-15 13:45:18
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -65,7 +65,7 @@ export const getPortalAvatar = (url: string, fileId: string) => {
 export function getImages(path: any = '', type = 'defaultImg', curBaseUrl = 'CUNOVS_SERVER') {
     const baseUrl = getBaseUrl()[curBaseUrl];
     const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
-    if (path instanceof Blob || path.startsWith('blob:') || path.startsWith('data:')) {
+    if (path.startsWith('blob:') || path.startsWith('data:')) {
         return path;
     }
     if (path === '' || !path) {
@@ -125,4 +125,20 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
         return `${year}年${preDate.getMonth() + 1}月${preDate.getDate()}日`;
     }
     return '-';
+};
+
+/**
+ * @description: Encode
+ * @param {*} str
+ * @return {*}
+ */
+export const urlEncode = (str:string|number):string => {
+    str = (str + '').toString();
+    return encodeURIComponent(str)
+        .replace(/!/g, '%21')
+        .replace(/'/g, '%27')
+        .replace(/\(/g, '%28')
+        .replace(/\)/g, '%29')
+        .replace(/\*/g, '%2A')
+        .replace(/%20/g, '+');
 };

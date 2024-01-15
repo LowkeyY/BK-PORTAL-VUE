@@ -12,11 +12,12 @@
         <drag-menu :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
             <template #grid="{oindex, content, active}">
                 <view class="grid">
-                    <img class="icon" :src="`../../static/images/grids/${content.icon}.svg`" alt="">
-                    <text class="text">{{ content.text }}</text>
-                    <view class="grid-dot">
-                        <uni-icons type="minus-filled" color="#c0c0c0"></uni-icons>
-                    </view>
+                    <image class="icon" :src="`../../static/images/grids/${content.icon}.svg`" alt="">
+                        <text class="text">{{ content.text }}</text>
+                        <view class="grid-dot">
+                            <uni-icons type="minus-filled" color="#c0c0c0"></uni-icons>
+                        </view>
+                    </image>
                 </view>
             </template>
         </drag-menu> 

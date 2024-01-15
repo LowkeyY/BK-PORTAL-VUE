@@ -1,18 +1,23 @@
+/* eslint-disable camelcase */
 /*
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 15:58:32
+ * @LastEditTime: 2024-01-12 15:00:40
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
+
 import { defineStore } from 'pinia';
 import { moodleBaseInfoApi,gridsSortApi,setGridsApi } from '@/services/app';
+import { pcLoginApi,getPCLoginCodeApi,getPaymentCodeApi } from '@/services/login';
 import { StorageEnum } from '@/enums/storageEnum';
-import { Toast } from '@/utils/uniapi/prompt';
+import { Toast ,Loading,HideLoading} from '@/utils/uniapi/prompt';
+import { useOpenUrl } from '@/hooks/useOpenUrl';
+import {urlEncode} from '@/utils';
 // import {exceScript} from '@/utils/handle';
 import { isArray } from '@/utils/is';
-import { bkStudentGirds,moreGird } from '@/utils/constants';
+import { bkStudentGirds,moreGird,oauthUrl } from '@/utils/constants';
 import storage from '@/utils/storage';
 interface AppState {
     courseid: string ;
@@ -125,6 +130,78 @@ export const useAppStore = defineStore({
                     callback();
                 }else{
                     Toast(msg);
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }
+        },
+        /**
+         * @description: 模拟pc登录实现单点登录集成
+         * @param {string} appType
+         * @return {*}
+         */        
+        async getPCLoginCode(appType:string):Promise<any>{
+            const credential=  storage.get(StorageEnum.CREDENTIAL);
+            const params:PcLoginCodeParams = {
+                credential,
+                _t:new Date().getTime()
+            };
+            try {
+                Loading('正在打开...');
+                const {data,success,msg} = await getPCLoginCodeApi(params);
+                if(success){
+                    this.pcLogin({password:data,appType});
+                }else{
+                    Toast(msg);
+                    HideLoading();
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }finally{
+                HideLoading();
+            }
+        },
+        async pcLogin(data:Record<string,any>):Promise<any>{
+            const {password,appType}= data;
+            const params:PcLoginParams = {
+                username: storage.get(StorageEnum.USER_CODE),
+                password,
+                loginMode: 'PasswordLogin',
+            };
+            try {
+                const {success} = await pcLoginApi(params);
+                if(success){
+                    useOpenUrl(oauthUrl[appType]);
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }
+        },
+        /**
+         * @description: 缴费系统集成
+         * @return {*}
+         */        
+        async getPaymentCode():Promise<any>{
+            const head = {
+                version: 'V1.0',
+                charset: 'UTF-8',
+                channel_id: urlEncode('202106180006'),
+                datetime: urlEncode(new Date().getTime()),
+                sign_type: 'SHA256WithRSA'
+            };
+            const userCode = {
+                user_code: storage.get(StorageEnum.USER_CODE)
+            };
+            const params= {
+                head: JSON.stringify(head),
+                data: JSON.stringify(userCode)
+            };
+            try {
+                const {success,sign} = await getPaymentCodeApi(params);
+                if(success){
+                    const { head: paramHead, data } = params;
+                    const url = encodeURI(`${oauthUrl.payment}?head=${paramHead}&data=${data}&sign=${sign}`);
+                    useOpenUrl(url);
                 }
             } catch (err: any) {
                 return Promise.reject(err);

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 15:11:29
+ * @LastEditTime: 2024-01-11 13:42:46
  * @FilePath: \BK-Portal-VUE\src\services\app.ts
  * @Description: 
  */
@@ -19,8 +19,9 @@ const userLoginId = storage.get(StorageEnum.USER_LOGIN_ID);
 
 const MODDLE_BASE_INFO = `${CUNOVS_SERVER}/config`; // 学习平台配置数据
 const MESSAGE_COUNTS = `${CUNOVS_SERVER}/msg/counts/${moodleToken}`; // 未读消息数
-const  GRIDS_SORT= `${CUNOVS_SERVER}/config/module/${userLoginId}`; // 菜单模块排序
-const  SET_GRIDS= `${CUNOVS_SERVER}/config/saveModuleConfig`; 
+const GRIDS_SORT= `${CUNOVS_SERVER}/config/module/${userLoginId}`; // 菜单模块排序
+const SET_GRIDS= `${CUNOVS_SERVER}/config/saveModuleConfig`; // 保存菜单顺序
+
 /**
  * @description:学习平台基础信息
  * @return {*}

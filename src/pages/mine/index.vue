@@ -76,7 +76,7 @@ onMounted(async () => {
             <uni-grid :column="4" :show-border="false" :square="false" @change="change">
                 <uni-grid-item v-for="(item, index) in bkMineGirds" :key="item.id" :index="index">
                     <view class="grid-item-box">
-                        <img class="icon" :src="`../static/images/grids/${item.icon}.svg`" />
+                        <image class="icon" :src="`/static/images/grids/${item.icon}.svg`" alt="" />
                         <text class="text">{{ item.text }}</text>
                     </view>
                 </uni-grid-item>
@@ -173,8 +173,8 @@ onMounted(async () => {
     justify-content: center;
     flex: 1;
     .icon {
-      width: 50%;
-      height: 50%;
+      width: 56rpx;
+      height: 56rpx;
     }
     .text {
       margin-top: 20rpx;

@@ -123,6 +123,17 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "webview",
+                    "path": "webview/index",
+                    "style": {
+                        "navigationBarTitleText": "应用"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }

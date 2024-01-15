@@ -2,19 +2,30 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-09 15:59:30
+ * @LastEditTime: 2024-01-15 13:44:45
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
-import storage from './storage';
 
 
+export const oauthUrl:Record<string,any> = {
+    // 学业进度
+    academicProgress:'http://jwgl.bjou.edu.cn/sso/jzOauthLogin?&ljdz=xsxy%2Fxsxyqk_cxXsxyqkIndex.html%3Fgnmkdm%3DN105515%26layout%3Ddefault',
+    // 学位申请
+    applyingForDegree:'http://jwgl.bjou.edu.cn/sso/jzOauthLogin?&ljdz=bygl%2Fxwsqgl_cxXwsqIndex.html%3Fgnmkdm%3DN553510%26layout%3Ddefault',            
+    // 自主选课
+    selected:'http://jwgl.bjou.edu.cn/sso/jzOauthLogin?&ljdz=xsxk%2Fzzxklbb_cxZzxkLbbIndex.html%3Fgnmkdm%3DN253512%26layout%3Ddefault',
+    // 暂缓毕业
+    suspendGraduation:'http://jwgl.bjou.edu.cn/sso/jzOauthLogin?&ljdz=bygl%2Fzhbygl_cxZhbysqIndex.html%3Fgnmkdm%3DN553010%26layout%3Ddefault',
+    // 缴费系统
+    payment:'https://bjkfdx.mp.sinojy.cn/api/user/loginByInterface'
+};
 export const bkStudentGirds:Grids[] = [
     {
         id: '1',
         icon: 'academicProgress',
         text: '学业进度',
-        appType: 'xyjd',
+        appType: 'academicProgress',
         // path: 'alert' // 临时弹窗
         path: 'oauth'   // 路由name oauth为单点登录集成
     },
@@ -61,14 +72,14 @@ export const bkStudentGirds:Grids[] = [
         id: '8',
         icon:'applyingForDegree',
         text: '申请学位',
-        appType: 'xwsq',
+        appType: 'applyingForDegree',
         path: 'oauth'
     },
     {
         id: '9',
         icon: 'selected',
         text: '自主选课',
-        appType: 'xkxx',
+        appType: 'selected',
         // path: 'oauth'
         path: 'alert'
     },
@@ -76,7 +87,7 @@ export const bkStudentGirds:Grids[] = [
         id: '10',
         icon: 'suspendGraduation',
         text: '暂缓毕业',
-        appType: 'zhby',
+        appType: 'suspendGraduation',
         path: 'oauth'
     },
     {

@@ -42,7 +42,8 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "minSdkVersion" : 21
+                "minSdkVersion" : 21,
+                "debuggable":true
             },
             /* ios打包配置 */
             "ios" : {

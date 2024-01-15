@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 11:54:05
+ * @LastEditTime: 2024-01-12 14:38:31
  * @FilePath: \BK-Portal-VUE\src\services\login.ts
  * @Description:
  */
@@ -17,11 +17,14 @@ const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const SSO = `${PORTAL_SERVER}/sso`; // !!!!!!!!!!!!!!!!!!!!!!!!单点登录sso接口 PORTAL_SERVER !!!!!!!!!!!!!!!
 const LOGIN = `${PORTAL_SERVER}/login`;
 const PORTAL_TOKEN = `${PORTAL_SERVER}/oauth/userToken`;
-const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`;
-const MOODLE_TOKEN = `${CUNOVS_SERVER}/config/getBkUser`;
-const LOGIN_OUT = `/logout/${moodleToken}`;
+const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`; 
+const MOODLE_TOKEN = `${CUNOVS_SERVER}/config/getBkUser`; // 获取学习平台Token
+const LOGIN_OUT = `/logout/${moodleToken}`; // 退出
+const GET_PCLOGIN_CODE = `${SSO_SERVER}/security/encodeFix`; // 集成单点登录，获取PC端登录密码
+const PC_LOGIN = `${SSO_SERVER}/security_check`; // 模拟PC登录获取pc端cookie 用于集成单点登录
+const PAYMENT_LOGIN = `${CUNOVS_SERVER}/other/sso/jwgl`; // 缴费系统单点登录
 
-/**
+/* 
  * sso单点登录
  * @param params
  */
@@ -84,5 +87,35 @@ export function checkFirstLoginApi(data: AccessTokenParams) {
 export function logout() {
     return http.request({
         url: LOGIN_OUT,
+    });
+}
+
+/**
+ * @description: 
+ * @return {*}
+ */
+export function getPCLoginCodeApi(data:PcLoginCodeParams) {
+    return http.request({
+        url: GET_PCLOGIN_CODE,
+        data
+    });
+}
+/**
+ * @description: 
+ * @return {*}
+ */
+export function pcLoginApi(data:PcLoginParams) {
+    return http.request({
+        url: PC_LOGIN,
+        method: 'post',
+        data,
+    });
+}
+
+export function getPaymentCodeApi(data:PaymentLoginParams) {
+    return http.request({
+        url: PAYMENT_LOGIN,
+        method: 'post',
+        data,
     });
 }

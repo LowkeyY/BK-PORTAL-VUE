@@ -1,3 +1,4 @@
+
 declare interface SsoParams {
     username: string;
     password: string;
@@ -16,4 +17,20 @@ declare interface MoodleTokenParams {
  }
 declare interface LoginModel {
     token: string;
+}
+
+declare interface PcLoginCodeParams {
+    credential: string;
+    _t?:string|number
+}
+
+declare interface PcLoginParams {
+    username: string;
+    password:string|number;
+    loginMode:string;
+}
+
+declare interface PaymentLoginParams {
+    head: string;
+    data:string;
 }

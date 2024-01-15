@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 16:51:24
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-14 18:10:53
+ * @LastEditTime: 2024-01-12 13:25:55
  * @FilePath: \BK-Portal-VUE\src\enums\baseUrlEnums.ts
  * @Description: 定义BaseURL常量
  */
@@ -38,3 +38,6 @@ export enum devBaseUrlEnums {
       // 资源管理平台 （世纪金正）
       RESOURE_SERVER='https://resm.bjou.edu.cn'
 }
+
+
+

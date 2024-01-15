@@ -2,17 +2,17 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-10-30 16:14:13
- * @FilePath: \ALS-Education-Charity-Trust-Weapp\src\components\Empty\index.vue
+ * @LastEditTime: 2024-01-15 13:43:57
+ * @FilePath: \BK-Portal-VUE\src\components\Empty\Empty.vue
  * @Description: 
 -->
 <template>
     <view class="empty">
         <view v-if="!loading">
-            <img class="img" src="@/static/images/empty.png" alt="">
+            <image class="img" src="@/static/images/empty.png" alt="" />
             <view class="empty-text">{{ text }}</view>
         </view>
-        <img v-else class="loading-img" src="@/static/svg/loading2.svg" alt="">
+        <image v-else class="loading-img" src="@/static/svg/loading2.svg" alt="" />
     </view>
 </template>
 
@@ -24,7 +24,7 @@ defineProps({
     },
     text: {
         type: String,
-        default: '没有数据'
+        default: '没有数据!'
     }
 });
 </script>

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 17:56:05
+ * @LastEditTime: 2024-01-15 13:44:29
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -39,15 +39,15 @@
                 @refresherrestore="onRestore"
             >
                 <view class="pull-loading">
-                    <view v-if="showPullText" class="text"> 释放刷新 </view>
+                    <view v-if="showPullText" class="text">释放刷新</view>
                     <view v-if="pullLoading" class="img">
-                        <img style="height: 60rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
+                        <image style="height: 60rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="" />
                     </view>
                 </view>
                 <slot v-if="listData.length&&(!loading||isRefresh)" />
                 <Empty v-else-if="!pullLoading" :loading="loading" />
                 <view v-if="hasMoreLoading" class="hasMoreImg">
-                    <img style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="">
+                    <image style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" alt="" />
                 </view>
                 <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--到底了--</view>
             </scroll-view>
