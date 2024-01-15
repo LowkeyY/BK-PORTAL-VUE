@@ -7,7 +7,7 @@
  * @Description: 
 -->
 <template>
-    <uni-nav-bar :dark="dark" color="#fff" background-color="#4b99ec" :border="false" :shadow="shadow" :title="title" left-icon="left" :right-text="rightText" @click-left="handleLeftClick" @click-right="handleRightClick">
+    <uni-nav-bar :dark="dark" color="#fff" background-color="#2b83d7" :border="false" :shadow="shadow" :title="title" left-icon="left" :right-text="rightText" @click-left="handleLeftClick" @click-right="handleRightClick">
         <template #left>
             <slot name="left"></slot>
         </template>

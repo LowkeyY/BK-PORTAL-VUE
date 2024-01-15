@@ -2,16 +2,16 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-12 19:06:41
+ * @LastEditTime: 2024-01-15 14:34:09
  * @FilePath: \BK-Portal-VUE\src\components\Menu\Menu.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view class="grid-container">
         <uni-grid :column="column" :highlight="true" class="grid-box" :show-border="false">
             <uni-grid-item v-for="(item, index) in menuList" :key="item.id" :index="index">
                 <view class="grid-item-box" style="background-color: #fff;" @click="()=>handleClick(item)">
-                    <image class="icon" :src="`/static/images/grids/${item.icon}.svg`" alt="" />
+                    <image class="icon" :src="`/static/images/grids/${item.icon}.svg`" mode="aspectFx" />
                     <text class="text">{{ item.text }}</text>
                     <view class="grid-dot">
                         <slot name="dot" />

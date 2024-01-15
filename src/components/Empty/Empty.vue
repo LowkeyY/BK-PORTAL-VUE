@@ -2,17 +2,17 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 13:43:57
+ * @LastEditTime: 2024-01-15 14:33:45
  * @FilePath: \BK-Portal-VUE\src\components\Empty\Empty.vue
  * @Description: 
 -->
 <template>
     <view class="empty">
         <view v-if="!loading">
-            <image class="img" src="@/static/images/empty.png" alt="" />
+            <image class="img" src="/static/images/empty.png" mode="aspectFix" />
             <view class="empty-text">{{ text }}</view>
         </view>
-        <image v-else class="loading-img" src="@/static/svg/loading2.svg" alt="" />
+        <image v-else class="loading-img" src="/static/svg/loading2.svg" mode="aspectFix" />
     </view>
 </template>
 

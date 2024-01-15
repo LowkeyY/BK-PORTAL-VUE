@@ -1,8 +1,8 @@
 {
-    "name" : "uniapp_vue3_vite_ts",
+    "name" : "bk_portal_app",
     "appid" : "__UNI__4350F4E",
     "description" : "",
-    "versionName" : "1.2.1",
+    "versionName" : "0.0.1",
     "versionCode" : "100",
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -56,7 +56,12 @@
             "splashscreen" : {
                 "useOriginalMsgbox" : true
             }
-        }
+        },
+        "statusbar": {                    
+        "immersed": "none",                                 
+        "style": "light",                                    
+        "background": "#RRGGBB"                                 
+    }
     },
     /* 快应用特有相关 */
     "quickapp" : {},

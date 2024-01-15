@@ -2,9 +2,9 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-02 17:42:30
+ * @LastEditTime: 2024-01-15 14:04:31
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view class="menu-container">
@@ -12,15 +12,14 @@
         <drag-menu :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
             <template #grid="{oindex, content, active}">
                 <view class="grid">
-                    <image class="icon" :src="`../../static/images/grids/${content.icon}.svg`" alt="">
-                        <text class="text">{{ content.text }}</text>
-                        <view class="grid-dot">
-                            <uni-icons type="minus-filled" color="#c0c0c0"></uni-icons>
-                        </view>
-                    </image>
+                    <image class="icon" :src="`/static/images/grids/${content.icon}.svg`" mode="aspectFix" />
+                    <text class="text">{{ content.text }}</text>
+                    <view class="grid-dot">
+                        <uni-icons type="minus-filled" color="#c0c0c0"></uni-icons>
+                    </view>
                 </view>
             </template>
-        </drag-menu> 
+        </drag-menu>
         <uni-section type="line" title="更多菜单" />
         <Menu :menu-list="filterGrids" @handle-grids-click="handleAddClick">
             <template #dot>

@@ -11,7 +11,7 @@
 <template>
     <web-view
         :src="targetUrl" :webview-styles="{progress:{
-            color:'#4b99ec'
+            color:'#2b83d7'
         }}"
     ></web-view>
 </template>

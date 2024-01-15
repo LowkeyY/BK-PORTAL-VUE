@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-01-08 15:01:28
  * @FilePath: \BK-Portal-VUE\src\services\list.ts
- * @Description: 
+ * @Description:
  */
 
 
@@ -43,7 +43,7 @@ export function gradeListApi(data:{userid:string} ) {
 }
 
 /**
- * @description: 
+ * @description:
  * @param {GradeDetailsParams} data
  * @return {*}
  */
@@ -55,13 +55,41 @@ export function gradeDetailsApi(data:GradeDetailsParams) {
 }
 
 /**
- * @description: 
+ * @description:
  * @param {GradeDetailsParams} data
  * @return {*}
  */
 export function gradeDetailsRefreshApi(data:GradeDetailsParams) {
     return http.request({
         url:GRADE_DETAILS_REFRESH,
+        data
+    });
+}
+
+
+/**
+ * @description: 我的小组成员列表
+ * @param {object} data
+ * @param params
+ * @return {*}
+ */
+export function groupListApi(data:GradeDetailsParams,params:SetPageParams) {
+    const {currentPage=1,pageSize=10}=params;
+    return http.request({
+        url:`${CUNOVS_SERVER}/group/users/${moodleToken}?nowPage=${currentPage}&rowCount=${pageSize}`,
+        data
+    });
+}
+
+/**
+ * @description: 我的老师列表
+ * @param {object} data
+ * @param params
+ * @return {*}
+ */
+export function myTeacherListApi(data:GradeDetailsParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/mentors/${moodleToken}`,
         data
     });
 }
