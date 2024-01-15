@@ -1,6 +1,6 @@
 <template>
     <view v-if="loading" class="loading">
-        <img style="height: 100rpx" src="@/static/svg/loading2.svg" alt="" />
+        <image style="height: 100rpx" src="@/static/svg/loading2.svg" />
         <text>{{ text }}</text>
     </view>
 </template>

@@ -5,6 +5,7 @@ import { bkMineGirds, bkMineInfo } from '@/utils/mineConstants';
 import LoadingIcon from '@/components/LoadingIcon/index.vue';
 import { getPortalAvatar } from '@/utils';
 import { getBaseUrl } from '@/utils/env';
+import {handleGridsClick} from "@/utils/handle";
 
 const loading = ref(false);
 const router = useRouter();
@@ -26,7 +27,7 @@ const goSettings = () => {
     router.push({ name: 'settings' });
 };
 
-onMounted(async () => {
+onShow(async () => {
     loading.value = true;
     const { success, message, data } = await userInfoApi();
     if (success) {
@@ -73,14 +74,7 @@ onMounted(async () => {
             </view>
         </view>
         <view class="userinfo-operate">
-            <uni-grid :column="4" :show-border="false" :square="false" @change="change">
-                <uni-grid-item v-for="(item, index) in bkMineGirds" :key="item.id" :index="index">
-                    <view class="grid-item-box">
-                        <img class="icon" :src="`../static/images/grids/${item.icon}.svg`" />
-                        <text class="text">{{ item.text }}</text>
-                    </view>
-                </uni-grid-item>
-            </uni-grid>
+            <Menu :menu-list="bkMineGirds" :column="4" @handle-grids-click="handleGridsClick" />
         </view>
         <view class="userinfo-box">
             <uni-section class="mb-10" type="line" title="个人信息">
@@ -179,8 +173,12 @@ onMounted(async () => {
     .text {
       margin-top: 20rpx;
       font-size: 26rpx;
-      color: $uni-font-color-block;
+      color: $uni-text-color;
     }
   }
+}
+.userinfo-box {
+  position: relative;
+  z-index: 2;
 }
 </style>

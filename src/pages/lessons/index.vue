@@ -5,7 +5,7 @@
         <view class="uni-padding-wrap">
             <uni-segmented-control :current="current" :values="courses" style-type="button" active-color="#2b83d7" @click-item="onClickItem" />
         </view>
- 
+
         <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <view v-if="current===0">
                 <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
@@ -37,6 +37,7 @@
                             class=""
                             :style="{
                                 paddingLeft:'10rpx',
+                                minWidth:'100rpx',
                                 color:curLesson.graderaw >= 60 ? '#1eb259' : '#f34e14'
                             }"
                         >

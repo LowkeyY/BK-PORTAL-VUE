@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-01-02 17:42:30
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view class="menu-container">
@@ -12,14 +12,14 @@
         <drag-menu :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
             <template #grid="{oindex, content, active}">
                 <view class="grid">
-                    <img class="icon" :src="`../../static/images/grids/${content.icon}.svg`" alt="">
+                    <image class="icon" :src="`/static/images/grids/${content.icon}.svg`" mode="aspectFill" />
                     <text class="text">{{ content.text }}</text>
                     <view class="grid-dot">
                         <uni-icons type="minus-filled" color="#c0c0c0"></uni-icons>
                     </view>
                 </view>
             </template>
-        </drag-menu> 
+        </drag-menu>
         <uni-section type="line" title="更多菜单" />
         <Menu :menu-list="filterGrids" @handle-grids-click="handleAddClick">
             <template #dot>

@@ -4,15 +4,15 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2023-10-30 16:14:13
  * @FilePath: \ALS-Education-Charity-Trust-Weapp\src\components\Empty\index.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view class="empty">
         <view v-if="!loading">
-            <img class="img" src="@/static/images/empty.png" alt="">
+            <image class="img" src="/static/images/empty.png" mode="aspectFill" />
             <view class="empty-text">{{ text }}</view>
         </view>
-        <img v-else class="loading-img" src="@/static/svg/loading2.svg" alt="">
+        <image v-else class="loading-img" src="/static/svg/loading2.svg" mode="aspectFill" />
     </view>
 </template>
 

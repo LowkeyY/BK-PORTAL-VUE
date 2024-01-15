@@ -3,14 +3,14 @@ export const bkMineGirds = [
         id: '1',
         icon: 'myGroup',
         text: '我的小组',
-        path: 'group',
+        path: 'myGroups',
         auth: '',
     },
     {
         id: '2',
         icon: 'myTeacher',
         text: '我的老师',
-        path: 'teachers',
+        path: 'myTeachers',
         auth: '',
     },
     {
@@ -24,7 +24,7 @@ export const bkMineGirds = [
         id: '4',
         icon: 'collect',
         text: '收藏',
-        path: 'collect',
+        path: 'myCollections',
         auth: '',
     },
 ];

@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2023-12-29 15:05:28
  * @FilePath: \BK-Portal-VUE\src\components\Link\Link.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view class="text">
@@ -14,7 +14,6 @@
 
 <script setup name="Link" lang="ts">
 defineProps({
-
     text: {
         type: String,
         default: '-'

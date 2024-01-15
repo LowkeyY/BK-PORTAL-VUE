@@ -126,3 +126,28 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
     }
     return '-';
 };
+
+/**
+ * @description: 文件类型映射icon
+ * @param {*} date
+ * @param {*} details
+ * @param {*} showWeek
+ * @return {*}
+ */
+export const getFileIcon = (fileName:string):string => {
+    const fileExtension:string = fileName.toLowerCase();
+    // 定义文件类型与对应图标的映射关系
+    const iconMap:Record<string, string> = {
+        '.pdf': 'PDF.svg',
+        '.doc': 'DOCX.svg',
+        '.docx': 'DOCX.svg',
+        '.xls': 'EXCEL.svg',
+        '.xlsx': 'EXCEL.svg',
+        '.png': 'IMAGE.svg',
+        '.jpg': 'IMAGE.svg',
+        '.jpeg': 'IMAGE.svg',
+        '.gif': 'IMAGE.svg',
+    };
+    const icon:string=iconMap[fileExtension] || 'file.svg';
+    return `../static/svg/fileType/${icon}`;
+};

@@ -21,18 +21,18 @@ $uni-color-warning: #f0ad4e;
 $uni-color-error: #dd524d;
 
 /* 文字基本颜色 */
-$uni-text-color: #333; //基本色
-$uni-text-color-inverse: #fff; //反色
-$uni-text-color-grey: #999; //辅助灰色，如加载更多的提示信息
+$uni-text-color: #333; // 基本色
+$uni-text-color-inverse: #fff; // 反色
+$uni-text-color-grey: #999; // 辅助灰色，如加载更多的提示信息
 $uni-text-color-placeholder: #808080;
 $uni-text-color-disable: #c0c0c0;
-$uni-text-color-link: #2b83d7; //跳转颜色
+$uni-text-color-link: #2b83d7; // 跳转颜色
 
 /* 背景颜色 */
 $uni-bg-color: #fff;
-$uni-bg-color-grey: #f8f8f8;
-$uni-bg-color-hover: #f1f1f1; //点击状态颜色
-$uni-bg-color-mask: rgb(0 0 0 / 40%); //遮罩颜色
+$uni-bg-color-grey: #f6f6f6;
+$uni-bg-color-hover: #f1f1f1; // 点击状态颜色
+$uni-bg-color-mask: rgb(0 0 0 / 40%); // 遮罩颜色
 
 /* 边框颜色 */
 $uni-border-color: #c8c7cc;
@@ -74,7 +74,7 @@ $uni-list-padding: 16rpx 20rpx 20rpx;
 $uni-container-padding: 20rpx;
 
 /* 按钮类型颜色 */
-$uni-buttonT-type-info: #909399;
+$uni-button-type-info: #909399;
 $uni-button-type-primary: #409eff;
 $uni-button-type-success: #67c23a;
 $uni-button-type-warning: #e6a23c;
@@ -86,4 +86,3 @@ $uni-font-size-base: 24rpx;
 $uni-font-size-m: 26rpx;
 $uni-font-size-lg: 30rpx;
 $uni-font-color-white: #fff;
-$uni-font-color-block: #131313;

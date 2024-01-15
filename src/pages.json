@@ -123,6 +123,82 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "informationDetail",
+                    "path": "informationDetail/index",
+                    "style": {
+                        "navigationBarTitleText": "通知公告",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "myCollections",
+                    "path": "collection/index",
+                    "style": {
+                        "navigationBarTitleText": "我的收藏",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "myGroups",
+                    "path": "group/index",
+                    "style": {
+                        "navigationBarTitleText": "我的小组",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "groupsMember",
+                    "path": "group/member",
+                    "style": {
+                        "navigationBarTitleText": "小组成员",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "personnelMessage",
+                    "path": "group/personnelMessage",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "myTeachers",
+                    "path": "teacher/index",
+                    "style": {
+                        "navigationBarTitleText": "我的老师",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }
