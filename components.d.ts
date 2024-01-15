@@ -24,6 +24,7 @@ declare module 'vue' {
     ResourceIcon: typeof import('./src/components/ResourceIcon/ResourceIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StatusBar: typeof import('./src/components/StatusBar/StatusBar.vue')['default']
     Test: typeof import('./src/components/Test/index.vue')['default']
   }
 }

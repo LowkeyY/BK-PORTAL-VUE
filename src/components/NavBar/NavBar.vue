@@ -2,19 +2,22 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 17:05:34
+ * @LastEditTime: 2024-01-15 16:03:28
  * @FilePath: \BK-Portal-VUE\src\components\NavBar\NavBar.vue
  * @Description: 
 -->
 <template>
-    <uni-nav-bar :dark="dark" color="#fff" background-color="#2b83d7" :border="false" :shadow="shadow" :title="title" left-icon="left" :right-text="rightText" @click-left="handleLeftClick" @click-right="handleRightClick">
-        <template #left>
-            <slot name="left"></slot>
-        </template>
-        <template #right>
-            <slot name="right"></slot>
-        </template>
-    </uni-nav-bar>
+    <view>
+        <status-bar />
+        <uni-nav-bar :dark="dark" color="#fff" background-color="#2b83d7" :border="false" :shadow="shadow" :title="title" left-icon="left" :right-text="rightText" @click-left="handleLeftClick" @click-right="handleRightClick">
+            <template #left>
+                <slot name="left"></slot>
+            </template>
+            <template #right>
+                <slot name="right"></slot>
+            </template>
+        </uni-nav-bar>
+    </view>
 </template>
 
 <script setup name="Nav">

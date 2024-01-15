@@ -42,6 +42,7 @@ onShow(async () => {
 <template>
     <LoadingIcon :loading="loading"></LoadingIcon>
     <view class="mypage-container">
+        <status-bar />
         <view class="mypage-top-box">
             <image src="@/static/images/bgImages/mineBg.png" class="bg" mode="scaleToFill" />
             <view class="mypage-top-content">
