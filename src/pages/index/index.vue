@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 16:07:25
+ * @LastEditTime: 2024-01-17 14:05:53
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -12,7 +12,7 @@
         <logo-header />  
         <Menu :menu-list="grids" @handle-grids-click="handleGridsClick" />
         <view class="notice-bar">
-            <uni-list-item show-arrow>
+            <uni-list-item show-arrow clickable @click="handleGoMessageCenter">
                 <template #body>
                     <view class="content">
                         <image class="icon" src="/static/images/spirit/bell.png" mode="widthFix" />
@@ -32,7 +32,7 @@ import { useAuthStore } from '@/store/modules/auth';
 import { useAppStore } from '@/store/app';
 import {isBjouUser} from '@/utils';
 import {messageCountsApi} from '@/services/app';
-import {handleGridsClick} from '@/utils/handle';
+import {handleGridsClick,handleJumpToPage} from '@/utils/handle';
 const useUser = useUserStore();
 const useAuth = useAuthStore();
 const useApp = useAppStore();
@@ -48,6 +48,10 @@ const queryMessageCounts =async ()=>{
     if(success){
         noticeCont.value=messageCount;
     }
+};
+
+const handleGoMessageCenter = ():void=>{
+    handleJumpToPage('messageCenter');
 };
 const init =async ()=>{
     await useUser.queryPortalUserInfoApi();

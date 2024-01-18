@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-20 13:13:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-12 14:58:48
+ * @LastEditTime: 2024-01-17 13:55:04
  * @FilePath: \BK-Portal-VUE\src\utils\handle.ts
  * @Description: 公共事件
  */
@@ -29,7 +29,7 @@ export function exceScript(func:string) {
  * @param {*} any
  * @return {*}
  */
-export function handleJumpToPage(path:string,params:Record<string,any>):void{
+export function handleJumpToPage(path:string,params?:Record<string,any>):void{
     if (isUrl(path)) {
         // webview 打开
         useOpenUrl(path);

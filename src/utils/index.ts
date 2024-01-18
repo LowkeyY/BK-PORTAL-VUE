@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 14:26:40
+ * @LastEditTime: 2024-01-18 13:45:40
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -125,6 +125,79 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
         return `${year}年${preDate.getMonth() + 1}月${preDate.getDate()}日`;
     }
     return '-';
+};
+
+/**
+ * @description: 聊天时间转换
+ * @param {*} timeValue
+ * @return {*}
+ */
+export const getMessageTime = (timeValue:number):string => {
+    const time:number = timeValue * 1000;
+  
+    function formatDateTime (time:number):string {
+        const date = new Date(time);
+        const y = date.getFullYear();
+        let m:string|number = date.getMonth() + 1;
+        m = m < 10 ? (`0${m}`) : m;
+        let d:string|number = date.getDate();
+        d = d < 10 ? (`0${d}`) : d;
+        let h:string|number = date.getHours();
+        h = h < 10 ? (`0${h}`) : h;
+        let minute:string|number = date.getMinutes();
+        let second:string|number = date.getSeconds();
+        minute = minute < 10 ? (`0${minute}`) : minute;
+        second = second < 10 ? (`0${second}`) : second;
+        return `${y}-${m}-${d} ${h}:${minute}:${second}`;
+    }
+  
+    // 判断传入日期是否为昨天
+    function isYestday (time:number) {
+        const date = (new Date()); // 当前时间
+        const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(); // 今天凌晨
+        const yestday = new Date(today - 24 * 3600 * 1000).getTime();
+        return time < today && yestday <= time;
+    }
+  
+    // 判断传入日期是否属于今年
+    function isYear (time:number) {
+        const takeNewYear = new Date().getFullYear().toString(); // 当前时间的年份
+        const takeTimeValue = formatDateTime(time)
+            .substring(0, 4); // 传入时间的年份
+        return takeTimeValue === takeNewYear;
+    }
+  
+    // 60000 1分钟
+    // 3600000 1小时
+    // 86400000 24小时
+    // 对传入时间进行时间转换
+    function timeChange (time:number) {
+        const timeNew = new Date().getTime(); // 当前时间
+        const timeDiffer = timeNew - time; // 与当前时间误差
+        let returnTime = '';
+  
+        if (timeDiffer <= 60000) { // 一分钟内
+            returnTime = '刚刚';
+        } else if (timeDiffer > 60000 && timeDiffer < 3600000) { // 1小时内
+            returnTime = `${Math.floor(timeDiffer / 60000)}分钟前`;
+        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) { // 今日
+            returnTime = formatDateTime(time)
+                .substring(11, 16);
+        } else if (timeDiffer > 3600000 && isYestday(time) === true) { // 昨天
+            returnTime = `昨天${formatDateTime(time)
+                .substring(11, 16)}`;
+        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === true) {	// 今年
+            returnTime = formatDateTime(time)
+                .substring(5, 16);
+        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === false) { // 不属于今年
+            returnTime = formatDateTime(time)
+                .substring(0, 10);
+        }
+  
+        return returnTime;
+    }
+  
+    return timeChange(time);
 };
 /**
  * @description: 文件类型映射icon

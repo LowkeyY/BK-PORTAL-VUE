@@ -204,7 +204,22 @@
                     "name": "webview",
                     "path": "webview/index",
                     "style": {
-                        "navigationBarTitleText": "应用"
+                        "navigationBarTitleText": "应用",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "messageCenter",
+                    "path": "messageCenter/index",
+                    "style": {
+                        "navigationBarTitleText": "消息中心",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
                     },
                     "meta": {
                         "ignoreAuth": true,
