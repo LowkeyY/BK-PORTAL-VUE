@@ -29,5 +29,14 @@ export function courseListDueApi(data:courseListParams) {
     });
 }
 
-
+/**
+ * @description:课程内容
+ * @return {*}
+ */
+export function courseContentApi(data:CourseContentParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/course/${moodleToken}`,
+        data,
+    });
+}
 

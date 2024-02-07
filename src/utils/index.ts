@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-18 13:45:40
+ * @LastEditTime: 2024-02-07 14:49:08
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -238,4 +238,18 @@ export const urlEncode = (str:string|number):string => {
         .replace(/\)/g, '%29')
         .replace(/\*/g, '%2A')
         .replace(/%20/g, '+');
+};
+
+/**
+ * @description: 
+ * @param {*} type
+ * @return {*}
+ */
+export const pattern = (type:string):Record<string,any> => {
+    const obj = {};
+    obj.href = /[a-zA-z]+:\/\/[^\\">]*/g;
+    obj.svg = /mymobile/ig;
+    obj.phone = /^1\d{10}$/;
+    obj.email = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    return obj[type];
 };

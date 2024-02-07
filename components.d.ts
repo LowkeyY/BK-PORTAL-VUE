@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppProvider: typeof import('./src/components/AppProvider/AppProvider.vue')['default']
+    AttendanceState: typeof import('./src/components/AttendanceState/AttendanceState.vue')['default']
     BasicButton: typeof import('./src/components/BasicButton/BasicButton.vue')['default']
     BasicInput: typeof import('./src/components/BasicInput/index.vue')['default']
     ComProgressBar: typeof import('./src/components/ComProgressBar/index.vue')['default']
@@ -21,6 +22,7 @@ declare module 'vue' {
     NavBar: typeof import('./src/components/NavBar/NavBar.vue')['default']
     PersonInformation: typeof import('./src/components/personInformation/index.vue')['default']
     PullRefreshList: typeof import('./src/components/PullRefreshList/PullRefreshList.vue')['default']
+    RenderHtml: typeof import('./src/components/RenderHtml/RenderHtml.vue')['default']
     ResourceIcon: typeof import('./src/components/ResourceIcon/ResourceIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

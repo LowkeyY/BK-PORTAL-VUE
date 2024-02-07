@@ -1,0 +1,50 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2024-01-24 18:48:45
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-02-07 17:17:15
+ * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\LessonContent.vue
+ * @Description: 
+-->
+
+
+<template>
+    <pull-refresh-list type="content">
+        <uni-collapse v-model="accordionVal" :show-animation="true" accordion @change="change">
+            <uni-collapse-item v-for="(item,index) in resources" :key="item.id" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
+                <view class="content">
+                    <view v-if="item.summary!==''">
+                        <render-html :html="item.summary" />
+                    </view>
+                    <view v-if="item.availabilityinfo">
+                        <render-html :html="item.availabilityinfo" />
+                    </view>
+                    <resource-list :list="item.modules" />
+                </view>
+            </uni-collapse-item>
+        </uni-collapse>
+    </pull-refresh-list>
+</template>
+<script lang="ts" setup name="LessonContent">
+const accordionVal= ref('0');
+import {useLessonStore} from '@/store/modules/lesson';
+import ResourceList from './ResourceList.vue';
+const useLesson = useLessonStore();
+const lessonData = computed(()=>useLesson.lessonData);
+const resources = computed(()=>useLesson.getLessonResource);
+const change = ()=>{
+    
+};
+</script>
+<style lang="scss" scoped>
+::v-deep .uni-collapse-item__title-box {
+  background-color: #2087ca;
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+}
+.collapse-item {
+  background-color: #2087ca;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 6rpx;
+}
+</style>

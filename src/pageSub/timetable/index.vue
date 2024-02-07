@@ -2,8 +2,8 @@
  * @Author: Lowkey
  * @Date: 2024-01-05 13:06:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 16:20:28
- * @FilePath: \BK-Portal-VUE\src\pageSub\timeTable\index.vue
+ * @LastEditTime: 2024-02-05 14:34:40
+ * @FilePath: \BK-Portal-VUE\src\pageSub\timetable\index.vue
  * @Description: 
 -->
 
@@ -32,7 +32,7 @@
                     <view class="list-link">
                         <text>{{ `形考成绩：${renderInfo(item.course.examScore)}` }}</text>
                         <view>
-                            <button class="mini-btn" style="margin-right: 8px ;" type="primary" plain="true" size="mini">进入学习</button>
+                            <button class="mini-btn" style="margin-right: 8px;" type="primary" plain="true" size="mini">进入学习</button>
                             <button class="mini-btn" type="primary" plain="true" size="mini">参与直播</button>
                         </view>
                     </view> 

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-11 13:35:43
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 16:01:50
+ * @LastEditTime: 2024-02-05 18:11:39
  * @FilePath: \BK-Portal-VUE\src\utils\request.ts
  * @Description:
  */
@@ -52,7 +52,7 @@ const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FOR
             url: url,
             method: method,
             header,
-            timeout: 10000,
+            // timeout: 10000,
             withCredentials:true,
             data: data,
             success: successData => {

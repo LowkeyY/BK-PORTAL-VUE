@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-18 16:27:54
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 15:05:32
+ * @LastEditTime: 2024-01-22 16:01:23
  * @FilePath: \BK-Portal-VUE\src\enums\storageEnum.ts
  * @Description: 
  */
@@ -16,5 +16,6 @@ export enum StorageEnum {
     MOODLE_USER_ID = 'moodleUserId', // 学习平台用户ID
     MOODLE_TOKEN= 'moodleToken', // 学习平台Token
     USER_LOGIN_ID = 'userLoginId',
-    GRIDS_SORT = 'gridsSort' // 菜单排序
+    GRIDS_SORT = 'gridsSort', // 菜单排序
+    PORTAL_USER_NAME='portalUserName' // 用户名
 }

@@ -2,22 +2,23 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-21 14:21:50
+ * @LastEditTime: 2024-01-22 16:01:36
  * @FilePath: \BK-Portal-VUE\src\store\modules\user.ts
  * @Description: 
  */
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
-import { userRoleApi,userInfoApi,portalUserInfoApi } from '@/services/user';
 import {setStorage} from '@/utils';
+import { userRoleApi,userInfoApi,portalUserInfoApi } from '@/services/user';
 import { StorageEnum } from '@/enums/storageEnum';
 import { Toast } from '@/utils/uniapi/prompt';
 import storage from '@/utils/storage';
 
 interface UserState {
-    moodleUserId?: string | number;
-    portalUserId?: string | number;
-    userCode?:string
+    moodleUserId: string;
+    portalUserId: string;
+    portalUserName:string;
+    userCode:string
 }
 
 
@@ -26,7 +27,8 @@ export const useUserStore = defineStore({
     state: (): UserState => ({
         moodleUserId:storage.get(StorageEnum.MOODLE_USER_ID)||'',
         portalUserId:storage.get(StorageEnum.PORTAL_USER_ID)||'',
-        userCode:storage.get(StorageEnum.USER_CODE)||''
+        userCode:storage.get(StorageEnum.USER_CODE)||'',
+        portalUserName:storage.get(StorageEnum.USER_CODE)||''
     }),
     getters: {},
     actions: {
@@ -67,11 +69,12 @@ export const useUserStore = defineStore({
             try {
                 const { data=[], message= '请稍后再试', code } = await portalUserInfoApi(params as AccessTokenParams);
                 if(code===0){
-                    const { userId = '',userCode='',eduUserId='' } = data;
+                    const { userId = '',userCode='',eduUserId='',userName } = data;
                     const infos = {
                         [StorageEnum.PORTAL_USER_ID]:userId,
                         [StorageEnum.USER_CODE]:userCode,
                         [StorageEnum.MOODLE_USER_ID]:eduUserId,
+                        [StorageEnum.PORTAL_USER_NAME]:userName,
                     };
                     this.updateState(infos);
                     setStorage(infos);              

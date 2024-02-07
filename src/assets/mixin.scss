@@ -1,9 +1,13 @@
 @mixin disabled {
-  background: #e0e0e0;
-  color: #999;
+    background: #e0e0e0;
+    color: #999;
 }
 @mixin flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@mixin break {
+    word-break: break-all;
+    word-wrap: break-word;
 }

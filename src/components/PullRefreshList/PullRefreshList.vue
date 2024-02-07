@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 14:05:30
+ * @LastEditTime: 2024-02-05 15:44:04
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -44,12 +44,17 @@
                         <image style="height: 60rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" />
                     </view>
                 </view>
-                <slot v-if="listData.length&&(!loading||isRefresh)" />
-                <Empty v-else-if="!pullLoading" :loading="loading" />
-                <view v-if="hasMoreLoading" class="hasMoreImg">
-                    <image style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" />
+                <view v-if="type==='list'">
+                    <slot v-if="listData.length&&(!loading||isRefresh)" />
+                    <Empty v-else-if="!pullLoading" :loading="loading" />
+                    <view v-if="hasMoreLoading" class="hasMoreImg">
+                        <image style="height: 80rpx; background-color: transparent;" src="@/static/svg/pullLoading.svg" />
+                    </view>
+                    <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--到底了--</view>
                 </view>
-                <view v-if="!!listData.length && !hasMore&&!hasMoreLoading" class="bottom-line">--到底了--</view>
+                <view v-else>
+                    <slot v-if="!loading||isRefresh" />
+                </view>
             </scroll-view>
         </ComSkeleton>
     </view>
@@ -68,6 +73,10 @@ const props = defineProps({
     listData: {
         type: Array,
         default: () => []
+    },
+    type:{
+        type:String,
+        default:'list'
     },
     hasMore: {
         type: Boolean,

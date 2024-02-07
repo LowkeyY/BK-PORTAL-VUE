@@ -8,7 +8,7 @@
 
         <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <view v-if="current===0">
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
+                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
                     <h4 class="lesson-title">{{ curLesson.fullname }}</h4>
                     <view class="lesson-content">
                         <view class="lesson-img">
@@ -47,7 +47,7 @@
                 </view>
             </view>
             <view v-else>
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson">
+                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
                     <h4>{{ curLesson.fullname }}</h4>
                     <view class="lesson-content">
                         <view class="lesson-img">
@@ -87,6 +87,7 @@ import {useAppStore} from '@/store/app';
 import {courseListDueApi, courseListOpenApi} from '@/services/lesson';
 import {useUserStore} from '@/store/modules/user';
 import useRefreshList from '@/hooks/useRefreshList';
+import {handleJumpToPage} from '@/utils/handle';
 import {changeLessonDate, getImages} from '@/utils';
 
 const appStore = useAppStore();
@@ -109,7 +110,9 @@ const onClickItem = (e) => {
     params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
     fetchList(params);
 };
-
+const handleGoContent = (id:string)=>{
+    handleJumpToPage('lessonContent',{courseid:id});
+};
 onShow( () => {
     setTimeout(()=>{
         current.value=0;
