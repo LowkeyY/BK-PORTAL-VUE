@@ -236,6 +236,17 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "liveCourse",
+                    "path": "liveCourse/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         }

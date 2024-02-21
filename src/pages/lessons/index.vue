@@ -9,7 +9,14 @@
         <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <view v-if="current===0">
                 <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
-                    <h4 class="lesson-title">{{ curLesson.fullname }}</h4>
+                    <view class="lesson-title-container">
+                        <text class="lesson-title">{{ curLesson.fullname }}</text>
+                        <uni-tag
+                            v-if="isLiveCourse(curLesson)" text="直播课" size="mini"
+                            custom-style="background-color: #2b83d7; border-color: #4335d6; color: #fff;border-color:#2b83d7"
+                        >
+                        </uni-tag>
+                    </view>
                     <view class="lesson-content">
                         <view class="lesson-img">
                             <image :src="getImages(curLesson.courseImage)" style="width: 100%;height: 100%;" mode="scaleToFill" />
@@ -48,7 +55,14 @@
             </view>
             <view v-else>
                 <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
-                    <h4>{{ curLesson.fullname }}</h4>
+                    <view class="lesson-title-container">
+                        <text class="lesson-title">{{ curLesson.fullname }}</text>
+                        <uni-tag
+                            v-if="isLiveCourse(curLesson)" text="直播课" size="mini"
+                            custom-style="background-color: #2b83d7; border-color: #4335d6; color: #fff;border-color:#2b83d7"
+                        >
+                        </uni-tag>
+                    </view>
                     <view class="lesson-content">
                         <view class="lesson-img">
                             <image :src="getImages(curLesson.courseImage)" style="width: 100%;height: 100%;" mode="scaleToFill" />
@@ -89,7 +103,10 @@ import {useUserStore} from '@/store/modules/user';
 import useRefreshList from '@/hooks/useRefreshList';
 import {handleJumpToPage} from '@/utils/handle';
 import {changeLessonDate, getImages} from '@/utils';
+import {useLiveCourseStore} from '@/store/modules/liveCourse';
+import {getLiveCourseFilterList} from '@/hooks/useLiveCourse';
 
+const useLiveCourse=useLiveCourseStore();
 const appStore = useAppStore();
 const useUser = useUserStore();
 const current = ref(0);
@@ -101,7 +118,13 @@ const params = reactive({
     },
     searchApi: courseListOpenApi,
 });
-
+const isLiveCourse = (course:any) => {
+    if(course.idnumber){
+        const filterArr=getLiveCourseFilterList(useLiveCourse.liveCourseList,course.idnumber);
+        return filterArr.length > 0;
+    }
+    return false;
+};
 const { dataState,refresh, fetchList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params);
 const onClickItem = (e) => {
     if (current.value !== e.currentIndex) {
@@ -115,13 +138,14 @@ const handleGoContent = (id:string)=>{
 };
 onShow( () => {
     setTimeout(()=>{
-        current.value=0;
         params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
         fetchList(params);
     },0);
 });
 
-
+onLoad(async () => {
+    await useLiveCourse.queryLiveCourse();
+});
 </script>
 
 <style lang="scss" scoped>

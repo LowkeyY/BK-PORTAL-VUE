@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-02-07 18:02:35
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
@@ -45,11 +45,12 @@
         />
         <view class="uni-padding-wrap">
             <uni-segmented-control :current="current" :values="tabsValue" style-type="text" active-color="#2b83d7" @click-item="onClickItem" />
-            <view class="lesson-content">
-                <Tour-content v-show="currentTab.key === 'tour'" />
-                <Lesson-content v-show="currentTab.key === 'content'" />
-                <Attendance-content v-show="currentTab.key === 'attendance'" />
-                <Live-content v-show="currentTab.key === 'liveCourse'" />
+            <view>
+                <Tour-content class="lesson-content"  v-show="currentTab.key === 'tour'" />
+                <Lesson-content class="lesson-content"  v-show="currentTab.key === 'content'" />
+                <Attendance-content class="lesson-content"  v-show="currentTab.key === 'attendance'" />
+                <Live-content class="lesson-content" v-show="currentTab.key === 'liveCourse'" />
+                <Live-course-list class="live" v-show="currentTab.key === 'liveCourseList'" :live-list="curLiveCourses" />
             </view>
         </view>
     </app-provider>
@@ -63,8 +64,13 @@ import TourContent from './components/TourContent.vue';
 import LessonContent from './components/LessonContent.vue';
 import AttendanceContent from './components/AttendanceContent.vue';
 import LiveContent from './components/LiveContent.vue';
+import LiveCourseList from './components/LiveCourseList.vue';
+import {getLiveCourseFilterList} from '@/hooks/useLiveCourse';
+import {useLiveCourseStore} from '@/store/modules/liveCourse';
+
 const { setLog, setCourseRecordLog } = useSetLog();
 const useLesson = useLessonStore();
+const useLiveCourse = useLiveCourseStore();
 const useApp = useAppStore();
 const router = useRouter();
 const lessonData: Record<string, any> = computed(() => useLesson.lessonData);
@@ -80,7 +86,7 @@ const attendanceState = computed(() => {
     return stat;
 });
 const current = ref(0); // 默认展示导学
-
+const curLiveCourses=ref([]);
 const showAttendance = computed(() => (lessonData.value.isAttendance && day_pass.value !== '0') || lessonData.value.attendanceType === '2');
 const ALL_TABS = [
     {
@@ -96,6 +102,10 @@ const ALL_TABS = [
         key: 'attendance',
     },
     {
+        name: '直播列表',
+        key: 'liveCourseList',
+    },
+    {
         name: '课程管理',
         key: 'liveCourse',
     },
@@ -103,9 +113,11 @@ const ALL_TABS = [
 
 const tabs = computed(() => {
     return ALL_TABS.filter((item) => {
-        if (item.key === 'attendance') {
+        if(item.key === 'liveCourseList' ){
+            return curLiveCourses.value.length>0;
+        }else if (item.key === 'attendance') {
             return showAttendance.value;
-        } else if (item.key === 'liveCourse') {
+        }else if (item.key === 'liveCourse') {
             return true;
         } else {
             return true;
@@ -117,10 +129,14 @@ const tabsValue = computed(() => tabs.value.map((item) => item.name));
 const onClickItem = (e: Record<string, any>) => {
     currentTab.value = tabs.value[e.currentIndex];
 };
-onLoad((options) => {
+onLoad(async (options) => {
     if (options) {
         const { courseid } = options;
-        useLesson.queryCourseContent({ courseid });
+        await useLesson.queryCourseContent({ courseid });
+        await useLiveCourse.queryLiveCourse();
+        if(lessonData.value.idnumber){
+            curLiveCourses.value=getLiveCourseFilterList(useLiveCourse.liveCourseList,lessonData.value.idnumber);
+        }
         setLog({
             courseid,
             type: 'course',
@@ -186,5 +202,10 @@ onLoad((options) => {
 }
 .lesson-content {
   padding: 20px 20px 0;
+  height: 100%;
+}
+.live {
+  height: 100%;
+  background-color: $uni-bg-color-grey;
 }
 </style>

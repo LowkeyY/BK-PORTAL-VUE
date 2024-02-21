@@ -15,6 +15,7 @@ import { StorageEnum } from '@/enums/storageEnum';
 
 const {CUNOVS_SERVER,PORTAL_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
+const userCode = storage.get(StorageEnum.USER_CODE);
 
 const TIMETABLE = `${PORTAL_SERVER}/mobile/bkcourse/list`; // 课程表
 const GRADE_LIST = `${CUNOVS_SERVER}/grade/courseList/${moodleToken}`; // 我的成绩
@@ -91,5 +92,15 @@ export function myTeacherListApi(data:GradeDetailsParams) {
     return http.request({
         url:`${CUNOVS_SERVER}/mentors/${moodleToken}`,
         data
+    });
+}
+
+/**
+ * @description: 我的直播列表
+ * @return {*}
+ */
+export function liveCourseListApi() {
+    return http.request({
+        url:`${PORTAL_SERVER}/workbench/courseSchedule/list?userId=${userCode}`,
     });
 }

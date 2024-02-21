@@ -134,7 +134,7 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
  */
 export const getMessageTime = (timeValue:number):string => {
     const time:number = timeValue * 1000;
-  
+
     function formatDateTime (time:number):string {
         const date = new Date(time);
         const y = date.getFullYear();
@@ -150,7 +150,7 @@ export const getMessageTime = (timeValue:number):string => {
         second = second < 10 ? (`0${second}`) : second;
         return `${y}-${m}-${d} ${h}:${minute}:${second}`;
     }
-  
+
     // 判断传入日期是否为昨天
     function isYestday (time:number) {
         const date = (new Date()); // 当前时间
@@ -158,7 +158,7 @@ export const getMessageTime = (timeValue:number):string => {
         const yestday = new Date(today - 24 * 3600 * 1000).getTime();
         return time < today && yestday <= time;
     }
-  
+
     // 判断传入日期是否属于今年
     function isYear (time:number) {
         const takeNewYear = new Date().getFullYear().toString(); // 当前时间的年份
@@ -166,7 +166,7 @@ export const getMessageTime = (timeValue:number):string => {
             .substring(0, 4); // 传入时间的年份
         return takeTimeValue === takeNewYear;
     }
-  
+
     // 60000 1分钟
     // 3600000 1小时
     // 86400000 24小时
@@ -175,7 +175,7 @@ export const getMessageTime = (timeValue:number):string => {
         const timeNew = new Date().getTime(); // 当前时间
         const timeDiffer = timeNew - time; // 与当前时间误差
         let returnTime = '';
-  
+
         if (timeDiffer <= 60000) { // 一分钟内
             returnTime = '刚刚';
         } else if (timeDiffer > 60000 && timeDiffer < 3600000) { // 1小时内
@@ -193,10 +193,10 @@ export const getMessageTime = (timeValue:number):string => {
             returnTime = formatDateTime(time)
                 .substring(0, 10);
         }
-  
+
         return returnTime;
     }
-  
+
     return timeChange(time);
 };
 /**
@@ -241,7 +241,7 @@ export const urlEncode = (str:string|number):string => {
 };
 
 /**
- * @description: 
+ * @description:
  * @param {*} type
  * @return {*}
  */
@@ -252,4 +252,37 @@ export const pattern = (type:string):Record<string,any> => {
     obj.phone = /^1\d{10}$/;
     obj.email = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
     return obj[type];
+};
+
+
+/**
+ * @description: 转换中文
+ * @param {*} num
+ * @return {*}
+ */
+export const toChineseNum=(num:number) => {
+    const chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+    // const chnUnitSection = ['', '万', '亿', '万亿', '亿亿'];
+    const chnUnitChar = ['', '十', '百', '千'];
+    let strIns = '', chnStr = '';
+    let unitPos = 0;
+    let zero = true;
+    while (num > 0) {
+        const v = num % 10;
+        if (v === 0) {
+            if (!zero) {
+                zero = true;
+                chnStr = chnNumChar[v] + chnStr;
+            }
+        } else {
+            zero = false;
+            strIns = chnNumChar[v];
+            strIns += chnUnitChar[unitPos];
+            chnStr = strIns + chnStr;
+        }
+        unitPos++;
+        num = Math.floor(num / 10);
+
+    }
+    return `[第${chnStr}场]`;
 };
