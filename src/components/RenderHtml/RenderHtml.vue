@@ -1,3 +1,11 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2024-02-05 17:13:36
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-02-22 14:22:23
+ * @FilePath: \BK-Portal-VUE\src\components\RenderHtml\RenderHtml.vue
+ * @Description: 
+-->
 
 
 <template>
@@ -17,7 +25,7 @@ defineProps({
 .container {
   margin: 20rpx;
   overflow: hidden;
-  font-size: $uni-font-size-base;
+  font-size: $uni-font-size-lg;
   line-height: 1.8;
   word-break: break-all;
   word-wrap: break-word;
@@ -44,6 +52,11 @@ defineProps({
     max-width: 100% !important;
     max-height: 100% !important;
     height: auto !important;
+  }
+  .clear {
+    clear: both;
+    margin: 0 auto;
+    width: 0;
   }
 }
 </style>

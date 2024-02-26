@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 14:23:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 18:02:35
+ * @LastEditTime: 2024-02-22 18:10:24
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
  * @Description:
 -->
@@ -46,11 +46,11 @@
         <view class="uni-padding-wrap">
             <uni-segmented-control :current="current" :values="tabsValue" style-type="text" active-color="#2b83d7" @click-item="onClickItem" />
             <view>
-                <Tour-content class="lesson-content"  v-show="currentTab.key === 'tour'" />
-                <Lesson-content class="lesson-content"  v-show="currentTab.key === 'content'" />
-                <Attendance-content class="lesson-content"  v-show="currentTab.key === 'attendance'" />
-                <Live-content class="lesson-content" v-show="currentTab.key === 'liveCourse'" />
-                <Live-course-list class="live" v-show="currentTab.key === 'liveCourseList'" :live-list="curLiveCourses" />
+                <Tour-content v-show="currentTab.key === 'tour'" class="lesson-content" />
+                <Lesson-content v-show="currentTab.key === 'content'" class="lesson-content" />
+                <Attendance-content v-show="currentTab.key === 'attendance'" class="lesson-content" />
+                <Live-content v-show="currentTab.key === 'liveCourse'" class="lesson-content" />
+                <Live-course-list v-show="currentTab.key === 'liveCourseList'" class="live" :live-list="curLiveCourses" />
             </view>
         </view>
     </app-provider>
@@ -81,9 +81,9 @@ const day_pass = computed(() => {
     return day_pass;
 });
 const attendanceState = computed(() => {
-    const { attendance = {} } = lessonData.value;
-    const { stat } = attendance;
-    return stat;
+    const { attendance = {},openState } = lessonData.value;
+    const { stat ,weekStat} = attendance;
+    return openState==='1'?weekStat:stat;
 });
 const current = ref(0); // 默认展示导学
 const curLiveCourses=ref([]);
@@ -201,7 +201,8 @@ onLoad(async (options) => {
   background-color: #fff;
 }
 .lesson-content {
-  padding: 20px 20px 0;
+  margin-top: 16rpx;
+  padding: 0 20rpx;
   height: 100%;
 }
 .live {

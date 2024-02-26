@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:48:45
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 17:17:15
+ * @LastEditTime: 2024-02-22 14:25:57
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\LessonContent.vue
  * @Description: 
 -->
@@ -13,11 +13,11 @@
         <uni-collapse v-model="accordionVal" :show-animation="true" accordion @change="change">
             <uni-collapse-item v-for="(item,index) in resources" :key="item.id" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
                 <view class="content">
-                    <view v-if="item.summary!==''">
-                        <render-html :html="item.summary" />
+                    <view v-if="item.summary!==''" class="html">
+                        <rich-text :nodes="item.summary" space />
                     </view>
-                    <view v-if="item.availabilityinfo">
-                        <render-html :html="item.availabilityinfo" />
+                    <view v-if="item.availabilityinfo" class="html">
+                        <rich-text :nodes="item.availabilityinfo" space />
                     </view>
                     <resource-list :list="item.modules" />
                 </view>
@@ -46,5 +46,14 @@ const change = ()=>{
   background-color: #2087ca;
   border-radius: 10px 10px 0 0;
   margin-bottom: 6rpx;
+}
+.content {
+  .html {
+    padding: 20rpx;
+    p {
+      font-size: $uni-font-size-lg;
+      line-height: $uni-line-height;
+    }
+  }
 }
 </style>

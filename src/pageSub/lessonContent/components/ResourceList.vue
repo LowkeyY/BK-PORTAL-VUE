@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-07 12:51:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 17:20:24
+ * @LastEditTime: 2024-02-26 16:52:44
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\ResourceList.vue
  * @Description: 
 -->
@@ -13,7 +13,7 @@
             <StatusIcon v-if="String(item.tracking) !==ResourceTracking.NONE" :id="item.id" :state="String(item.stats.state)" :tracking="String(item.tracking)" />
         </view>
         <view v-else class="resource-container">
-            <view class="content">
+            <view class="content" @click="()=>handleResourceClick(item,courseid)">
                 <image :class="['icon',item.availabilityinfo&&'disabled']" :src="getImages(item.modicon.replace(pattern('svg'), 'fordson'))" mode="widthFix" />
                 <view :class="['right-content',item.availabilityinfo&&'disabled']">
                     <view class="name">{{ item.name }}</view>
@@ -21,13 +21,14 @@
                 </view>
             </view>
             <view v-if="item.description" class="description">
-                <render-html :html="item.description" />
-                <view class="mask">
-                    更多
+                <rich-text :nodes="item.description" space />
+                <view class="mask-container">
+                    <view class="mask"></view>
+                    <view class="btn">查看描述</view>
                 </view>
             </view>
             <view v-if="item.availabilityinfo" class="availabilityinfo">
-                <render-html :html="item.availabilityinfo" />
+                <rich-text :nodes="item.availabilityinfo" space />
             </view>
         </view>
     </view>
@@ -36,13 +37,20 @@
 <script setup name="ResourceList">
 import { getImages,pattern } from '@/utils';
 import {ResourceTracking} from '@/enums/statusEnum';
+import useLessonResource from '@/hooks/useLessonResource';
 import StatusIcon from './StatusIcon.vue';
+const { handleResourceClick } = useLessonResource();
 defineProps({
     list: {
         type: Array,
-        default: []
+        default: ()=>[]
     },
-
+});
+const courseid =ref('');
+onLoad((option) => {
+    if (option && option.courseid) {
+        courseid.value = option.courseid;
+    }
 });
 </script>
 
@@ -51,7 +59,13 @@ defineProps({
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  font-size: $uni-font-size-lg !important;
   padding: 20rpx  0;
+  p {
+    margin: 0;
+    font-size: $uni-font-size-lg !important;
+    font-weight: bold;
+  }
 }
 .resource-container {
   padding: 20rpx 0;
@@ -78,6 +92,7 @@ defineProps({
   }
 }
 .description {
+  position: relative;
   font-size: $uni-font-size-base;
   color: $uni-color-subtitle;
   margin-top: 20rpx;
@@ -98,14 +113,21 @@ defineProps({
     max-width: 100% !important;
     height: auto !important;
   }
-  .mask {
-    position: relative;
+  .mask-container {
+    display: flex;
+    position: absolute;
     width: 100%;
-    margin-top: -40rpx;
+    bottom: -2rpx;
     box-sizing: border-box;
     text-align: right;
     color: $uni-color-primary;
-    background-image: linear-gradient(180deg, hsl(0deg 0% 100% / 82%), #fff);
+    .mask {
+      flex: 1;
+      background-image: linear-gradient(180deg, hsl(0deg 0% 100% / 60%), #fff);
+    }
+    .btn {
+      background-color: #fff;
+    }
   }
 }
 .availabilityinfo {
@@ -113,9 +135,10 @@ defineProps({
   color: #c83737;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 20rpx;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  line-height: $uni-font-size-base;
+  line-height: $uni-line-height;
   @include break;
   p h1 h2 h3 h4 h5 h6 ul strong span {
     margin: 0;
@@ -125,4 +148,4 @@ defineProps({
 .disabled {
   opacity: 0.6;
 }
-</style>
+</style>@/hooks/useLessonResource
