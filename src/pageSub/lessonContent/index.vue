@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 14:23:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 15:38:12
+ * @LastEditTime: 2024-02-22 18:10:24
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
  * @Description:
 -->
@@ -82,7 +82,7 @@ const day_pass = computed(() => {
 const attendanceState = computed(() => {
     const { attendance = {},openState } = lessonData.value;
     const { stat ,weekStat} = attendance;
-    return openState==='1'?weekStat:stat;
+    return openState==='1'?stat:weekStat;
 });
 const current = ref(1); // 默认展示学习
 const curLiveCourses=ref([]);
@@ -133,11 +133,13 @@ onLoad(async (options) => {
         const { courseid } = options;
         loading.value = true;
         await useLesson.queryCourseContent({ courseid });
-        loading.value=false;
         await useLiveCourse.queryLiveCourse();
         if(lessonData.value.idnumber){
             curLiveCourses.value=getLiveCourseFilterList(useLiveCourse.liveCourseList,lessonData.value.idnumber);
         }
+        const {attendanceType}=lessonData.value;
+        attendanceType==='2'?await useLesson.queryDurationCourse({ courseid }): await useLesson.queryAttendanceCourse({ courseid });
+        loading.value=false;
         setLog({
             courseid,
             type: 'course',

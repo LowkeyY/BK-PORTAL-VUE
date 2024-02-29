@@ -19,7 +19,6 @@ const handleMessage = () => {
     console.log(curPerson.value);
 };
 const addContact =async () => {
-    console.log(curPerson.value,'添加联系人');
     const {id}=curPerson.value;
     const {success}= await addContactsApi({touserid:id});
     if(success){

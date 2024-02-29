@@ -33,10 +33,38 @@ export function courseListDueApi(data:courseListParams) {
  * @description:课程内容
  * @return {*}
  */
-export function courseContentApi(data:CourseContentParams) {
+export function courseContentApi(data: AttendanceCourseParams) {
     return http.request({
         url:`${CUNOVS_SERVER}/course/${moodleToken}`,
         data,
     });
 }
 
+/**
+ * @description:课程考勤
+ * @return {*}
+ */
+export function attendanceCourseApi(data:AttendanceCourseParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/attendance/course/${moodleToken}`,
+        data,
+    });
+}
+
+export function durationCourseApi(data:AttendanceCourseParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/duration/course/${moodleToken}`,
+        data,
+    });
+}
+
+/**
+ * @description:课程考勤刷新
+ * @return {*}
+ */
+export function attendanceRefreshApi(data:AttendanceCourseParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/attendance/refresh/${moodleToken}`,
+        data,
+    });
+}

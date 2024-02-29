@@ -290,6 +290,93 @@ export const toChineseNum=(num:number) => {
     return `[第${chnStr}场]`;
 };
 
+
+/**
+ * @description: 考勤时间
+ * @param {*} timeValue
+ * @return {*}
+ */
+export const getAttendanceTime = (timeValue:number):string => {
+    const time:number = timeValue * 1000;
+
+    function formatDateTime (time:number):string {
+        const date = new Date(time);
+        const y = date.getFullYear();
+        let m:string|number = date.getMonth() + 1;
+        m = m < 10 ? (`0${m}`) : m;
+        let d:string|number = date.getDate();
+        d = d < 10 ? (`0${d}`) : d;
+        let h:string|number = date.getHours();
+        h = h < 10 ? (`0${h}`) : h;
+        let minute:string|number = date.getMinutes();
+        let second:string|number = date.getSeconds();
+        minute = minute < 10 ? (`0${minute}`) : minute;
+        second = second < 10 ? (`0${second}`) : second;
+        return `${y}-${m}-${d} ${h}:${minute}:${second}`;
+    }
+
+    // 判断传入日期是否为昨天
+    function isYestday (time:number) {
+        const date = (new Date()); // 当前时间
+        const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(); // 今天凌晨
+        const yestday = new Date(today - 24 * 3600 * 1000).getTime();
+        return time < today && yestday <= time;
+    }
+
+    // 60000 1分钟
+    // 3600000 1小时
+    // 86400000 24小时
+    // 对传入时间进行时间转换
+    function timeChange (time:number) {
+        const timeNew = Date.parse(new Date()); // 当前时间
+        const timeDiffer = timeNew - time; // 与当前时间误差
+        let returnTime = {};
+
+        if (timeDiffer <= 120000) { // 一分钟内
+            returnTime = {
+                time: '刚刚',
+                color: '#00bd06'
+            };
+        } else if (timeDiffer > 120000 && timeDiffer < 300000) { // 1-5分钟
+            returnTime = {
+                time: `${Math.floor(timeDiffer / 60000)}分钟前`,
+                color: '#ffa22f'
+            };
+        } else if (timeDiffer > 300000 && timeDiffer < 600000) { // 5-10
+            returnTime = {
+                time: `${Math.floor(timeDiffer / 60000)}分钟前`,
+                color: '#ffa22f'
+            };
+        } else if (timeDiffer > 600000 && timeDiffer < 3600000) { // 1小时内
+            returnTime = {
+                time: `${Math.floor(timeDiffer / 60000)}分钟前`,
+                color: '#ff2222'
+            };
+        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) { // 今日
+            returnTime = {
+                time: formatDateTime(time)
+                    .substr(11, 5),
+                color: '#ff2222'
+            };
+        } else if (timeDiffer > 3600000 && isYestday(time) === true) { // 昨天
+            returnTime = {
+                time: `昨天${formatDateTime(time)
+                    .substr(11, 5)}`,
+                color: '#ff2222'
+            };
+        } else if (timeDiffer > 86400000 && isYestday(time) === false) {
+            returnTime = {
+                time: formatDateTime(time),
+                color: '#ff2222'
+            };
+        }
+
+        return returnTime;
+    }
+
+    return timeChange(time);
+};
+
 /**
  * @description: 
  * @param {*} fileSize

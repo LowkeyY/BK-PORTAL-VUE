@@ -26,7 +26,16 @@
                             <view class="lesson-msg">{{ `结课日期：${changeLessonDate(curLesson.enddate) || '-'}` }}</view>
                             <view>
                                 <uni-tag
-                                    :text="curLesson.hasFinalExam?'终考课':'终考课'" :type="curLesson.hasFinalExam?'warning':'success'"
+                                    v-if="curLesson.hasFinalExam"
+                                    type="warning"
+                                    text="终考课"
+                                    size="small"
+                                />
+                                <uni-tag
+                                    v-if="curLesson.isAttendance"
+                                    style="margin-left: 10rpx"
+                                    type="success"
+                                    text="考勤课"
                                     size="small"
                                 />
                             </view>
@@ -38,7 +47,7 @@
                             type="follow-right"
                             :texture="[curLesson.graderaw >= 60 ? '#1eb259' : '#f34e14','#e3e3e3']"
                             :disable-value="true"
-                            :value="curLesson.graderaw/100"
+                            :value="curLesson.graderaw?curLesson.graderaw/100:0"
                         />
                         <text
                             class=""
@@ -48,7 +57,7 @@
                                 color:curLesson.graderaw >= 60 ? '#1eb259' : '#f34e14'
                             }"
                         >
-                            {{ curLesson.graderaw }}
+                            {{ curLesson.graderaw?curLesson.graderaw:'' }}
                         </text>
                     </view>
                 </view>
@@ -126,12 +135,12 @@ const isLiveCourse = (course:any) => {
     return false;
 };
 const { dataState,refresh, fetchList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params);
-const onClickItem = (e) => {
+const onClickItem =async (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;
     }
     params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
-    fetchList(params);
+    await fetchList(params);
 };
 const handleGoContent = (id:string)=>{
     handleJumpToPage('lessonContent',{courseid:id});

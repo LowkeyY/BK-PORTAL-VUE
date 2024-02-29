@@ -14,8 +14,8 @@ declare interface courseListParams {
 }
 
 declare interface CourseContentParams {
-    userid:string;
-    courseid: string;
+    userid:string|number;
+    courseid: string|number;
     coursename:string;
     userfullname: string;
     username:string;
@@ -30,4 +30,9 @@ declare interface SetGridsParams {
 declare interface SetPageParams {
     currentPage:number,
     pageSize:number
+}
+
+declare interface AttendanceCourseParams {
+    userid:string|number;
+    courseid: string|number;
 }

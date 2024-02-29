@@ -4,11 +4,11 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-02-29 15:49:14
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\TourContent.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
-    <pull-refresh-list type="content" show-skeleton :loading="useLesson.loading">
+    <pull-refresh-list type="content" show-skeleton :loading="useLesson.loading" :has-more="false" :is-refresh="isRefresh" @on-refresh="refresh">
         <view>
             <view v-if="teachersData.master.length||teachersData.tutor.length">
                 <uni-section type="line" title="教师信息" />
@@ -54,12 +54,32 @@
 import {useLessonStore} from '@/store/modules/lesson';
 import { getImages } from '@/utils';
 import ResourceList from './ResourceList.vue';
+import {isEmpty} from '@/utils/is';
 const useLesson = useLessonStore();
 const lessonData:Record<string, any> = computed(()=>useLesson.lessonData);
 const teachersData:Record<string, any> = computed(()=>useLesson.getTeachers);
 const tourSummary= computed(()=>useLesson.getTourSummary);
 const resources = computed(()=>useLesson.getTourContent);
 
+//刷新
+const isRefresh=ref(false);
+const curCourseid=ref('');
+const refresh =async (callback: () => void) => {
+    isRefresh.value=true;
+    try {
+        await useLesson.queryCourseContent({ courseid:curCourseid.value });
+    } finally {
+        callback();
+        isRefresh.value=false;
+    }
+};
+onLoad(async (option)=>{
+    const {courseid}=option;
+    curCourseid.value=courseid;
+    if(isEmpty(lessonData.value)){
+        await useLesson.queryCourseContent({ courseid:curCourseid.value });
+    }
+});
 </script>
 <style lang="scss" scoped>
 .teachers-content {

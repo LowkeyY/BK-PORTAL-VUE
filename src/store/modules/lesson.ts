@@ -2,30 +2,29 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 16:54:39
+ * @LastEditTime: 2024-02-07 17:04:51
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
- * @Description: 
+ * @Description:
  */
 
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/store/modules/user';
 import { useAppStore } from '@/store/app';
-import {courseContentApi} from '@/services/lesson';
+import {attendanceCourseApi, attendanceRefreshApi, courseContentApi, durationCourseApi} from '@/services/lesson';
 import {useSystem} from '@/hooks/app/useSystem';
-import { StorageEnum } from '@/enums/storageEnum';
 import { Toast } from '@/utils/uniapi/prompt';
-import storage from '@/utils/storage';
 import { isEmpty } from '@/utils/is';
 
 interface UserState {
     lessonData: Record<string,any>;
+    attendanceData:Record<string,any>;
     loading:boolean;
-    collapseActiveIndex:string;
+    collapseActiveIndex:string|number;
 }
+const useUser = useUserStore();
 
 
 const  findNameByCourses = (course:any[], id:string) => {
-  
     let name = '';
     if (id && course.length) {
         const selectedCourse:any = course.filter((c:any) => c.id === id);
@@ -37,6 +36,7 @@ export const useLessonStore = defineStore({
     id: 'lesson',
     state: (): UserState => ({
         lessonData:{},
+        attendanceData:{},
         loading:false,
         collapseActiveIndex:''
     }),
@@ -97,7 +97,6 @@ export const useLessonStore = defineStore({
                 const {success,message='请稍后再试',...courseData}= await courseContentApi(params);
                 if(success){
                     this.lessonData=courseData;
-                    console.log(courseData);
                     this.collapseActiveIndex=String(courseData.activityIndex);
                 }else {
                     Toast(message);
@@ -106,6 +105,51 @@ export const useLessonStore = defineStore({
                 return Promise.reject(err);
             }finally{
                 this.loading=false;
+            }
+        },
+        async queryAttendanceCourse(payload:Record<string,string>): Promise<any> {
+            const {courseid=''} = payload;
+            const params:AttendanceCourseParams = {
+                courseid,
+                userid:useUser.moodleUserId,
+            };
+            try {
+                const res=await attendanceCourseApi(params);
+                if(res.success){
+                    this.attendanceData=res;
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }
+        },
+        async queryDurationCourse(payload:Record<string,string>): Promise<any> {
+            const {courseid=''} = payload;
+            const params:AttendanceCourseParams = {
+                courseid,
+                userid:useUser.moodleUserId,
+            };
+            try {
+                const res= await durationCourseApi(params);
+                if(res.success){
+                    this.attendanceData=res;
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }
+        },
+        async queryAttendanceRefresh(payload:Record<string,string>): Promise<any> {
+            const {courseid=''} = payload;
+            const params:AttendanceCourseParams = {
+                courseid,
+                userid:useUser.moodleUserId,
+            };
+            try {
+                const res= await attendanceRefreshApi(params);
+                if(res.success){
+                    this.attendanceData=res;
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
             }
         },
     },

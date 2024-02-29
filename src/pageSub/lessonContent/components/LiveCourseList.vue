@@ -21,13 +21,13 @@
 import {useLiveCourseStore} from '@/store/modules/liveCourse';
 import {toChineseNum} from '@/utils';
 import {useOpenUrl} from '@/hooks/useOpenUrl';
+import {isEmpty} from '@/utils/is';
 
-defineProps({
+const props=defineProps({
     liveList: {
         type: Array,
         default:()=> []
-    },
-
+    }
 });
 
 
@@ -51,6 +51,12 @@ const goUrl = (course) => {
         useOpenUrl(course.joinUrl);
     }
 };
+
+onLoad(async ()=>{
+    if(isEmpty(props.liveList)){
+        await useLiveCourse.queryLiveCourse();
+    }
+});
 </script>
 
 <style lang="scss" scoped>
