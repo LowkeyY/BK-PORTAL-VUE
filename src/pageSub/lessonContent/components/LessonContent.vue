@@ -2,16 +2,16 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:48:45
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-22 14:25:57
+ * @LastEditTime: 2024-02-29 16:55:51
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\LessonContent.vue
  * @Description: 
 -->
 
 
 <template>
-    <pull-refresh-list type="content">
-        <uni-collapse v-model="accordionVal" :show-animation="true" accordion @change="change">
-            <uni-collapse-item v-for="(item,index) in resources" :key="item.id" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
+    <pull-refresh-list type="content" show-skeleton :loading="useLesson.loading">
+        <uni-collapse v-model="useLesson.collapseActiveIndex" accordion @change="change">
+            <uni-collapse-item v-for="(item,index) in resources" :key="item.id" :show-animation="true" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
                 <view class="content">
                     <view v-if="item.summary!==''" class="html">
                         <rich-text :nodes="item.summary" space />
@@ -26,14 +26,15 @@
     </pull-refresh-list>
 </template>
 <script lang="ts" setup name="LessonContent">
-const accordionVal= ref('0');
+
 import {useLessonStore} from '@/store/modules/lesson';
 import ResourceList from './ResourceList.vue';
 const useLesson = useLessonStore();
 const lessonData = computed(()=>useLesson.lessonData);
 const resources = computed(()=>useLesson.getLessonResource);
-const change = ()=>{
-    
+
+const change = (val:string)=>{
+    useLesson.collapseActiveIndex=val;
 };
 </script>
 <style lang="scss" scoped>

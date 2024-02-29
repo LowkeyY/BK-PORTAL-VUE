@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 14:49:08
+ * @LastEditTime: 2024-02-27 18:17:44
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -245,12 +245,15 @@ export const urlEncode = (str:string|number):string => {
  * @param {*} type
  * @return {*}
  */
-export const pattern = (type:string):Record<string,any> => {
-    const obj = {};
-    obj.href = /[a-zA-z]+:\/\/[^\\">]*/g;
-    obj.svg = /mymobile/ig;
-    obj.phone = /^1\d{10}$/;
-    obj.email = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+export const pattern = (type:string) => {
+    const obj = {
+        href:/[a-zA-z]+:\/\/[^\\">]*/g,
+        svg:/mymobile/ig,
+        phone:/^1\d{10}$/,
+        // eslint-disable-next-line no-useless-escape
+        email:/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
+        zip:/\.zip|.rar|.7z$/i
+    };
     return obj[type];
 };
 
@@ -285,4 +288,26 @@ export const toChineseNum=(num:number) => {
 
     }
     return `[第${chnStr}场]`;
+};
+
+/**
+ * @description: 
+ * @param {*} fileSize
+ * @return {*}
+ */
+export const renderFileSize = (fileSize:number) => {
+    if (fileSize < 1024) {
+        return `${fileSize}B`;
+    } else if (fileSize < (1024 * 1024)) {
+        let temp:number|string = fileSize / 1024;
+        temp = temp.toFixed(2);
+        return `${temp}KB`;
+    } else if (fileSize < (1024 * 1024 * 1024)) {
+        let temp:number|string = fileSize / (1024 * 1024);
+        temp = temp.toFixed(2);
+        return `${temp}MB`;
+    }
+    let temp:number|string = fileSize / (1024 * 1024 * 1024);
+    temp = temp.toFixed(2);
+    return `${temp}GB`;
 };

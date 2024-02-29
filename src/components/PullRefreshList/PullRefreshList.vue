@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-05 15:44:04
+ * @LastEditTime: 2024-02-29 16:21:53
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -20,7 +20,7 @@
                 <slot name="extra" />
             </view>
         </view>
-        <ComSkeleton type="list" :loading="loading&&!isRefresh&&showSkeleton">
+        <ComSkeleton :type="type==='list'?'list':'text'" :loading="loading&&!isRefresh&&showSkeleton">
             <scroll-view
                 id="scroll-el"
                 enable-flex="true"
@@ -67,7 +67,7 @@ import { px2rpx } from '@/utils/uniapi';
 const _this = getCurrentInstance();
 const pullLoading = ref(false);
 const showPullText = ref(false);
-const elementHeight = ref('0');
+const elementHeight = ref('100%');
 const triggered = ref(false);
 const props = defineProps({
     listData: {
@@ -135,7 +135,8 @@ const onAbort = () => {
 const onRestore = () => {
     triggered.value = false;
 };
-onUpdated(() => {
+
+const setHeight=()=>{
     // 自适应容器高度
     setTimeout(() => {
         uni.getSystemInfo({
@@ -150,6 +151,12 @@ onUpdated(() => {
             }
         });
     }, 300);
+};
+onUpdated(()=>{
+    setHeight();
+});
+onMounted(() => {
+    setHeight();
 });
 </script>
 

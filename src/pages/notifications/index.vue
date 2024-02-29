@@ -15,7 +15,7 @@
                             <text class="notice-date-date">{{ formatCreateDate(notice.createDate).date }}</text>
                         </view>
                         <view class="notice-msg">
-                            <uni-tag :inverted="true" text="置顶" size="mini" type="error" />
+                            <uni-tag v-if="notice.isTop===1" :inverted="true" text="置顶" size="mini" type="error" />
                             <text class="notice-text">
                                 {{ notice.title }}
                             </text>

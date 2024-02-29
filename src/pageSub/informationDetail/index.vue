@@ -1,14 +1,18 @@
 
+
 <script lang="ts" setup>
 import LoadingIcon from '@/components/LoadingIcon/index.vue';
 import {getInformationApi, informationCollectionApi} from '@/services/notifications';
-import {getCommonDate, getFileIcon} from '@/utils';
+import {portalFileDownload,portalEnclosureDownload} from '@/services/app';
+import {getCommonDate} from '@/utils';
+import useFiles from '@/hooks/useFiles';
 
+const {openFile} = useFiles();
 const loading=ref(false);
 const curInformation = ref({});
 const curInformationId = ref({});
 const dynamicFontSize = ref(''); // 初始动态字体大小
-const parseRichText=(html)=> {
+const parseRichText=(html:string)=> {
     return html.replace(/font-size: \d+px;/g, 'font-size: var(--font-size) !important;');
 };
 
@@ -17,7 +21,6 @@ const getCurInformation =async () => {
     if(success){
         curInformation.value=data;
     }
-    console.log(curInformation.value);
 };
 
 const handelCollection =async () => {
@@ -26,15 +29,16 @@ const handelCollection =async () => {
         getCurInformation();
     }
 };
-const downloadFile = (data,index)=>{
-    if(curInformation.value.fileList[index].loading)return;
-    console.log(data,index);
-    curInformation.value.fileList[index].loading=true;
-    setTimeout(()=>{
-        curInformation.value.fileList[index].loading=false;
-    },1000);
-};
 
+const handleDownload:void = (file,index)=>{
+    const {fileId,fileName,groupId} = file;
+    const fileParams = {
+        fileUrl:curInformation.value.informationType === 1 ?`${portalEnclosureDownload}?fileId=${fileId}`: `${portalFileDownload}/${groupId}`,
+        fileSize:file.fileSize,
+        fileName
+    };
+    openFile(fileParams);
+};
 onLoad(async option => {
     const {informationId,categoryName}=option;
     if(categoryName){
@@ -68,29 +72,7 @@ onLoad(async option => {
                 <rich-text :nodes="curInformation.informationDetail?parseRichText(curInformation.informationDetail):null"></rich-text>
             </view>
             <view v-if="curInformation.fileList?.length>0">
-                <uni-section title="附件" type="line" style="background-color: transparent;">
-                    <uni-list :border="false">
-                        <uni-list-item
-                            v-for="(file,index) in curInformation.fileList" :key="file.fileId" ellipsis="1" clickable
-                            :title="file.fileName" :note="getCommonDate(file.uploadTime / 1000)"
-                            @click="downloadFile(file,index)"
-                        >
-                            <template #header>
-                                <image class="icon" :src="getFileIcon(file.fileExt)" style="width: 60rpx;height: 60rpx;padding-right: 20rpx;" mode="aspectFix" />
-                            </template>
-                            <template #footer>
-                                <view class="download">
-                                    <button
-                                        style="color: #3492cf;background: #f0f8fd;border: 2rpx solid #3492cf;border-radius: 8rpx;font-size: 20rpx;"
-                                        size="mini" plain="true" :loading="!!file.loading"
-                                    >
-                                        {{ file.loading?'下载中':'下载' }}
-                                    </button>
-                                </view>
-                            </template>
-                        </uni-list-item>
-                    </uni-list>
-                </uni-section>
+                <files-content :file-list="curInformation.fileList" @handle-download="handleDownload" />
             </view>
         </view>
     </view>
@@ -120,7 +102,5 @@ body,
 .outer-box {
   --font-size: 26rpx;
 }
-.file-box {
-  @include flex;
-}
+
 </style>

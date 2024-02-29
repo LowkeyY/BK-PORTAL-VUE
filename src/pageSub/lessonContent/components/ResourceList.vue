@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-07 12:51:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-26 16:52:44
+ * @LastEditTime: 2024-02-29 14:31:40
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\ResourceList.vue
  * @Description: 
 -->
@@ -21,11 +21,9 @@
                 </view>
             </view>
             <view v-if="item.description" class="description">
-                <rich-text :nodes="item.description" space />
-                <view class="mask-container">
-                    <view class="mask"></view>
-                    <view class="btn">查看描述</view>
-                </view>
+                <expand-content>
+                    <rich-text :nodes="item.description" space />
+                </expand-content>
             </view>
             <view v-if="item.availabilityinfo" class="availabilityinfo">
                 <rich-text :nodes="item.availabilityinfo" space />
@@ -92,17 +90,11 @@ onLoad((option) => {
   }
 }
 .description {
-  position: relative;
+  //   position: relative;
   font-size: $uni-font-size-base;
   color: $uni-color-subtitle;
   margin-top: 20rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   line-height: $uni-line-height;
-  @include break;
   p {
     margin: 0;
   }
@@ -112,22 +104,6 @@ onLoad((option) => {
   img {
     max-width: 100% !important;
     height: auto !important;
-  }
-  .mask-container {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    bottom: -2rpx;
-    box-sizing: border-box;
-    text-align: right;
-    color: $uni-color-primary;
-    .mask {
-      flex: 1;
-      background-image: linear-gradient(180deg, hsl(0deg 0% 100% / 60%), #fff);
-    }
-    .btn {
-      background-color: #fff;
-    }
   }
 }
 .availabilityinfo {

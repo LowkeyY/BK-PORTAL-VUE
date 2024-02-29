@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 14:23:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-22 18:10:24
+ * @LastEditTime: 2024-02-29 15:38:12
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
  * @Description:
 -->
@@ -45,13 +45,11 @@
         />
         <view class="uni-padding-wrap">
             <uni-segmented-control :current="current" :values="tabsValue" style-type="text" active-color="#2b83d7" @click-item="onClickItem" />
-            <view>
-                <Tour-content v-show="currentTab.key === 'tour'" class="lesson-content" />
-                <Lesson-content v-show="currentTab.key === 'content'" class="lesson-content" />
-                <Attendance-content v-show="currentTab.key === 'attendance'" class="lesson-content" />
-                <Live-content v-show="currentTab.key === 'liveCourse'" class="lesson-content" />
-                <Live-course-list v-show="currentTab.key === 'liveCourseList'" class="live" :live-list="curLiveCourses" />
-            </view>
+            <Tour-content v-if="currentTab.key === 'tour'" class="lesson-content" />
+            <Lesson-content v-if="currentTab.key === 'content'" class="lesson-content" />
+            <Attendance-content v-if="currentTab.key === 'attendance'" class="lesson-content" />
+            <Live-content v-if="currentTab.key === 'liveCourse'" class="lesson-content" />
+            <Live-course-list v-if="currentTab.key === 'liveCourseList'" class="live" :live-list="curLiveCourses" />
         </view>
     </app-provider>
 </template>
@@ -73,6 +71,7 @@ const useLesson = useLessonStore();
 const useLiveCourse = useLiveCourseStore();
 const useApp = useAppStore();
 const router = useRouter();
+const loading = ref(false);
 const lessonData: Record<string, any> = computed(() => useLesson.lessonData);
 const day_pass = computed(() => {
     const { attendance = {} } = lessonData.value;
@@ -85,7 +84,7 @@ const attendanceState = computed(() => {
     const { stat ,weekStat} = attendance;
     return openState==='1'?weekStat:stat;
 });
-const current = ref(0); // 默认展示导学
+const current = ref(1); // 默认展示学习
 const curLiveCourses=ref([]);
 const showAttendance = computed(() => (lessonData.value.isAttendance && day_pass.value !== '0') || lessonData.value.attendanceType === '2');
 const ALL_TABS = [
@@ -132,7 +131,9 @@ const onClickItem = (e: Record<string, any>) => {
 onLoad(async (options) => {
     if (options) {
         const { courseid } = options;
+        loading.value = true;
         await useLesson.queryCourseContent({ courseid });
+        loading.value=false;
         await useLiveCourse.queryLiveCourse();
         if(lessonData.value.idnumber){
             curLiveCourses.value=getLiveCourseFilterList(useLiveCourse.liveCourseList,lessonData.value.idnumber);

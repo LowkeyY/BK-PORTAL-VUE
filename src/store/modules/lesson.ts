@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 17:04:51
+ * @LastEditTime: 2024-02-29 16:54:39
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description: 
  */
@@ -19,10 +19,11 @@ import { isEmpty } from '@/utils/is';
 
 interface UserState {
     lessonData: Record<string,any>;
-   
+    loading:boolean;
+    collapseActiveIndex:string;
 }
-const useUser = useUserStore();
-const useApp = useAppStore();
+
+
 const  findNameByCourses = (course:any[], id:string) => {
   
     let name = '';
@@ -35,7 +36,9 @@ const  findNameByCourses = (course:any[], id:string) => {
 export const useLessonStore = defineStore({
     id: 'lesson',
     state: (): UserState => ({
-        lessonData:{}
+        lessonData:{},
+        loading:false,
+        collapseActiveIndex:''
     }),
     getters: {
         getTourContent:(state)=>{
@@ -75,6 +78,9 @@ export const useLessonStore = defineStore({
     },
     actions: {
         async queryCourseContent(payload:Record<string,string>): Promise<any> {
+            const useUser = useUserStore();
+            const useApp = useAppStore();
+            this.loading=true;
             const courseData = useApp.courseData;
             const {courseid=''} = payload;
             const coursename = findNameByCourses(courseData, courseid);
@@ -91,11 +97,15 @@ export const useLessonStore = defineStore({
                 const {success,message='请稍后再试',...courseData}= await courseContentApi(params);
                 if(success){
                     this.lessonData=courseData;
+                    console.log(courseData);
+                    this.collapseActiveIndex=String(courseData.activityIndex);
                 }else {
                     Toast(message);
                 }
             } catch (err: any) {
                 return Promise.reject(err);
+            }finally{
+                this.loading=false;
             }
         },
     },

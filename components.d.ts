@@ -14,6 +14,8 @@ declare module 'vue' {
     ComProgressBar: typeof import('./src/components/ComProgressBar/index.vue')['default']
     ComSkeleton: typeof import('./src/components/ComSkeleton/index.vue')['default']
     Empty: typeof import('./src/components/Empty/Empty.vue')['default']
+    ExpandContent: typeof import('./src/components/ExpandContent/ExpandContent.vue')['default']
+    FilesContent: typeof import('./src/components/FilesContent/FilesContent.vue')['default']
     Iconify: typeof import('./src/components/Iconify/Iconify.vue')['default']
     Link: typeof import('./src/components/Link/Link.vue')['default']
     LoadingIcon: typeof import('./src/components/LoadingIcon/index.vue')['default']
