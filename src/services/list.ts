@@ -104,3 +104,15 @@ export function liveCourseListApi() {
         url:`${PORTAL_SERVER}/workbench/courseSchedule/list?userId=${userCode}`,
     });
 }
+
+
+/**
+ * @description: 我的考勤列表
+ * @return {*}
+ */
+export function attendanceCourseListApi(data:AttendanceCourseParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/attendance/courseList/${moodleToken}`,
+        data
+    });
+}

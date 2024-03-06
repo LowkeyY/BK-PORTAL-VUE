@@ -47,7 +47,7 @@
             <uni-segmented-control :current="current" :values="tabsValue" style-type="text" active-color="#2b83d7" @click-item="onClickItem" />
             <Tour-content v-if="currentTab.key === 'tour'" class="lesson-content" />
             <Lesson-content v-if="currentTab.key === 'content'" class="lesson-content" />
-            <Attendance-content v-if="currentTab.key === 'attendance'" class="lesson-content" />
+            <attendance-details v-if="currentTab.key === 'attendance'" class="lesson-content" />
             <Live-content v-if="currentTab.key === 'liveCourse'" class="lesson-content" />
             <Live-course-list v-if="currentTab.key === 'liveCourseList'" class="live" :live-list="curLiveCourses" />
         </view>
@@ -65,6 +65,7 @@ import LiveContent from './components/LiveContent.vue';
 import LiveCourseList from './components/LiveCourseList.vue';
 import {getLiveCourseFilterList} from '@/hooks/useLiveCourse';
 import {useLiveCourseStore} from '@/store/modules/liveCourse';
+import AttendanceDetails from "@/components/AttendanceDetails/AttendanceDetails.vue";
 
 const { setLog, setCourseRecordLog } = useSetLog();
 const useLesson = useLessonStore();
@@ -137,8 +138,6 @@ onLoad(async (options) => {
         if(lessonData.value.idnumber){
             curLiveCourses.value=getLiveCourseFilterList(useLiveCourse.liveCourseList,lessonData.value.idnumber);
         }
-        const {attendanceType}=lessonData.value;
-        attendanceType==='2'?await useLesson.queryDurationCourse({ courseid }): await useLesson.queryAttendanceCourse({ courseid });
         loading.value=false;
         setLog({
             courseid,
@@ -175,7 +174,7 @@ onLoad(async (options) => {
     padding: 20rpx;
     border-radius: 30px 30px 0 0;
     .course-name {
-      font-size: $uni-font-size-m;
+      font-size: $uni-font-size-lg;
     }
     .course-tips {
       display: flex;

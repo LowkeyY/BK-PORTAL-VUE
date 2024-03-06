@@ -2,7 +2,7 @@
 
 declare interface GradeDetailsParams {
     userId:string|number,
-    courseid:string|number
+    courseid?:string|number
 }
 
 declare interface InformationCollectionData {

@@ -54,9 +54,6 @@ const refresh =async (callback: () => void) => {
 onLoad(async (option)=>{
     const {courseid}=option;
     curCourseid.value=courseid;
-    if(isEmpty(lessonData.value)){
-        await useLesson.queryCourseContent({ courseid:curCourseid.value });
-    }
 });
 </script>
 <style lang="scss" scoped>

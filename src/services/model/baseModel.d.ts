@@ -34,5 +34,5 @@ declare interface SetPageParams {
 
 declare interface AttendanceCourseParams {
     userid:string|number;
-    courseid: string|number;
+    courseid?: string|number;
 }

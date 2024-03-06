@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppProvider: typeof import('./src/components/AppProvider/AppProvider.vue')['default']
+    AttendanceDetails: typeof import('./src/components/AttendanceDetails/AttendanceDetails.vue')['default']
     AttendanceState: typeof import('./src/components/AttendanceState/AttendanceState.vue')['default']
     BasicButton: typeof import('./src/components/BasicButton/BasicButton.vue')['default']
     BasicInput: typeof import('./src/components/BasicInput/index.vue')['default']

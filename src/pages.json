@@ -238,8 +238,41 @@
                     }
                 },
                 {
+                    "name": "chatDetail",
+                    "path": "chat/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
                     "name": "liveCourse",
                     "path": "liveCourse/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "attendance",
+                    "path": "myAttendance/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "attendanceDetail",
+                    "path": "attendanceDetail/index",
                     "style": {
                         "navigationStyle": "custom"
                     },

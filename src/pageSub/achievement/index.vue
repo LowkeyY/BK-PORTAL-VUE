@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-01-08 16:20:01
  * @FilePath: \BK-Portal-VUE\src\pageSub\achievement\index.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
@@ -72,6 +72,7 @@ const handleListClick = (curLesson:Record<string,any>)=>{
   .lesson-title {
     font-size: $uni-font-size-lg;
     color: $uni-color-title;
+    font-weight: 600;
   }
   .lesson-content {
     padding: 10rpx 0;

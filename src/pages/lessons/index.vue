@@ -8,7 +8,7 @@
 
         <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <view v-if="current===0">
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
+                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson)">
                     <view class="lesson-title-container">
                         <text class="lesson-title">{{ curLesson.fullname }}</text>
                         <uni-tag
@@ -63,7 +63,7 @@
                 </view>
             </view>
             <view v-else>
-                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson.id)">
+                <view v-for="(curLesson) in dataState.listData" :key="curLesson.id" class="lesson" @click="()=>handleGoContent(curLesson)">
                     <view class="lesson-title-container">
                         <text class="lesson-title">{{ curLesson.fullname }}</text>
                         <uni-tag
@@ -142,8 +142,9 @@ const onClickItem =async (e) => {
     params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
     await fetchList(params);
 };
-const handleGoContent = (id:string)=>{
-    handleJumpToPage('lessonContent',{courseid:id});
+const handleGoContent = (data)=>{
+    const {id,attendanceType}=data;
+    handleJumpToPage('lessonContent',{courseid:id,attendanceType});
 };
 onShow( () => {
     setTimeout(()=>{
