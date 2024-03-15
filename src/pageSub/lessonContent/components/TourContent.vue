@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:25:09
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 15:49:14
+ * @LastEditTime: 2024-03-14 15:07:37
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\TourContent.vue
  * @Description:
 -->
@@ -15,7 +15,7 @@
                 <view class="teachers-content">
                     <view v-for="master in teachersData.master" :key="master.id" class="teachers-item">
                         <view class="avatar">
-                            <image class="img" :src="getImages(master.avatar)" mode="widthFix" />
+                            <image class="img" :src="getImages(master.avatar,'defaultUserIcon')" mode="widthFix" />
                             <view class="role-container">
                                 <text class="role">责</text>
                             </view>
@@ -24,7 +24,7 @@
                     </view>
                     <view v-for="tutor in teachersData.tutor" :key="tutor.id" class="teachers-item">
                         <view class="avatar">
-                            <image class="img" :src="getImages(tutor.userData?.avatar)" mode="widthFix" />
+                            <image class="img" :src="getImages(tutor.userData?.avatar,'defaultUserIcon')" mode="widthFix" />
                             <view class="role-container">
                                 <text class="role">{{ tutor.roleData?.roleName.slice(0,1) }}</text>
                             </view>
@@ -34,15 +34,17 @@
                 </view>
             </view>
             <view v-if="lessonData.summary!==''">
-                <uni-section type="line" title="课程简介" />
-                <render-html :html="lessonData.summary" />
+                <uni-section type="line" title="课程简介">
+                    <render-html :html="lessonData.summary" />
+                </uni-section>
             </view>
             <view v-if="tourSummary!==''">
                 <render-html :html="tourSummary" />
             </view>
             <view v-if="lessonData.attendanceRule">
-                <uni-section type="line" title="考勤要求" />
-                <render-html :html="lessonData.attendanceRule" />
+                <uni-section type="line" title="考勤要求">
+                    <render-html :html="lessonData.attendanceRule" />
+                </uni-section>
             </view>
             <view>
                 <resource-list :list="resources" />

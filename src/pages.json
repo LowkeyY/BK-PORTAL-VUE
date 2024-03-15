@@ -237,17 +237,17 @@
                         "tabBar": false
                     }
                 },
-                {
-                    "name": "chatDetail",
-                    "path": "chat/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    },
-                    "meta": {
-                        "ignoreAuth": true,
-                        "tabBar": false
-                    }
-                },
+                // {
+                //     "name": "chatDetail",
+                //     "path": "chat/index",
+                //     "style": {
+                //         "navigationStyle": "custom"
+                //     },
+                //     "meta": {
+                //         "ignoreAuth": true,
+                //         "tabBar": false
+                //     }
+                // },
                 {
                     "name": "liveCourse",
                     "path": "liveCourse/index",
@@ -322,6 +322,18 @@
                 {
                     "name": "assign",
                     "path": "assign/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "assignSubmit",
+                    "path": "assign/assignSubmit",
                     "style": {
                         "navigationStyle": "custom"
                     },

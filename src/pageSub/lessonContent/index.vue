@@ -65,7 +65,7 @@ import LiveContent from './components/LiveContent.vue';
 import LiveCourseList from './components/LiveCourseList.vue';
 import {getLiveCourseFilterList} from '@/hooks/useLiveCourse';
 import {useLiveCourseStore} from '@/store/modules/liveCourse';
-import AttendanceDetails from "@/components/AttendanceDetails/AttendanceDetails.vue";
+import AttendanceDetails from '@/components/AttendanceDetails/AttendanceDetails.vue';
 
 const { setLog, setCourseRecordLog } = useSetLog();
 const useLesson = useLessonStore();
@@ -105,10 +105,10 @@ const ALL_TABS = [
         name: '直播列表',
         key: 'liveCourseList',
     },
-    {
-        name: '课程管理',
-        key: 'liveCourse',
-    },
+    // {
+    //     name: '课程管理',
+    //     key: 'liveCourse',
+    // },
 ];
 
 const tabs = computed(() => {

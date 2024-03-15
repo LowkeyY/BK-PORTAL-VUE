@@ -69,3 +69,18 @@ web-view,
 page {
   background-color: #f6f6f6;
 }
+.availabilityinfo {
+  font-size: 24rpx !important;
+  color: #c83737;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 20rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-height: 1.5em;
+  @include break;
+  p h1 h2 h3 h4 h5 h6 ul strong span {
+    margin: 0;
+    font-size: 24rpx !important;
+  }
+}

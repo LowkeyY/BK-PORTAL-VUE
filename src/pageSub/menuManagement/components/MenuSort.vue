@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 14:04:31
+ * @LastEditTime: 2024-03-14 15:05:57
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
  * @Description:
 -->
@@ -20,12 +20,13 @@
                 </view>
             </template>
         </drag-menu>
-        <uni-section type="line" title="更多菜单" />
-        <Menu :menu-list="filterGrids" @handle-grids-click="handleAddClick">
-            <template #dot>
-                <uni-icons type="plus-filled" color="#2b83d7"></uni-icons>
-            </template>
-        </Menu>
+        <uni-section type="line" title="更多菜单">
+            <Menu :menu-list="filterGrids" @handle-grids-click="handleAddClick">
+                <template #dot>
+                    <uni-icons type="plus-filled" color="#2b83d7"></uni-icons>
+                </template>
+            </Menu>
+        </uni-section>
     </view>
 </template>
 

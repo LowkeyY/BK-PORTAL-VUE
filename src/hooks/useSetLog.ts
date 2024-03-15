@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 16:55:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-27 19:19:15
+ * @LastEditTime: 2024-03-01 13:38:55
  * @FilePath: \BK-Portal-VUE\src\hooks\useSetLog.ts
  * @Description: 记录浏览日志
  */
@@ -15,7 +15,7 @@ interface LogParams {
     assesstime?:string|number,
     courseid:string,
     cmid?:string,
-    type:string,
+    type?:string,
     modname?:string,
     userid?:string
 }
@@ -34,6 +34,7 @@ export const useSetLog = () => {
     const defaults = {
         cmid:'',
         modname:'',
+        type:'mod',
         assesstime:new Date().getTime(),
         userid:useUser.moodleUserId
     };

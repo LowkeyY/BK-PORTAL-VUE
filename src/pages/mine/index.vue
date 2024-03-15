@@ -72,6 +72,10 @@ onShow(async () => {
                         {{ `学制：${curUserInfo?.educational}` }}
                     </span>
                 </view>
+                <view class="time">
+                    <text>学籍有效到期时间：</text>
+                    <text>2025/03/08</text>
+                </view>
             </view>
         </view>
         <view class="userinfo-operate">
@@ -154,6 +158,10 @@ onShow(async () => {
   width: 90%;
   padding-left: 16px;
   justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.time {
+  padding-left: 16px;
 }
 .userinfo-operate {
   position: relative;

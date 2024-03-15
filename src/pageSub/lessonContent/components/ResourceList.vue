@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-07 12:51:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 14:31:40
+ * @LastEditTime: 2024-03-13 17:24:24
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\ResourceList.vue
  * @Description: 
 -->
@@ -106,22 +106,7 @@ onLoad((option) => {
     height: auto !important;
   }
 }
-.availabilityinfo {
-  font-size: $uni-font-size-base !important;
-  color: #c83737;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 20rpx;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  line-height: $uni-line-height;
-  @include break;
-  p h1 h2 h3 h4 h5 h6 ul strong span {
-    margin: 0;
-    font-size: $uni-font-size-base !important;
-  }
-}
 .disabled {
   opacity: 0.6;
 }
-</style>@/hooks/useLessonResource
+</style>

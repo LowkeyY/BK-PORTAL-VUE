@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-30 13:19:26
+ * @LastEditTime: 2024-03-15 11:49:45
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -23,11 +23,12 @@
                 </template>
             </uni-list-item>
         </view>
-        <!-- <uni-section class="mb-10" type="line" title="本周未完成任务" /> -->
-        <view class="uni-padding-wrap">
+        <uni-section type="line" title="本周未完成任务" />
+        <!-- <view class="uni-padding-wrap">
             <uni-segmented-control :current="0" :values="['任务', '待办']" style-type="text" active-color="#2b83d7" />
-        </view>
-        <pull-refresh-list :loading="loading" :list-data="[]" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
+        </view> -->
+        <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
+            <student-task-list :list="dataState.listData" />
         </pull-refresh-list>
     </view>
 </template>
@@ -38,15 +39,18 @@ import { useAuthStore } from '@/store/modules/auth';
 import { useAppStore } from '@/store/app';
 import {isBjouUser} from '@/utils';
 import {messageCountsApi} from '@/services/app';
+import {studentTaskListApi} from '@/services/list';
 import {handleGridsClick,handleJumpToPage} from '@/utils/handle';
 import useRefreshList from '@/hooks/useRefreshList';
+import StudentTaskList from './components/StudentTaskList.vue';
 const useUser = useUserStore();
 const useAuth = useAuthStore();
 const useApp = useAppStore();
-const params = reactive({
+const params:any = reactive({
     searchData:{
+        userid:useUser.moodleUserId
     },
-    searchApi: messageCountsApi,
+    searchApi: studentTaskListApi,
 });
 
 const { dataState,refresh, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params);

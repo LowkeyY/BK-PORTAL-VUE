@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-1-5 12:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-08 15:01:28
+ * @LastEditTime: 2024-03-13 16:06:58
  * @FilePath: \BK-Portal-VUE\src\services\list.ts
  * @Description:
  */
@@ -21,6 +21,7 @@ const TIMETABLE = `${PORTAL_SERVER}/mobile/bkcourse/list`; // 课程表
 const GRADE_LIST = `${CUNOVS_SERVER}/grade/courseList/${moodleToken}`; // 我的成绩
 const GRADE_DETAILS = `${CUNOVS_SERVER}/grade/${moodleToken}`; // 成绩详情列表
 const GRADE_DETAILS_REFRESH = `${CUNOVS_SERVER}/grade/refresh/${moodleToken}`; // 刷新成绩详情列表（从学习平台直接获取数据，不走同步，刷新请求减少学习平台压力）
+const TASK_LIST = `${CUNOVS_SERVER}/task/${moodleToken}`; // 学生本周任务列表
 /**
  * @description: 课程表
  * @return {*}
@@ -113,6 +114,17 @@ export function liveCourseListApi() {
 export function attendanceCourseListApi(data:AttendanceCourseParams) {
     return http.request({
         url:`${CUNOVS_SERVER}/attendance/courseList/${moodleToken}`,
+        data
+    });
+}
+
+/**
+ * @description: 我的考勤列表
+ * @return {*}
+ */
+export function studentTaskListApi(data:Record<string,any>) {
+    return http.request({
+        url:TASK_LIST,
         data
     });
 }

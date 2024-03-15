@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-27 14:02:13
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-27 19:18:40
+ * @LastEditTime: 2024-03-11 12:55:56
  * @FilePath: \BK-Portal-VUE\src\hooks\useFiles.ts
  * @Description: 
  */
@@ -42,6 +42,7 @@ export default function  useFiles() {
                             filePath: filePath,
                             showMenu: true,
                             success: function (res) {
+                               
                                 Toast('正在打开文件');
                             },
                             fail:function(res){

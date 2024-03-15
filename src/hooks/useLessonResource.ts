@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 14:26:07
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-27 19:18:51
+ * @LastEditTime: 2024-03-05 14:55:29
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
  * @Description: 
  */
@@ -90,7 +90,7 @@ export default function useLessonResource() {
     };
 
     
-    const handleResourceClick = (params:any,courseid:string|number)=>{
+    const handleResourceClick = (params:any,courseid?:string|number)=>{
         const { modname = '', modulename = '', name='',id = '', instance = '', httpurl = '', contents = [{}],coursewareID, tracking = '2', stats = {},href} = params as any;
         const { state = 0 } = stats;
         const modType =  modname || modulename;
@@ -119,6 +119,8 @@ export default function useLessonResource() {
                 if (Object.keys(contents[0]).length > 0) {
                     // 不需要请求源文件，下载文件
                     const {fileurl='', filesize= 0} = contents[0];
+                    console.log(`${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`);
+ 
                     openFile({
                         fileSize:filesize,
                         fileUrl: `${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`
@@ -165,9 +167,32 @@ export default function useLessonResource() {
         }
     };
   
- 
+    const handlerTagAHrefParseParam = (params:any, courseid?:string|number) => {
+        const { modname = '' } = params;
+        if (modname !== '') {
+            let targetParams = '';
+            if (modname === 'resource') {
+                const {
+                    fileurl = '', filesize=0, href = '', id = '', ...otherParams
+                } = params;
+                if (id === '' && (fileurl !== '')) {
+                    targetParams = {
+                        contents: [{
+                            fileurl: fileurl || href,
+                            filesize
+                        }],
+                        ...otherParams
+                    };
+                }
+            }
+            handleResourceClick(targetParams !== '' ? targetParams : params, courseid);
+        } else {
+            Toast('需要查看的标签类型不能为空。');
+        }
+    };
     return {
         getResourceType,
-        handleResourceClick
+        handleResourceClick,
+        handlerTagAHrefParseParam
     };
 }

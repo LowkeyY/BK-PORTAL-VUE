@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-27 18:17:44
+ * @LastEditTime: 2024-03-13 17:07:31
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -128,6 +128,44 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
 };
 
 /**
+ * @description: 作业间隔时间
+ * @param {*} data
+ * @param {*} state
+ * @param {*} timemodified
+ * @return {*}
+ */
+export const getSurplusDay = (data:number, state:string, timemodified = 0) => {
+    const now = new Date().getTime();
+    const getDays = (time:number) => {
+        const days = time / 1000 / 60 / 60 / 24;
+        const daysRound = Math.floor(days);
+        const hours = time / 1000 / 60 / 60 - (24 * daysRound);
+        const hoursRound = Math.floor(hours);
+        const minutes = time / 1000 / 60 - (24 * 60 * daysRound) - (60 * hoursRound);
+        const minutesRound = Math.floor(minutes);
+        // const seconds = time / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+        return `${daysRound > 0 ? `${daysRound}天` : ''}${hoursRound > 0 ? `${hoursRound}小时` : ''}${minutesRound}分钟`;
+    };
+    if (state === 'submitted') {
+        const nowTime = data * 1000 - now;
+        if (data * 1000 > now) {
+            return getDays(nowTime);
+        }
+        if (data > timemodified) {
+            const time = (data - timemodified) * 1000;
+            return `提早了${getDays(time)}提交`;
+        }
+        const time = timemodified * 1000 - data * 1000;
+        return `推迟了${getDays(time)}提交`;
+    }
+    if (data * 1000 > now) {
+        const time = data * 1000 - now;
+        return getDays(time);
+    }
+    return '作业已截止';
+};
+
+/**
  * @description: 聊天时间转换
  * @param {*} timeValue
  * @return {*}
@@ -207,21 +245,57 @@ export const getMessageTime = (timeValue:number):string => {
  * @return {*}
  */
 export const getFileIcon = (fileName:string):string => {
-    const fileExtension:string = fileName.toLowerCase();
+    // const fileExtension:string = fileName.toLowerCase();
     // 定义文件类型与对应图标的映射关系
-    const iconMap:Record<string, string> = {
-        '.pdf': 'PDF.svg',
-        '.doc': 'DOCX.svg',
-        '.docx': 'DOCX.svg',
-        '.xls': 'EXCEL.svg',
-        '.xlsx': 'EXCEL.svg',
-        '.png': 'IMAGE.svg',
-        '.jpg': 'IMAGE.svg',
-        '.jpeg': 'IMAGE.svg',
-        '.gif': 'IMAGE.svg',
+    // const iconMap:Record<string, string> = {
+    //     '.pdf': 'PDF.svg',
+    //     '.doc': 'DOCX.svg',
+    //     '.docx': 'DOCX.svg',
+    //     '.xls': 'EXCEL.svg',
+    //     '.xlsx': 'EXCEL.svg',
+    //     '.png': 'IMAGE.svg',
+    //     '.jpg': 'IMAGE.svg',
+    //     '.jpeg': 'IMAGE.svg',
+    //     '.gif': 'IMAGE.svg',
+    // };
+    const pdfReg = /\.pdf$/i;
+    const wordReg = /\.docx?$/i;
+    const excelReg = /\.xlsx?$/i;
+    const imageReg = /\.(jpg|jpeg|png|gif|bmp)$/i;
+    const rarReg = /\.(zip|rar|7z)$/i;
+    const fileExtension = () =>{
+        if(pdfReg.test(fileName)){
+            return 'PDF.svg';
+        }else if(wordReg.test(fileName)){
+            return 'DOCX.svg';
+        }else if(excelReg.test(fileName)){
+            return 'EXCEL.svg';
+        }else if(imageReg.test(fileName)){
+            return 'IMAGE.svg';
+        }else if(rarReg.test(fileName)){
+            return 'RAR.svg';
+        }else{
+            return 'file.svg';
+        }
     };
-    const icon:string=iconMap[fileExtension] || 'file.svg';
+    const icon:string=fileExtension();
     return `/static/svg/fileType/${icon}`;
+};
+
+/**
+ * @description: 本地任务图标
+ * @param {string} type
+ * @return {*}
+ */
+export const getTaskIcon = (type:string) => {
+    if (type === 'assign') {
+        return '/static/svg/resourceIcon/homework.svg';
+    } else if (type === 'quiz') {
+        return '/static/svg/resourceIcon/test.svg';
+    } else if (type === 'forum') {
+        return '/static/svg/resourceIcon/huodong.svg';
+    }
+    return '';
 };
 
 /**
@@ -383,6 +457,7 @@ export const getAttendanceTime = (timeValue:number):string => {
  * @return {*}
  */
 export const renderFileSize = (fileSize:number) => {
+  
     if (fileSize < 1024) {
         return `${fileSize}B`;
     } else if (fileSize < (1024 * 1024)) {
@@ -397,4 +472,45 @@ export const renderFileSize = (fileSize:number) => {
     let temp:number|string = fileSize / (1024 * 1024 * 1024);
     temp = temp.toFixed(2);
     return `${temp}GB`;
+};
+
+/**
+ * @description: 获取页面参数
+ * @return {*}
+ */
+export const getCurPageParam=()=>{
+    const pages = getCurrentPages();
+    const curPage:any = pages[pages.length-1];
+    const curParam = curPage.options || curPage.$route.query; // h5:curPage.$route.query
+    return curParam;
+};
+
+/**
+ * @description: 解析JSON数据
+ * @param {any} res
+ * @return {*}
+ */
+export const parseJSON=(res:any)=>{
+    try {
+        return JSON.parse(res);
+    } catch (e) {
+        return res;
+    }
+};
+
+/**
+ * 任务列表时间转换
+ * @param date
+ * @returns {string}
+ */
+export const isToday = (date:number):boolean => {
+    if (date) {
+        const currentDate = new Date();
+        const lessonDate = new Date(date * 1000);
+        if (currentDate.toDateString() <= lessonDate.toDateString()) {
+            return true;
+        }
+        return false;
+    }
+    return false;
 };

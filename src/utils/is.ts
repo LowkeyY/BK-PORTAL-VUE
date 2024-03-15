@@ -98,3 +98,15 @@ export function isUrl(path: string): boolean {
         /^((https|http|ftp|rtsp|mms):\/\/)(([0-9a-zA-Z_!~*'().&=+$%-]+: )?[0-9a-zA-Z_!~*'().&=+$%-]+@)?(([0-9]{1,3}.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z].[a-zA-Z]{2,6})(:[0-9]{1,4})?((\/?)|(\/[0-9a-zA-Z_!~*'().;?:@&=+$,%#-]+)+\/?)$/;
     return reg.test(path);
 }
+
+/**
+ * @description: 图片是否能加载
+ * @param {string} src
+ * @return {*}
+ */
+export function isUsefulPic(src:string):boolean{
+    const ImgObj:Record<string,any> = new Image();
+    ImgObj.src = src;
+  
+    return ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0);
+}

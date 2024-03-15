@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-29 11:15:58
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 16:14:59
+ * @LastEditTime: 2024-03-04 14:56:25
  * @FilePath: \BK-Portal-VUE\src\components\ExpandContent\ExpandContent.vue
  * @Description: 
 -->
@@ -13,8 +13,14 @@
             <slot />
         </view>
         <view v-if="showMask" class="mask" :class="{position:!expand}">
-            <view v-if="!expand" class="btn" @click="expand=true;height='100%'">{{ expandText }}</view>
-            <view v-if="expand" @click="expand=false;height=maxHeight">收起</view>
+            <view v-if="!expand" class="btn" @click="expand=true;height='100%'">
+                <text> {{ expandText }}</text>
+                <uni-icons type="arrow-down" color="#2b83d7" size="18" />
+            </view>
+            <view v-if="expand" class="btn" @click="expand=false;height=maxHeight">
+                <text>收起</text>
+                <uni-icons type="arrow-up" color="#2b83d7" size="18" />
+            </view>
         </view>
     </view>
 </template>
@@ -31,8 +37,8 @@ const props = defineProps({
         default: '80rpx'
     }
 });
-const containerRef = ref<HTMLElement | null>(null);
-const contentRef = ref<HTMLElement | null>(null);
+const containerRef = ref<HTMLElement | any>(null);
+const contentRef = ref<HTMLElement | any>(null);
 const showMask = ref(false);
 const expand = ref(false);
 const height = ref(props.maxHeight);
@@ -42,8 +48,8 @@ const height = ref(props.maxHeight);
  * @return {*}
  */
 const calculateHeight = ():void => {
-    const content =contentRef.value.$el;
-    if(!contentRef.value.$el) return;
+    if(!contentRef.value) return;
+    const content =contentRef.value?.$el;
     const mediaElements = content.querySelectorAll('img, video, audio');
     const loadMediaPromises:Promise<unknown>[] = [];
     for (const mediaElement of mediaElements) {
@@ -54,7 +60,7 @@ const calculateHeight = ():void => {
     }
 
     Promise.all(loadMediaPromises).then(() => {
-        const containerHei = containerRef.value.$el.offsetHeight;
+        const containerHei = containerRef.value?.$el.offsetHeight;
         const contentHei = content.offsetHeight;
         if(contentHei>containerHei){
             showMask.value=true;
@@ -75,13 +81,16 @@ onMounted(()=>{
 }
 .mask {
   width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20rpx;
   bottom: -2rpx;
   box-sizing: border-box;
-  text-align: right;
   color: $uni-color-primary;
+  background-image: linear-gradient(180deg, hsl(0deg 0% 100% / 60%), #fff);
   .btn {
-    flex: 1;
-    background-image: linear-gradient(180deg, hsl(0deg 0% 100% / 60%), #fff);
+    display: flex;
+    align-items: center;
   }
 }
 .hidden {

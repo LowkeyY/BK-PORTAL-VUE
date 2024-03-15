@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-07 17:04:51
+ * @LastEditTime: 2024-03-06 17:53:14
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -19,7 +19,7 @@ interface UserState {
     lessonData: Record<string,any>;
     attendanceData:Record<string,any>;
     loading:boolean;
-    collapseActiveIndex:string|number;
+    collapseActiveIndex:string[];
 }
 const useUser = useUserStore();
 
@@ -38,7 +38,7 @@ export const useLessonStore = defineStore({
         lessonData:{},
         attendanceData:{},
         loading:false,
-        collapseActiveIndex:''
+        collapseActiveIndex:['0']
     }),
     getters: {
         getTourContent:(state)=>{
@@ -97,7 +97,7 @@ export const useLessonStore = defineStore({
                 const {success,message='请稍后再试',...courseData}= await courseContentApi(params);
                 if(success){
                     this.lessonData=courseData;
-                    this.collapseActiveIndex=String(courseData.activityIndex);
+                    this.collapseActiveIndex=[String(courseData.activityIndex)];
                 }else {
                     Toast(message);
                 }

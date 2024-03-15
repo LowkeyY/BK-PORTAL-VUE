@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 16:51:24
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-12 13:25:55
+ * @LastEditTime: 2024-03-07 16:12:05
  * @FilePath: \BK-Portal-VUE\src\enums\baseUrlEnums.ts
  * @Description: 定义BaseURL常量
  */
@@ -14,7 +14,7 @@ export enum prodBaseUrlEnums {
     // 公司接口
     CUNOVS_SERVER='http://elearningapp.bjou.edu.cn:8080',
     // 学习平台 （学伴科技）
-    MOODLE_SERVER='http://elearning.bjou.edu.cn',
+    MOODLE_SERVER='https://elearning.bjou.edu.cn',
     // APP管理平台 （本公司）
     MANAGE_SERVER='http://elearningapp.bjou.edu.cn:9200',
     // 统一认证 （世纪金正）
@@ -30,7 +30,7 @@ export enum devBaseUrlEnums {
       // 公司接口
       CUNOVS_SERVER='http://elearningapp.bjou.edu.cn:8080',
       // 学习平台 （学伴科技）
-      MOODLE_SERVER='http://elearning.bjou.edu.cn',
+      MOODLE_SERVER='https://elearning.bjou.edu.cn',
       // APP管理平台 （本公司）
       MANAGE_SERVER='http://elearningapp.bjou.edu.cn:9200',
       // 统一认证 （世纪金正）

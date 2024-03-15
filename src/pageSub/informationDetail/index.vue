@@ -9,7 +9,7 @@ import useFiles from '@/hooks/useFiles';
 
 const {openFile} = useFiles();
 const loading=ref(false);
-const curInformation = ref({});
+const curInformation = ref<Record<string,any>>({});
 const curInformationId = ref({});
 const dynamicFontSize = ref(''); // 初始动态字体大小
 const parseRichText=(html:string)=> {
@@ -30,7 +30,7 @@ const handelCollection =async () => {
     }
 };
 
-const handleDownload:void = (file,index)=>{
+const handleDownload = (file:Record<string,any>):void=>{
     const {fileId,fileName,groupId} = file;
     const fileParams = {
         fileUrl:curInformation.value.informationType === 1 ?`${portalEnclosureDownload}?fileId=${fileId}`: `${portalFileDownload}/${groupId}`,
@@ -71,9 +71,11 @@ onLoad(async option => {
             <view class="information-detail outer-box" :style="{ '--font-size': dynamicFontSize }">
                 <rich-text :nodes="curInformation.informationDetail?parseRichText(curInformation.informationDetail):null"></rich-text>
             </view>
-            <view v-if="curInformation.fileList?.length>0">
-                <files-content :file-list="curInformation.fileList" @handle-download="handleDownload" />
-            </view>
+            <files-content
+                :file-list="curInformation.fileList" :property-value="{ fileName:'fileName',
+                                                                        fileSize:'fileSize',
+                                                                        fileTime:'uploadTime'}" @handle-download="handleDownload"
+            />
         </view>
     </view>
 </template>

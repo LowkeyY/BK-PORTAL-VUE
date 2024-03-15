@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:48:45
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 16:55:51
+ * @LastEditTime: 2024-03-06 17:54:23
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\LessonContent.vue
  * @Description:
 -->
@@ -10,7 +10,7 @@
 
 <template>
     <pull-refresh-list type="content" show-skeleton :loading="useLesson.loading" :has-more="false" :is-refresh="isRefresh" @on-refresh="refresh">
-        <uni-collapse v-model="useLesson.collapseActiveIndex" accordion @change="change">
+        <uni-collapse v-model="useLesson.collapseActiveIndex" @change="change">
             <uni-collapse-item v-for="(item,index) in resources" :key="item.id" :show-animation="true" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
                 <view class="content">
                     <view v-if="item.summary!==''" class="html">
@@ -29,12 +29,12 @@
 
 import {useLessonStore} from '@/store/modules/lesson';
 import ResourceList from './ResourceList.vue';
-import {isEmpty} from '@/utils/is';
+
 const useLesson = useLessonStore();
 const lessonData = computed(()=>useLesson.lessonData);
 const resources = computed(()=>useLesson.getLessonResource);
 
-const change = (val:string)=>{
+const change = (val:string[])=>{
     useLesson.collapseActiveIndex=val;
 };
 
