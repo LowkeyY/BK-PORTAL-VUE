@@ -15,6 +15,7 @@ declare module 'vue' {
     BasicInput: typeof import('./src/components/BasicInput/index.vue')['default']
     ComProgressBar: typeof import('./src/components/ComProgressBar/index.vue')['default']
     ComSkeleton: typeof import('./src/components/ComSkeleton/index.vue')['default']
+    DrawPage: typeof import('./src/components/DrawPage/DrawPage.vue')['default']
     Eidtor: typeof import('./src/components/Editor/Eidtor.vue')['default']
     Empty: typeof import('./src/components/Empty/Empty.vue')['default']
     ExpandContent: typeof import('./src/components/ExpandContent/ExpandContent.vue')['default']

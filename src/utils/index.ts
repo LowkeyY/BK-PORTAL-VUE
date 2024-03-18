@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-13 17:07:31
+ * @LastEditTime: 2024-03-18 15:12:47
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -513,4 +513,19 @@ export const isToday = (date:number):boolean => {
         return false;
     }
     return false;
+};
+
+/**
+ * @description: 根据ID查询课程名称
+ * @param {any} course
+ * @param {string} id
+ * @return {*}
+ */
+export const  findNameByCourses = (course:any[], id:string) => {
+    let name = '';
+    if (id && course.length) {
+        const selectedCourse:any = course.filter((c:any) => c.id === id);
+        name = selectedCourse.length ? (selectedCourse[0] || {}).fullname : '';
+    }
+    return name || '';
 };

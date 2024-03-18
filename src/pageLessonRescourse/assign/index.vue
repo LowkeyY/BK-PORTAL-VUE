@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 17:46:49
+ * @LastEditTime: 2024-03-18 12:27:15
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
@@ -15,6 +15,7 @@
             <view class="content">
                 <view class="title">{{ assignData.assignmentsName }}</view>
                 <!-- <view class="course-name">{{ assignData.coursesName }}</view> -->
+                <uni-notice-bar v-if="assignData._useScriptFunc&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
                 <expand-content max-height="400rpx">
                     <render-html :html="assignData.intro" />
                 </expand-content>
@@ -35,7 +36,7 @@
                     <view class="actions">
                         <button v-if="assignData.canedit" type="primary" @click="handleGoSubmitAssign">{{ assignData.submitStatus === 'new' ? '提交作业' : '编辑提交的作业' }}</button>
                         <view v-if="assignData.cansubmit" class="submit">
-                            <button type="warn" @click="handleGoSubmitAssign">提交作业</button>
+                            <button :loading="useAssign.submitLoading" type="warn" @click="handleSubmitAssign">提交作业</button>
                             <view class="tips">*本作业一旦提交，您将不能再作任何修改。</view>
                         </view>
                     </view>
@@ -93,11 +94,14 @@ import UsabilityInfo from './components/UsabilityInfo.vue';
 import { useUserStore } from '@/store/modules/user';
 import { useAssignStore } from '@/store/modules/assign';
 import { useSetLog } from '@/hooks/useSetLog';
+import { useAppStore } from '@/store/app';
 import {handleJumpToPage} from '@/utils/handle';
 import {getCurPageParam,getImages,getCommonDate} from '@/utils';
 import { isEmpty,isUsefulPic } from '@/utils/is';
+import {prettifyModal} from '@/utils/uniapi/prompt';
 
 const useUser = useUserStore();
+const useApp = useAppStore();
 const useAssign = useAssignStore();
 const { setLog } = useSetLog();
 const { getResourceType,handlerTagAHrefParseParam } = useLessonResource();
@@ -119,9 +123,10 @@ const handleDownload = (file:Record<string,any>):void=>{
     };
     handlerTagAHrefParseParam(fileParams);
 };
-const refresh = (params)=>{
+const queryAssign = (params:AssignParams)=>{
     useAssign.queryAssign(params);
 };
+
 const handleGoSubmitAssign = () =>{
     const pageParams = getCurPageParam();
     const {courseid,instance} = pageParams;
@@ -134,36 +139,65 @@ const handleGoSubmitAssign = () =>{
     handleJumpToPage('assignSubmit',params);
 };
 
+const handleDoSubmit = () =>{
+    const pageParams = getCurPageParam();
+    const {instance} = pageParams;
+    const params = {
+        assignmentid:instance
+    };
+    useAssign.submitAssign(params,()=>queryAssign(queryParams.value as AssignParams));
+};
 
+const handleSubmitAssign = ()=>{
+    prettifyModal({
+        title:'确定提交？',
+        content:'本作业一旦提交，您将不能再作任何修改!',
+        type:'warn',
+        onConfirm:handleDoSubmit
+    });
+};
 
 onPullDownRefresh(()=>{
     if(!isEmpty(queryParams.value)){
-        refresh(queryParams.value);
+        queryAssign(queryParams.value);
     }
 });
 
 onShow(async ()=>{
+    const pageParams = getCurPageParam();
+    const { courseid,modname,instance,cmid} = pageParams;
+    const userid = useUser.moodleUserId;
+    navTitle.value= getResourceType(modname);
+    const assignParams = {
+        cmid,userid,courseid,ssignId:instance // ssignId 没错，后台漏写a
+    };
+    queryParams.value = assignParams;
     setTimeout(()=>{
-        refresh(queryParams.value);
-    },0);
-});
-onLoad(async (options) => {
-    if (options) {
-        const { courseid,modname,instance,cmid} = options;
-        const userid = useUser.moodleUserId;
-        navTitle.value= getResourceType(modname);
-        const assignParams = {
-            cmid,userid,courseid,ssignId:instance
-        };
-        queryParams.value = assignParams;
-        refresh(assignParams);
+        queryAssign(queryParams.value as AssignParams);
         setLog({
             cmid,
             modname,
             courseid
         });
-    }
+    },0);
 });
+// onLoad(async (options) => {
+// if (options) {
+// const { courseid,modname,instance,cmid} = options;
+// const userid = useUser.moodleUserId;
+// navTitle.value= getResourceType(modname);
+// const assignParams = {
+//     cmid,userid,courseid,ssignId:instance
+// };
+// queryParams.value = assignParams;
+// queryAssign(assignParams);
+// setLog({
+//     cmid,
+//     modname,
+//     courseid
+// });
+// }
+// });
 </script>
 <style lang="scss" scoped>
 .content {

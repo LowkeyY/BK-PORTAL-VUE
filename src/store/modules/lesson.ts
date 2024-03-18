@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-06 17:53:14
+ * @LastEditTime: 2024-03-18 15:13:36
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -14,6 +14,7 @@ import {attendanceCourseApi, attendanceRefreshApi, courseContentApi, durationCou
 import {useSystem} from '@/hooks/app/useSystem';
 import { Toast } from '@/utils/uniapi/prompt';
 import { isEmpty } from '@/utils/is';
+import {findNameByCourses} from '@/utils';
 
 interface UserState {
     lessonData: Record<string,any>;
@@ -24,14 +25,6 @@ interface UserState {
 const useUser = useUserStore();
 
 
-const  findNameByCourses = (course:any[], id:string) => {
-    let name = '';
-    if (id && course.length) {
-        const selectedCourse:any = course.filter((c:any) => c.id === id);
-        name = selectedCourse.length ? (selectedCourse[0] || {}).fullname : '';
-    }
-    return name || '';
-};
 export const useLessonStore = defineStore({
     id: 'lesson',
     state: (): UserState => ({

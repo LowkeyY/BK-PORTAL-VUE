@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-07 12:51:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-13 18:05:29
+ * @LastEditTime: 2024-03-18 18:06:11
  * @FilePath: \BK-Portal-VUE\src\pages\index\components\StudentTaskList.vue
  * @Description: 
 -->
@@ -43,7 +43,7 @@ defineProps({
 
 <style scoped lang="scss">
 .content {
-  padding: $uni-container-padding;
+  padding: $uni-container-padding $uni-container-padding 0;
 }
 .content-item {
   border-radius: $uni-border-radius-lg;

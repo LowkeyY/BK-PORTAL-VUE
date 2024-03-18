@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-29 11:15:58
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-04 14:56:25
+ * @LastEditTime: 2024-03-18 17:55:09
  * @FilePath: \BK-Portal-VUE\src\components\ExpandContent\ExpandContent.vue
  * @Description: 
 -->
@@ -68,6 +68,11 @@ const calculateHeight = ():void => {
     });
 };
 
+onUpdated(()=>{
+    nextTick(()=>{
+        calculateHeight();
+    });
+});
 onMounted(()=>{
     nextTick(()=>{
         calculateHeight();

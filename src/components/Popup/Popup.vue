@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-14 17:16:05
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 15:27:35
+ * @LastEditTime: 2024-03-18 12:03:19
  * @FilePath: \BK-Portal-VUE\src\components\Popup\Popup.vue
  * @Description: Popup
 -->
@@ -19,7 +19,7 @@
             <!-- 提示窗示例 -->
             <uni-popup ref="alertDialog" type="dialog">
                 <uni-popup-dialog
-                    type="info" :cancel-text="cancelText" :confirm-text="confirmText" :title="title" :content="content" @confirm="dialogConfirm"
+                    :type="type" :confirm-text="confirmText" :title="title" :content="content" @confirm="dialogConfirm"
                     @close="dialogClose"
                 ></uni-popup-dialog>
             </uni-popup>
@@ -52,6 +52,10 @@ const props = defineProps({
     onConfirm:{
         type: Function,
         default: ()=>{}
+    },
+    type:{
+        type: String,
+        default: 'info'
     }
 });
 

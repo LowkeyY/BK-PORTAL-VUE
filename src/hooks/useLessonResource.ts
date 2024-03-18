@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 14:26:07
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-05 14:55:29
+ * @LastEditTime: 2024-03-18 18:02:09
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
  * @Description: 
  */
@@ -113,14 +113,12 @@ export default function useLessonResource() {
               
             case 'svp':
             case 'superclass':
-               
+                changeRouter('superClass',defaultParams);
                 break;
             case 'resource':
                 if (Object.keys(contents[0]).length > 0) {
                     // 不需要请求源文件，下载文件
                     const {fileurl='', filesize= 0} = contents[0];
-                    console.log(`${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`);
- 
                     openFile({
                         fileSize:filesize,
                         fileUrl: `${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`

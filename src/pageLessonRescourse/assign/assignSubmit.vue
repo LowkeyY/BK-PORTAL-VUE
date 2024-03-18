@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-06 10:54:49
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 17:10:20
+ * @LastEditTime: 2024-03-18 12:00:19
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\assignSubmit.vue
  * @Description: 
 -->
@@ -25,7 +25,7 @@
             </uni-section>
         </view>
         <view class="btn">
-            <button :loading="useAssign.saveLoading" type="primary" @click="onConfirmSubmit">保存更改</button>
+            <button :loading="useAssign.saveLoading" type="primary" @click="onConfirmSave">保存更改</button>
         </view>
     </app-provider>
 </template>
@@ -33,8 +33,8 @@
 import useUploadFiles from '@/hooks/useUploadFiles';
 import { useAssignStore } from '@/store/modules/assign';
 import {getCurPageParam} from '@/utils';
+import {prettifyModal} from '@/utils/uniapi/prompt';
 
-const _this = getCurrentInstance();
 const useAssign = useAssignStore();
 const router = useRouter();
 // eslint-disable-next-line no-empty-pattern
@@ -101,7 +101,7 @@ const doSubmitAfterUpload = (response:any[])=>{
 };
 const {doUpload} = useUploadFiles({successCallback:doSubmitAfterUpload});
 
-const onSubmit =():void=>{
+const onSave =():void=>{
     const uploadFiles = fileRef.value?.uploadFiles;
    
     if(uploadFiles?.length){
@@ -122,11 +122,11 @@ const onSubmit =():void=>{
       
     }
 };
-const onConfirmSubmit = ()=>{
-    _this.appContext.config.globalProperties.$showPopup({
+const onConfirmSave = ()=>{
+    prettifyModal({
         title:'保存更改',
         content:'确定保存本次更改？',
-        onConfirm:onSubmit
+        onConfirm:onSave
     });
 };
 </script>

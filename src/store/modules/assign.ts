@@ -3,13 +3,13 @@
  * @Author: Lowkey
  * @Date: 2024-03-06 12:23:04
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 17:09:18
+ * @LastEditTime: 2024-03-18 13:24:24
  * @FilePath: \BK-Portal-VUE\src\store\modules\assign.ts
  * @Description: 
  */
 import {defineStore} from 'pinia';
 import {Toast} from '@/utils/uniapi/prompt';
-import {queryAssignApi,queryAssignCommentsApi,saveAssignApi} from '@/services/resources';
+import {queryAssignApi,queryAssignCommentsApi,saveAssignApi,submitAssignApi} from '@/services/assign';
 import {ErrorPrompt} from '@/enums/appEnum';
 import {isArray} from '@/utils/is';
 
@@ -18,6 +18,7 @@ interface UserState {
     loading:boolean;
     saveLoading:boolean;
     comments:any[];
+    submitLoading:boolean
 }
 
 export const useAssignStore = defineStore({
@@ -26,7 +27,8 @@ export const useAssignStore = defineStore({
         assignData:{},
         loading:false,
         saveLoading:false,
-        comments:[]
+        comments:[],
+        submitLoading:false
     }),
     getters: {
         /**
@@ -85,7 +87,7 @@ export const useAssignStore = defineStore({
                 throw err;
             }
         },
-        async saveAssign(assignParams:saveAssignParams,callback:any): Promise<any> {
+        async saveAssign(assignParams:saveAssignParams,callback:Function): Promise<any> {
            
             try{
                 this.saveLoading= true;
@@ -96,12 +98,35 @@ export const useAssignStore = defineStore({
                     Toast('保存成功');
                 }else{
                     // 复现错误：文本、文件都不传
-                    // Toast(`保存失败-${data.data[0].item}`);
+                    if(isArray(data.data)){
+                        Toast(`保存失败-${data.data[0].item}`);
+                    }
+                   
                 }
             }catch(err){
                 throw err;
             }finally{   
                 this.saveLoading= false;
+            }
+        },
+        async submitAssign(submitParams:submitAssignParams,callback:Function): Promise<any> {
+           
+            try{
+                this.submitLoading= true;
+                const {success, message = '请稍后再试', modalAlert = false} = await submitAssignApi(submitParams);
+                // 后台返回结果未优化 配合request如此判断
+                if(success){
+                  
+                    Toast('作业提交成功！');
+                    callback&&callback();
+                }else{
+                    // 复现错误：文本、文件都不传
+                    // Toast(`保存失败-${data.data[0].item}`);
+                }
+            }catch(err){
+                throw err;
+            }finally{   
+                this.submitLoading= false;
             }
         },
     }

@@ -290,7 +290,8 @@
                     "name": "page",
                     "path": "page/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -301,7 +302,8 @@
                     "name": "forum",
                     "path": "forum/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -312,7 +314,8 @@
                     "name": "quiz",
                     "path": "quiz/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -346,7 +349,8 @@
                     "name": "superClass",
                     "path": "superClass/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -357,7 +361,8 @@
                     "name": "feedback",
                     "path": "feedback/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -368,7 +373,8 @@
                     "name": "choice",
                     "path": "choice/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -379,7 +385,8 @@
                     "name": "folder",
                     "path": "folder/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -390,7 +397,8 @@
                     "name": "courseware",
                     "path": "courseware/index",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,

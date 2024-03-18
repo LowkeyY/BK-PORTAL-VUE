@@ -1,8 +1,10 @@
+
 /**
  * 交互反馈
  * https://uniapp.dcloud.io/api/ui/prompt.html
  */
-
+import { createApp } from '@/main';
+const {app} = createApp();
 /**
  * 显示消息提示框
  * @param title
@@ -82,5 +84,28 @@ export function ActionSheet(options: UniApp.ShowActionSheetOptions) {
                 reject(res);
             },
         });
+    });
+}
+
+/**
+ * @description: 自定义MOdal
+ * @param {string} title
+ * @param {string} content
+ * @param {Function} onConfirm
+ * @return {*}
+ */
+interface typeOptions{
+    title?:string
+    content?:string
+    type?:string
+    onConfirm?:Function
+}
+export function  prettifyModal(options:typeOptions){
+    const {title,content,type,onConfirm} = options;
+    app._context.config.globalProperties.$showPopup({
+        title,
+        content,
+        type,
+        onConfirm
     });
 }

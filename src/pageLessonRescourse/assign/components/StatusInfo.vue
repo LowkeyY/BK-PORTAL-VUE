@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-05 14:06:43
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-08 12:01:54
+ * @LastEditTime: 2024-03-18 12:34:54
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\components\StatusInfo.vue
  * @Description: 
 -->
@@ -10,21 +10,21 @@
     <view class="contaner">
         <uni-section title="提交状态" type="line" style="background-color: transparent;">
             <template #right>
-                <uni-tag style="margin-right: 8rpx;" :text="getSubmitStatus(submitStatus).text" :type="getSubmitStatus(submitStatus).type" size="small" />
-                <uni-tag :text="getGradeStatus(gradingstatus).text" :type="getGradeStatus(gradingstatus).type" size="small" />
+                <uni-tag style="margin-right: 8rpx;" :text="getSubmitStatus(data.submitStatus).text" :type="getSubmitStatus(data.submitStatus).type" size="small" />
+                <uni-tag :text="getGradeStatus(data.gradingstatus).text" :type="getGradeStatus(data.gradingstatus).type" size="small" />
             </template>
         </uni-section>
     </view>
 </template>
 
 <script setup name="StatusInfo" lang="ts">
-const props = defineProps({
+defineProps({
     data: {
         type: Object,
         default: ()=>{}
     }
 });
-const { submitStatus, gradingstatus } = toRefs(props.data);
+
 
 const  getSubmitStatus = (status:string):Record<string,any> => {
     const res = {
