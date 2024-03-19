@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 12:27:15
+ * @LastEditTime: 2024-03-19 14:23:16
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
@@ -17,7 +17,7 @@
                 <!-- <view class="course-name">{{ assignData.coursesName }}</view> -->
                 <uni-notice-bar v-if="assignData._useScriptFunc&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
                 <expand-content max-height="400rpx">
-                    <render-html :html="assignData.intro" />
+                    <render-html :html="assignData.intro" :courseid="queryParams?.courseid" />
                 </expand-content>
                 <files-content :show-title="false" :file-list="assignData.introattachments" @handle-download="handleDownload" />
                
@@ -109,11 +109,13 @@ const navTitle = ref('');
 const assignData = computed(()=>useAssign.assignData);
 const gradeData = computed(()=>useAssign.assignData.grade||{});
 const comments =  computed(()=>useAssign.comments);
-const queryParams=ref({});
+const queryParams=ref<pageParams>();
 const currentTab = ref(0);
 const handleRightClick = ()=>{
     console.log(23);
 };
+
+
 const handleDownload = (file:Record<string,any>):void=>{
     const {fileurl,filesize} = file;
     const fileParams = {

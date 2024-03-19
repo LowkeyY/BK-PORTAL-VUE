@@ -2,20 +2,18 @@
  * @Author: Lowkey
  * @Date: 2024-03-14 17:16:05
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 12:03:19
+ * @LastEditTime: 2024-03-19 13:20:33
  * @FilePath: \BK-Portal-VUE\src\components\Popup\Popup.vue
  * @Description: Popup
 -->
 <template>
     <view>
-        <!-- <view>
-           
-            <uni-popup ref="messageRef" type="message">
-                <uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message>
+        <view v-if="modalType==='message'">
+            <uni-popup ref="messageRef" type="message" @change="change">
+                <uni-popup-message :type="type" :message="content"></uni-popup-message>
             </uni-popup>
-        </view> -->
-
-        <view>
+        </view>
+        <view v-else>
             <!-- 提示窗示例 -->
             <uni-popup ref="alertDialog" type="dialog">
                 <uni-popup-dialog
@@ -56,11 +54,20 @@ const props = defineProps({
     type:{
         type: String,
         default: 'info'
+    },
+    modalType:{
+        type: String,
+        default: 'dialog'
     }
 });
 
 const alertDialog = ref();
-
+const messageRef =ref();
+const change= (e:Record<string,any>)=>{
+    if(!e.show){
+        removePopupDom();
+    }
+};
 /**
  * @description: 删除dom节点
  * @return {*}
@@ -78,7 +85,12 @@ const dialogClose = ()=>{
 };
 
 const showPopup = () =>{
-    alertDialog.value.open();
+    if(props.modalType==='dialog'){
+        alertDialog.value.open();
+    }else{
+        messageRef.value.open();
+    }
+   
 };
 onMounted(()=>{
     showPopup();

@@ -2,54 +2,51 @@
  * @Author: Lowkey
  * @Date: 2024-02-05 17:13:36
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 17:52:21
+ * @LastEditTime: 2024-03-19 14:39:18
  * @FilePath: \BK-Portal-VUE\src\components\RenderHtml\RenderHtml.vue
  * @Description: 
 -->
 
 
 <template>
-    <view class="content" @click="handleClick">
-        <mp-html :content="html" :tag-style="tagStyle" :scroll-table="true" :preview-img="false" @linktap="handleClick" @imgtap="handleClick" />
+    <view class="content">
+        <!-- <rich-text :nodes="parseHtml(html)" @itemclick="handleClick" /> -->
+        <mp-html
+            :content="html" :tag-style="style" :scroll-table="true" :preview-img="false" 
+            @linktap="(params:Record<string,any>)=>handlerLinkClick(params,courseid)"
+            @imgtap="(params:Record<string,any>)=>handlerLinkClick(params,courseid)"
+        />
     </view>
 </template>
 <script lang="ts" setup name="RenderHtml">
 // import parseHtml from '@/utils/html-parser.js';
+import useLessonResource from '@/hooks/useLessonResource';
 import mpHtml from 'mp-html/dist/uni-app/components/mp-html/mp-html';
-defineProps({
+import {defaultHtmlStyles} from '@/utils/constants';
+const props = defineProps({
     html: {
         type: [String,Object],
         default: ''
     },
+    courseid:{
+        type: String,
+        default: '' 
+    },
+    tagStyle:{
+        type: Object,
+        default: ()=>{}
+    }
 });
-const tagStyle = {
-    h1:'margin: 0.1em 0 !important; font-size: 36rpx;',
-    h2:'margin: 0.1em 0 !important; font-size: 34rpx;',
-    h3:'margin: 0.1em 0 !important; font-size: 32rpx;',
-    h4:'margin: 0.1em 0 !important; font-size: 30rpx;',
-    h5:'margin: 0.1em 0 !important; font-size: 28rpx;',
-    h6:'margin: 0.1em 0 !important; font-size: 26rpx;',
-    span:'font-size:26rpx',
-    strong:'font-size: 28rpx !important;',
-    p:'font-size: 26rpx;',
-    a:'font-size: 26rpx;',
-    div:'max-width: 100% !important;padding-left: 0 !important; margin-left: 0 !important;',
-    ul:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',
-    ol:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',
-    li:'padding: 0;font-size:26rpx;',
-    img:'max-width: 100% !important; max-height: 100% !important;height: auto !important;',
-    table:'height:auto !important;'
-  
+const { handlerLinkClick } = useLessonResource();
+
+const style = {
+    ...defaultHtmlStyles,
+    ...props.tagStyle
 };
-const emit = defineEmits(['handle-click']);
-const handleClick = (e:MouseEvent) =>{
-    console.log(e);
-    emit('handle-click',e);
-};
+
 </script>
 <style lang="scss" scoped>
 .content {
-  margin: 20rpx;
   overflow: hidden;
   font-size: $uni-font-size-lg;
   line-height: 1.8;

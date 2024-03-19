@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 16:32:21
+ * @LastEditTime: 2024-03-19 14:37:35
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\page\index.vue
  * @Description: 
 -->
@@ -15,7 +15,7 @@
         <ComSkeleton type="text" :loading="loading">
             <view class="content">
                 <view class="title">{{ pageData.name }}</view>
-                <render-html :html="pageData.content" @handle-click="hanldTargetClick" />
+                <render-html :html="pageData.content" :courseid="queryParams?.courseid" />
             </view>
         </ComSkeleton>
     </app-provider>
@@ -30,21 +30,20 @@ import {useSystem} from '@/hooks/app/useSystem';
 import { findNameByCourses } from '@/utils';
 import {isEmpty} from  '@/utils/is';
 
+
 const { getResourceType } = useLessonResource();
 const useUser = useUserStore();
 const useApp = useAppStore();
 const { setLog,setAccessTime} = useSetLog();
 const navTitle = ref('');
-const queryParams = ref({});
+const queryParams = ref<pageParams>();
 const pageData = ref<Record<string,any>>({});
 const startTime =ref();
 const loading = ref<boolean>(false);
 const handleRightClick = ()=>{
     console.log(23);
 };
-const hanldTargetClick=(e:MouseEvent)=>{
-    
-};
+
 const query =async (params:pageParams)=>{
     loading.value = true;
  

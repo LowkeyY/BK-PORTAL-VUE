@@ -98,14 +98,16 @@ interface typeOptions{
     title?:string
     content?:string
     type?:string
+    modalType?:string,
     onConfirm?:Function
 }
 export function  prettifyModal(options:typeOptions){
-    const {title,content,type,onConfirm} = options;
+    const {title,content,type,modalType,onConfirm} = options;
     app._context.config.globalProperties.$showPopup({
         title,
         content,
         type,
-        onConfirm
+        onConfirm,
+        modalType
     });
 }

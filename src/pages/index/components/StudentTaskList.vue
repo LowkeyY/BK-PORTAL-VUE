@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-07 12:51:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 18:06:11
+ * @LastEditTime: 2024-03-19 14:52:20
  * @FilePath: \BK-Portal-VUE\src\pages\index\components\StudentTaskList.vue
  * @Description: 
 -->
@@ -21,7 +21,7 @@
                     <view>{{ item.name }}</view>
                 </view>
                 <view v-if="item.availabilityinfo" class="availabilityinfo">
-                    <rich-text :nodes="item.availabilityinfo" space />
+                    <render-html :html="item.availabilityinfo" :courseid="item.courseid" :tag-style="availabilityinfoHtmlStyles" />
                 </view>
             </view>
         </view>
@@ -29,8 +29,10 @@
 </template>
 
 <script setup name="StudentTaskList">
-import { getTaskIcon,isToday,changeLessonDate } from '@/utils';
 import useLessonResource from '@/hooks/useLessonResource';
+import { getTaskIcon,isToday,changeLessonDate } from '@/utils';
+import {availabilityinfoHtmlStyles} from '@/utils/constants';
+
 const { handleResourceClick } = useLessonResource();
 defineProps({
     list: {

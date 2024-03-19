@@ -3,10 +3,12 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-14 13:12:48
+ * @LastEditTime: 2024-03-19 14:43:00
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
+
+import exp from 'constants';
 
 
 export const oauthUrl:Record<string,any> = {
@@ -302,4 +304,37 @@ export const allowFileTypes:Record<string,any>={
         name:'HTML 跟踪文件',
         value:['.vtt']
     }
+};
+
+export const defaultHtmlStyles = {
+    h1:'margin: 0.1em 0 !important; font-size: 36rpx;',
+    h2:'margin: 0.1em 0 !important; font-size: 34rpx;',
+    h3:'margin: 0.1em 0 !important; font-size: 32rpx;',
+    h4:'margin: 0.1em 0 !important; font-size: 30rpx;',
+    h5:'margin: 0.1em 0 !important; font-size: 28rpx;',
+    h6:'margin: 0.1em 0 !important; font-size: 26rpx;',
+    span:'font-size:26rpx',
+    strong:'font-size: 28rpx !important;',
+    p:'font-size: 26rpx;',
+    a:'font-size: 26rpx;',
+    div:'max-width: 100% !important;padding-left: 0 !important; margin-left: 0 !important;',
+    ul:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',
+    ol:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',
+    li:'padding: 0;font-size:26rpx;',
+    img:'max-width: 100% !important; max-height: 100% !important;height: auto !important;',
+    table:'height:auto !important;',
+};
+
+export const availabilityinfoHtmlStyles = {
+    h1:'margin: 0; font-size: 24rpx;',
+    h2:'margin: 0; font-size: 24rpx;',
+    h3:'margin: 0; font-size: 24rpx;',
+    h4:'margin: 0; font-size: 24rpx;',
+    h5:'margin: 0; font-size: 24rpx;',
+    h6:'margin: 0; font-size: 24rpx;',
+    span:'font-size:24rpx',
+    strong:'font-size: 24rpx !important;',
+    p:'margin: 0;font-size: 24rpx;',
+    a:'font-size: 24rpx;',
+    ul:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 24rpx;',
 };

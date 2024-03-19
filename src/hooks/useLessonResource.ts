@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 14:26:07
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 18:02:09
+ * @LastEditTime: 2024-03-19 14:32:57
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
  * @Description: 
  */
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import { router } from '@/router';
-import {Modal,Toast,Loading,HideLoading} from '@/utils/uniapi/prompt';
+import {Modal,Toast,Loading,HideLoading,prettifyModal} from '@/utils/uniapi/prompt';
 import {resourceType} from '@/utils/constants';
 import storage from '@/utils/storage';
 import { StorageEnum } from '@/enums/storageEnum';
@@ -118,6 +118,7 @@ export default function useLessonResource() {
             case 'resource':
                 if (Object.keys(contents[0]).length > 0) {
                     // 不需要请求源文件，下载文件
+                   
                     const {fileurl='', filesize= 0} = contents[0];
                     openFile({
                         fileSize:filesize,
@@ -167,13 +168,14 @@ export default function useLessonResource() {
   
     const handlerTagAHrefParseParam = (params:any, courseid?:string|number) => {
         const { modname = '' } = params;
+
         if (modname !== '') {
             let targetParams = '';
             if (modname === 'resource') {
                 const {
                     fileurl = '', filesize=0, href = '', id = '', ...otherParams
                 } = params;
-                if (id === '' && (fileurl !== '')) {
+                if (id === '' && (fileurl !== '' || href !== '')) {
                     targetParams = {
                         contents: [{
                             fileurl: fileurl || href,
@@ -188,9 +190,32 @@ export default function useLessonResource() {
             Toast('需要查看的标签类型不能为空。');
         }
     };
+    /**
+     * @description: html 中A标签事件 Attribute 包含 exec_script_func 的标签不能解析，rich-text 事件只有A标签 和img标签
+     * @return {*}
+     */    
+    const handlerLinkClick = (targetParams:Record<string,any>,courseid:string) =>{
+        let notHasError = false;
+        const {hrefparam} = targetParams;
+        if(hrefparam){
+            const params = JSON.parse(hrefparam);
+            const { href = '' } = params;
+            if ((notHasError = (href && courseid)) !== '') {
+                handlerTagAHrefParseParam(params, courseid);
+            }
+            if (!!hrefparam && !notHasError) {
+                prettifyModal({
+                    modalType:'message',
+                    type:'error',
+                    content:'无法显示此资源, 请使用网页版学习平台查看此资源!'
+                });
+            }
+        }
+    };
     return {
         getResourceType,
         handleResourceClick,
-        handlerTagAHrefParseParam
+        handlerTagAHrefParseParam,
+        handlerLinkClick
     };
 }
