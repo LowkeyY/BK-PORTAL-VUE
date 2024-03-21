@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 16:51:24
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-07 16:12:05
+ * @LastEditTime: 2024-03-19 17:29:28
  * @FilePath: \BK-Portal-VUE\src\enums\baseUrlEnums.ts
  * @Description: 定义BaseURL常量
  */
@@ -20,7 +20,8 @@ export enum prodBaseUrlEnums {
     // 统一认证 （世纪金正）
     SSO_SERVER='https://sso.bjou.edu.cn',
     // 资源管理平台 （世纪金正）
-    RESOURE_SERVER='https://resm.bjou.edu.cn'
+    RESOURE_SERVER='https://resm.bjou.edu.cn',
+    MDLRES_SERVER=''
 }
 
 // 学校测试环境
@@ -36,7 +37,9 @@ export enum devBaseUrlEnums {
       // 统一认证 （世纪金正）
       SSO_SERVER='https://sso.bjou.edu.cn',
       // 资源管理平台 （世纪金正）
-      RESOURE_SERVER='https://resm.bjou.edu.cn'
+      RESOURE_SERVER='https://resm.bjou.edu.cn',
+    //   MDLRES_SERVER = 'http://etestapp.bjou.edu.cn:9000/cnvresm',
+      MDLRES_SERVER=''
 }
 
 

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 14:23:16
+ * @LastEditTime: 2024-03-19 16:12:14
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
@@ -109,8 +109,10 @@ const navTitle = ref('');
 const assignData = computed(()=>useAssign.assignData);
 const gradeData = computed(()=>useAssign.assignData.grade||{});
 const comments =  computed(()=>useAssign.comments);
-const queryParams=ref<pageParams>();
+const queryParams=ref<AssignParams>();
 const currentTab = ref(0);
+const pageParams = getCurPageParam();
+const { courseid,modname,instance,cmid} = pageParams;
 const handleRightClick = ()=>{
     console.log(23);
 };
@@ -130,8 +132,7 @@ const queryAssign = (params:AssignParams)=>{
 };
 
 const handleGoSubmitAssign = () =>{
-    const pageParams = getCurPageParam();
-    const {courseid,instance} = pageParams;
+
     const params = {
         courseid,
         instance,
@@ -142,8 +143,7 @@ const handleGoSubmitAssign = () =>{
 };
 
 const handleDoSubmit = () =>{
-    const pageParams = getCurPageParam();
-    const {instance} = pageParams;
+
     const params = {
         assignmentid:instance
     };
@@ -166,8 +166,7 @@ onPullDownRefresh(()=>{
 });
 
 onShow(async ()=>{
-    const pageParams = getCurPageParam();
-    const { courseid,modname,instance,cmid} = pageParams;
+   
     const userid = useUser.moodleUserId;
     navTitle.value= getResourceType(modname);
     const assignParams = {

@@ -1,4 +1,5 @@
 
+
 declare interface AssignParams {
     cmid:string|number,
     ssignId:string|number,
@@ -45,4 +46,32 @@ declare interface svpParams {
     userfullname:string,
     username:string,
     devicetype:string
+}
+
+declare interface coursewareParams {
+    coursewareID:string,
+    userID:string,
+    courseID:string,
+}
+
+declare interface addPlayInfoParams {
+    coursewareID:string,
+    sourceType:string,
+    terminal:string,
+    playStartTime:string|number,
+    courseID:string,
+    uID?:string,
+    scenarioID?:string,
+    userID:string
+}
+
+declare interface upDateFlowParams {
+    playEndTime:string|number,
+    userLearningFlowID:string,
+}
+
+declare interface mdlresStateParams {
+    cmid:string,
+    userid:string,
+    courseid:string
 }

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 17:49:53
+ * @LastEditTime: 2024-03-20 12:33:04
  * @FilePath: \BK-Portal-VUE\src\components\NavBar\NavBar.vue
  * @Description: 
 -->
@@ -19,7 +19,7 @@
         </uni-nav-bar>
         <uni-popup ref="alertDialogRef" type="dialog">
             <uni-popup-dialog
-                type="info" cancel-text="取消" confirm-text="确定" title="返回？" content="返回后不会保存当前操作!" @confirm="dialogConfirm"
+                type="warn" cancel-text="取消" confirm-text="确定" title="返回？" :content="modalContent" @confirm="dialogConfirm"
                 @close="dialogClose"
             ></uni-popup-dialog>
         </uni-popup>
@@ -48,12 +48,23 @@ const props =defineProps({
     showModal:{
         type: Boolean,
         default: false
-    }
+    },
+    modalContent:{
+        type: String,
+        default: '返回后不会保存当前操作!'
+    },
+    useLeftClick: {
+        type: Boolean,
+        default: false
+    },
 });
-const emit = defineEmits(['handle-right-click']);
+const emit = defineEmits(['handle-right-click','handle-left-click']);
 const alertDialogRef = ref(null);
 const handleLeftClick = ()=>{
-   
+    if(props.useLeftClick){
+        emit('handle-left-click');
+        return; 
+    }
     if(props.showModal){
         alertDialogRef.value.open();
         return; 

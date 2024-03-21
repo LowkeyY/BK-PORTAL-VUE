@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 18:03:45
+ * @LastEditTime: 2024-03-19 16:48:03
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\superClass\index.vue
  * @Description: 
 -->
@@ -13,8 +13,9 @@
         <nav-bar :title="navTitle" right-text="资源反馈" @handle-right-click="handleRightClick" />
         <ComSkeleton type="text" :loading="loading">
             <view class="content">
-                <view v-if="pageData.name" class="title">{{ pageData.name }}</view>
-                <render-html :html="pageData.content" />
+                <view v-if="svpData.name" class="title">{{ svpData.name }}</view>
+                <uni-notice-bar v-if="svpData._useScriptFunc&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
+                <render-html :html="svpData.content" />
             </view>
         </ComSkeleton>
     </app-provider>
@@ -28,6 +29,7 @@ import { useSetLog } from '@/hooks/useSetLog';
 import {useSystem} from '@/hooks/app/useSystem';
 import { findNameByCourses } from '@/utils';
 import {isEmpty} from  '@/utils/is';
+import {Toast} from '@/utils/uniapi/prompt';
 
 const { getResourceType } = useLessonResource();
 const useUser = useUserStore();
@@ -35,7 +37,7 @@ const useApp = useAppStore();
 const { setLog,setAccessTime} = useSetLog();
 const navTitle = ref('');
 const queryParams = ref({});
-const pageData = ref<Record<string,any>>({});
+const svpData = ref<Record<string,any>>({});
 const startTime =ref();
 const loading = ref<boolean>(false);
 const handleRightClick = ()=>{
@@ -48,7 +50,9 @@ const query =async (params:svpParams)=>{
     try {
         const data = await querySvpApi(params);
         if(data.success){
-            pageData.value= data;
+            svpData.value= data;
+        }else{
+            Toast(data.message||'获取资源失败');
         }
     // eslint-disable-next-line no-useless-catch
     } catch (error) {

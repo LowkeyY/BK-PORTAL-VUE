@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 14:37:35
+ * @LastEditTime: 2024-03-19 16:47:40
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\page\index.vue
  * @Description: 
 -->
@@ -15,6 +15,7 @@
         <ComSkeleton type="text" :loading="loading">
             <view class="content">
                 <view class="title">{{ pageData.name }}</view>
+                <uni-notice-bar v-if="pageData._useScriptFunc&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
                 <render-html :html="pageData.content" :courseid="queryParams?.courseid" />
             </view>
         </ComSkeleton>
@@ -29,6 +30,7 @@ import { useSetLog } from '@/hooks/useSetLog';
 import {useSystem} from '@/hooks/app/useSystem';
 import { findNameByCourses } from '@/utils';
 import {isEmpty} from  '@/utils/is';
+import {Toast} from '@/utils/uniapi/prompt';
 
 
 const { getResourceType } = useLessonResource();
@@ -51,6 +53,8 @@ const query =async (params:pageParams)=>{
         const data = await queryPageApi(params);
         if(data.success){
             pageData.value= data;
+        }else{
+            Toast(data.message||'获取资源失败');
         }
     // eslint-disable-next-line no-useless-catch
     } catch (error) {

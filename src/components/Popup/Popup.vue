@@ -51,6 +51,10 @@ const props = defineProps({
         type: Function,
         default: ()=>{}
     },
+    onCancel:{
+        type: Function,
+        default: ()=>{}
+    },
     type:{
         type: String,
         default: 'info'
@@ -81,6 +85,7 @@ const dialogConfirm = ()=>{
 };
 const dialogClose = ()=>{
     alertDialog.value.close();
+    props.onCancel();
     removePopupDom();
 };
 
