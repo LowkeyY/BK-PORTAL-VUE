@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-18 13:25:41
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 16:27:16
+ * @LastEditTime: 2024-03-22 11:31:51
  * @FilePath: \BK-Portal-VUE\src\services\resource.ts
  * @Description: 
  */
@@ -18,7 +18,7 @@ const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 
 const QUERY_PAGE = `${CUNOVS_SERVER}/page/${moodleToken}`; // 查询网页资源
 const QUERY_SVP = `${CUNOVS_SERVER}/svp/${moodleToken}`; // 查询SVP（super class）资源
-
+const QUERY_FOLDER = `${CUNOVS_SERVER}/folder/list/${moodleToken}`; // 查询文件资源
 /**
  * @description:查询网页资源
  * @return {*}
@@ -37,6 +37,18 @@ export function queryPageApi(data:pageParams) {
 export function querySvpApi(data:svpParams) {
     return http.request({
         url:`${QUERY_SVP}`,
+        data
+    });
+}
+
+/**
+ * @description: 查询文件资源
+ * @param {folderParams} data
+ * @return {*}
+ */
+export function queryFolderApi(data:folderParams) {
+    return http.request({
+        url:`${QUERY_FOLDER}`,
         data
     });
 }

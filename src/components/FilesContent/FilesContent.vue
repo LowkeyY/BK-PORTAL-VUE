@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-27 15:39:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 11:54:03
+ * @LastEditTime: 2024-03-22 11:43:01
  * @FilePath: \BK-Portal-VUE\src\components\FilesContent\FilesContent.vue
  * @Description: 
 -->
@@ -92,6 +92,7 @@ const downloadFile = (file)=>{
   width: 90%;
   .name {
     font-size: $uni-font-size-lg;
+    margin-bottom: 12rpx;
   }
   .info {
     display: flex;

@@ -1,5 +1,4 @@
 
-
 declare interface AssignParams {
     cmid:string|number,
     ssignId:string|number,
@@ -73,5 +72,10 @@ declare interface upDateFlowParams {
 declare interface mdlresStateParams {
     cmid:string,
     userid:string,
+    courseid:string
+}
+
+declare interface folderParams {
+    cmid:string,
     courseid:string
 }
