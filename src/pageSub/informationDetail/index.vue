@@ -1,7 +1,7 @@
 
 
 <script lang="ts" setup>
-import LoadingIcon from '@/components/LoadingIcon/index.vue';
+
 import {getInformationApi, informationCollectionApi} from '@/services/notifications';
 import {portalFileDownload,portalEnclosureDownload} from '@/services/app';
 import {getCommonDate} from '@/utils';

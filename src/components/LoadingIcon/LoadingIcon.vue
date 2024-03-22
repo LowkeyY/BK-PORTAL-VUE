@@ -1,7 +1,13 @@
+
 <template>
-    <view v-if="loading" class="loading">
-        <image style="height: 100rpx;" src="@/static/svg/loading2.svg" />
-        <text>{{ text }}</text>
+    <view>
+        <view v-if="loading&&type==='cover'" class="loading">
+            <image style="height: 100rpx;" src="@/static/svg/loading2.svg" />
+            <text>{{ text }}</text>
+        </view>
+        <view v-else>
+            <image style="height: 40rpx;" src="@/static/svg/loading2.svg" mode="heightFix" />
+        </view>
     </view>
 </template>
 
@@ -15,6 +21,10 @@ defineProps({
         type: String,
         default: '加载中...',
     },
+    type:{
+        type: String,
+        default: 'cover',
+    }
 });
 </script>
 

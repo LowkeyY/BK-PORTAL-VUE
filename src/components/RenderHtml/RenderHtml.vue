@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-05 17:13:36
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 14:39:18
+ * @LastEditTime: 2024-03-22 17:49:57
  * @FilePath: \BK-Portal-VUE\src\components\RenderHtml\RenderHtml.vue
  * @Description: 
 -->
@@ -14,7 +14,7 @@
         <mp-html
             :content="html" :tag-style="style" :scroll-table="true" :preview-img="false" 
             @linktap="(params:Record<string,any>)=>handlerLinkClick(params,courseid)"
-            @imgtap="(params:Record<string,any>)=>handlerLinkClick(params,courseid)"
+            @imgtap="(params:Record<string,any>)=>handlerImageClick(params,courseid)"
         />
     </view>
 </template>
@@ -37,12 +37,22 @@ const props = defineProps({
         default: ()=>{}
     }
 });
-const { handlerLinkClick } = useLessonResource();
-
 const style = {
     ...defaultHtmlStyles,
     ...props.tagStyle
 };
+const { handlerLinkClick } = useLessonResource();
+const handlerImageClick = (params:Record<string,any>,corseid:string) =>{
+    if(!params['video-data-url']&&!params['hrefparam']){
+        // 普通图片点击预览
+        uni.previewImage({
+            urls: [params.src] // 仅预览单张图片
+        });
+    }else{
+        handlerLinkClick(params,corseid);
+    }
+};
+
 
 </script>
 <style lang="scss" scoped>

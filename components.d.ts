@@ -23,7 +23,7 @@ declare module 'vue' {
     FilesContent: typeof import('./src/components/FilesContent/FilesContent.vue')['default']
     Iconify: typeof import('./src/components/Iconify/Iconify.vue')['default']
     Link: typeof import('./src/components/Link/Link.vue')['default']
-    LoadingIcon: typeof import('./src/components/LoadingIcon/index.vue')['default']
+    LoadingIcon: typeof import('./src/components/LoadingIcon/LoadingIcon.vue')['default']
     LogoHeader: typeof import('./src/components/LogoHeader/LogoHeader.vue')['default']
     Menu: typeof import('./src/components/Menu/Menu.vue')['default']
     NavBar: typeof import('./src/components/NavBar/NavBar.vue')['default']

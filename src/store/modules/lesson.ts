@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 15:13:36
+ * @LastEditTime: 2024-03-22 16:58:36
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -10,7 +10,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/store/modules/user';
 import { useAppStore } from '@/store/app';
-import {attendanceCourseApi, attendanceRefreshApi, courseContentApi, durationCourseApi} from '@/services/lesson';
+import {attendanceCourseApi, attendanceRefreshApi, courseContentApi,courseRefreshApi, durationCourseApi} from '@/services/lesson';
 import {useSystem} from '@/hooks/app/useSystem';
 import { Toast } from '@/utils/uniapi/prompt';
 import { isEmpty } from '@/utils/is';
@@ -21,6 +21,7 @@ interface UserState {
     attendanceData:Record<string,any>;
     loading:boolean;
     collapseActiveIndex:string[];
+    courseid:string
 }
 const useUser = useUserStore();
 
@@ -31,7 +32,8 @@ export const useLessonStore = defineStore({
         lessonData:{},
         attendanceData:{},
         loading:false,
-        collapseActiveIndex:['0']
+        collapseActiveIndex:['0'],
+        courseid:''
     }),
     getters: {
         getTourContent:(state)=>{
@@ -70,10 +72,12 @@ export const useLessonStore = defineStore({
         },
     },
     actions: {
-        async queryCourseContent(payload:Record<string,string>): Promise<any> {
+        async queryCourseContent(payload:Record<string,string>,isRefresh?:boolean): Promise<any> {
             const useUser = useUserStore();
             const useApp = useAppStore();
-            this.loading=true;
+            if(!isRefresh) {
+                this.loading=true;
+            }
             const courseData = useApp.courseData;
             const {courseid=''} = payload;
             const coursename = findNameByCourses(courseData, courseid);
@@ -87,7 +91,7 @@ export const useLessonStore = defineStore({
                 devicetype
             };
             try {
-                const {success,message='请稍后再试',...courseData}= await courseContentApi(params);
+                const {success,message='请稍后再试',...courseData}=isRefresh?await courseRefreshApi(params):  await courseContentApi(params);
                 if(success){
                     this.lessonData=courseData;
                     this.collapseActiveIndex=[String(courseData.activityIndex)];
@@ -143,6 +147,38 @@ export const useLessonStore = defineStore({
                 }
             } catch (err: any) {
                 return Promise.reject(err);
+            }
+        },
+            
+        async updateStatus(): Promise<any> {
+            if(isEmpty(this.lessonData as {})) return; // 如果是初次加载数据不请求；
+            const useUser = useUserStore();
+            const useApp = useAppStore();
+            const courseData = useApp.courseData;
+            const coursename = findNameByCourses(courseData, this.courseid);
+            const devicetype = useSystem().uniPlatform;
+            const params:CourseContentParams = {
+                courseid:this.courseid,
+                userid:useUser.moodleUserId,
+                coursename,
+                userfullname:useUser.portalUserName,
+                username:useUser.userCode,
+                devicetype
+            };
+            try {
+                const {success,message='请稍后再试',...courseData}=await courseRefreshApi(params);
+                if(success){
+                    this.lessonData={ // 视图仅更新资源
+                        ...this.lessonData,
+                        contents:courseData.contents
+                    };
+                }else {
+                    Toast(message);
+                }
+            } catch (err: any) {
+                return Promise.reject(err);
+            }finally{
+                this.loading=false;
             }
         },
     },

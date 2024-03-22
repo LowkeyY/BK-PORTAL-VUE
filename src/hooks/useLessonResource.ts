@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 14:26:07
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 14:32:57
+ * @LastEditTime: 2024-03-22 17:36:26
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
  * @Description: 
  */
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import { router } from '@/router';
-import {Modal,Toast,Loading,HideLoading,prettifyModal} from '@/utils/uniapi/prompt';
+import {Toast,Loading,HideLoading,prettifyModal} from '@/utils/uniapi/prompt';
 import {resourceType} from '@/utils/constants';
 import storage from '@/utils/storage';
 import { StorageEnum } from '@/enums/storageEnum';
@@ -20,7 +20,8 @@ const {CUNOVS_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const QUERY_URL = `${CUNOVS_SERVER}/url/${moodleToken}`; // 请求url资源
 const QUERY_RESOURCE = `${CUNOVS_SERVER}/resource/${moodleToken}`;
-const UPDATE_URL_STATE = `${CUNOVS_SERVER}/url/view/${moodleToken}`;
+const UPDATE_URL_STATE = `${CUNOVS_SERVER}/url/view/${moodleToken}`; // 更新URL资源状态
+const UPDATE_RESOURCE_STATE = `${CUNOVS_SERVER}/resource/view/${moodleToken}`; // 更新URL资源状态
 const {openFile} = useFiles();
 
 export default function useLessonResource() {
@@ -61,6 +62,10 @@ export default function useLessonResource() {
      */
     const updateUrlState = (urlid:string)=>{
         http.get(UPDATE_URL_STATE,{urlid});
+    };
+
+    const updateResourceState = (resourceid:string)=>{
+        http.get(UPDATE_RESOURCE_STATE,{resourceid});
     };
 
     /**
@@ -128,6 +133,7 @@ export default function useLessonResource() {
                     // 请求源文件
                     queryFiles(defaultParams);
                 }
+                updateResourceState(instance);
                 break;
             case 'url':
                 updateUrlState(instance);
@@ -146,21 +152,29 @@ export default function useLessonResource() {
                 break;
             case 'label':
                 if(href){
-                    Modal({
+                    // Modal({
+                    //     title:'不能查看此资源',
+                    //     content:`请先按要求完成【${name}】`,
+                    //     showCancel:false,
+                    //     confirmText:'知道了'
+                    // });
+                    prettifyModal({
                         title:'不能查看此资源',
                         content:`请先按要求完成【${name}】`,
-                        showCancel:false,
-                        confirmText:'知道了'
                     });
                 }
                 break;
             default: // 默认提示无法显示
                 if (modType !== '') {
-                    Modal({
+                    // Modal({
+                    //     title:`移动端不兼容${getResourceType(modType)}`,
+                    //     content:'请使用网页版学习平台参与此活动。',
+                    //     showCancel:false,
+                    //     confirmText:'知道了'
+                    // });
+                    prettifyModal({
                         title:`移动端不兼容${getResourceType(modType)}`,
                         content:'请使用网页版学习平台参与此活动。',
-                        showCancel:false,
-                        confirmText:'知道了'
                     });
                 }
         }

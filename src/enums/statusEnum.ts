@@ -14,8 +14,8 @@ export enum GradeEnums {
  */
 export enum ResourceTracking {
     NONE= '0', 
-    AUTO= '1', 
-    MANUAL = '2', // 需手动触发
+    MANUAL = '1', // 需手动触发
+    AUTO = '2', 
 }
 
 /**

@@ -3,12 +3,11 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 14:43:00
+ * @LastEditTime: 2024-03-22 17:32:44
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
 
-import exp from 'constants';
 
 
 export const oauthUrl:Record<string,any> = {
@@ -313,10 +312,10 @@ export const defaultHtmlStyles = {
     h4:'margin: 0.1em 0 !important; font-size: 30rpx;',
     h5:'margin: 0.1em 0 !important; font-size: 28rpx;',
     h6:'margin: 0.1em 0 !important; font-size: 26rpx;',
-    span:'font-size:26rpx',
+    span:'font-size:26rpx !important;',
     strong:'font-size: 28rpx !important;',
-    p:'font-size: 26rpx;',
-    a:'font-size: 26rpx;',
+    p:'font-size: 26rpx !important;',
+    a:'font-size: 26rpx !important;',
     div:'max-width: 100% !important;padding-left: 0 !important; margin-left: 0 !important;',
     ul:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',
     ol:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 26rpx;',

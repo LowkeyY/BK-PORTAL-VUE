@@ -1,3 +1,4 @@
+
 <template>
     <view>
         <LoadingIcon :loading="loading"></LoadingIcon>
@@ -8,7 +9,6 @@
 
 <script setup lang="ts">
 import {addContactsApi, personInfoApi} from '@/services/user';
-import LoadingIcon from '@/components/LoadingIcon/index.vue';
 import {Toast} from '@/utils/uniapi/prompt';
 
 const router=useRouter();
@@ -42,7 +42,7 @@ onLoad(async option=>{
   position: absolute;
   left: 30rpx;
   top: 30rpx;
-    z-index: 2;
+  z-index: 2;
 }
 
 </style>

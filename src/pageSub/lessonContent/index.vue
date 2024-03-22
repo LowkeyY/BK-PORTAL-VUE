@@ -1,8 +1,9 @@
+
 <!--
  * @Author: Lowkey
  * @Date: 2024-01-22 14:23:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-20 18:48:19
+ * @LastEditTime: 2024-03-22 17:03:48
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
  * @Description:
 -->
@@ -54,13 +55,14 @@
     </app-provider>
 </template>
 <script lang="ts" setup>
+
 import { useLessonStore } from '@/store/modules/lesson';
 import { useAppStore } from '@/store/app';
 import { useSetLog } from '@/hooks/useSetLog';
 import { getImages, changeLessonDate } from '@/utils';
 import TourContent from './components/TourContent.vue';
 import LessonContent from './components/LessonContent.vue';
-import AttendanceContent from './components/AttendanceContent.vue';
+// import AttendanceContent from './components/AttendanceContent.vue';
 import LiveContent from './components/LiveContent.vue';
 import LiveCourseList from './components/LiveCourseList.vue';
 import {getLiveCourseFilterList} from '@/hooks/useLiveCourse';
@@ -74,10 +76,14 @@ const useApp = useAppStore();
 const router = useRouter();
 const loading = ref(false);
 const lessonData: Record<string, any> = computed(() => useLesson.lessonData);
+
+// eslint-disable-next-line camelcase
 const day_pass = computed(() => {
     const { attendance = {} } = lessonData.value;
     const { config = {} } = attendance;
+    // eslint-disable-next-line camelcase
     const { day_pass = '0' } = config;
+    // eslint-disable-next-line camelcase
     return day_pass;
 });
 const attendanceState = computed(() => {
@@ -86,7 +92,8 @@ const attendanceState = computed(() => {
     return openState==='1'?stat:weekStat;
 });
 const current = ref(1); // 默认展示学习
-const curLiveCourses=ref([]);
+const curLiveCourses=ref<any[]>([]);
+// eslint-disable-next-line camelcase
 const showAttendance = computed(() => (lessonData.value.isAttendance && day_pass.value !== '0') || lessonData.value.attendanceType === '2');
 const ALL_TABS = [
     {
@@ -129,9 +136,13 @@ const tabsValue = computed(() => tabs.value.map((item) => item.name));
 const onClickItem = (e: Record<string, any>) => {
     currentTab.value = tabs.value[e.currentIndex];
 };
+onShow(async ()=>{
+    await useLesson.updateStatus();
+});
 onLoad(async (options) => {
     if (options) {
         const { courseid } = options;
+        useLesson.courseid=courseid;
         loading.value = true;
         await useLesson.queryCourseContent({ courseid });
         await useLiveCourse.queryLiveCourse();

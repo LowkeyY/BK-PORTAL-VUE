@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:25:09
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-14 15:07:37
+ * @LastEditTime: 2024-03-22 17:21:53
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\TourContent.vue
  * @Description:
 -->
@@ -54,9 +54,9 @@
 </template>
 <script lang="ts" setup name="LessonTour">
 import {useLessonStore} from '@/store/modules/lesson';
-import { getImages } from '@/utils';
 import ResourceList from './ResourceList.vue';
-import {isEmpty} from '@/utils/is';
+import {getImages} from '@/utils';
+
 const useLesson = useLessonStore();
 const lessonData:Record<string, any> = computed(()=>useLesson.lessonData);
 const teachersData:Record<string, any> = computed(()=>useLesson.getTeachers);
@@ -65,25 +65,22 @@ const resources = computed(()=>useLesson.getTourContent);
 
 //刷新
 const isRefresh=ref(false);
-const curCourseid=ref('');
 const refresh =async (callback: () => void) => {
     isRefresh.value=true;
     try {
-        await useLesson.queryCourseContent({ courseid:curCourseid.value });
+        await useLesson.queryCourseContent({courseid:useLesson.courseid},true);
     } finally {
         callback();
         isRefresh.value=false;
     }
 };
-onLoad(async (option)=>{
-    const {courseid}=option;
-    curCourseid.value=courseid;
-});
+
 </script>
 <style lang="scss" scoped>
 .teachers-content {
   display: flex;
   align-items: center;
+  margin-bottom: 20rpx;
   .teachers-item {
     display: flex;
     flex-direction: column;

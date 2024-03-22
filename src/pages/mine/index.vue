@@ -2,7 +2,7 @@
 import { userInfoApi } from '@/services/user';
 import { Toast } from '@/utils/uniapi/prompt';
 import { bkMineGirds, bkMineInfo } from '@/utils/mineConstants';
-import LoadingIcon from '@/components/LoadingIcon/index.vue';
+
 import { getPortalAvatar } from '@/utils';
 import { getBaseUrl } from '@/utils/env';
 import {handleGridsClick} from '@/utils/handle';

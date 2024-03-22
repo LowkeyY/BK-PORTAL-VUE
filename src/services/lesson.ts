@@ -1,4 +1,5 @@
 
+
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import storage from '@/utils/storage';
@@ -33,9 +34,20 @@ export function courseListDueApi(data:courseListParams) {
  * @description:课程内容
  * @return {*}
  */
-export function courseContentApi(data: AttendanceCourseParams) {
+export function courseContentApi(data: CourseContentParams) {
     return http.request({
         url:`${CUNOVS_SERVER}/course/${moodleToken}`,
+        data,
+    });
+}
+
+/**
+ * @description:刷新课程内容
+ * @return {*}
+ */
+export function courseRefreshApi(data: CourseContentParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/course/refresh/${moodleToken}`,
         data,
     });
 }
@@ -65,6 +77,19 @@ export function durationCourseApi(data:AttendanceCourseParams) {
 export function attendanceRefreshApi(data:AttendanceCourseParams) {
     return http.request({
         url:`${CUNOVS_SERVER}/attendance/refresh/${moodleToken}`,
+        data,
+    });
+}
+
+/**
+ * @description: 标记资源完成
+ * @param {completionParams} data
+ * @return {*}
+ */
+export function completionApi(data:completionParams) {
+    return http.request({
+        url:`${CUNOVS_SERVER}/cm/completion/${moodleToken}`,
+        method:'post',
         data,
     });
 }
