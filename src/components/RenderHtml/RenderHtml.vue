@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-05 17:13:36
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:49:57
+ * @LastEditTime: 2024-03-22 18:53:56
  * @FilePath: \BK-Portal-VUE\src\components\RenderHtml\RenderHtml.vue
  * @Description: 
 -->
@@ -21,7 +21,6 @@
 <script lang="ts" setup name="RenderHtml">
 // import parseHtml from '@/utils/html-parser.js';
 import useLessonResource from '@/hooks/useLessonResource';
-import mpHtml from 'mp-html/dist/uni-app/components/mp-html/mp-html';
 import {defaultHtmlStyles} from '@/utils/constants';
 const props = defineProps({
     html: {
