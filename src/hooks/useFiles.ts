@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-27 14:02:13
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:35:34
+ * @LastEditTime: 2024-03-26 16:54:24
  * @FilePath: \BK-Portal-VUE\src\hooks\useFiles.ts
  * @Description: 
  */
@@ -74,7 +74,7 @@ export default function  useFiles() {
             prettifyModal({
                 title:'压缩包文件',
                 content:'下载后需要解压缩查看，需要使用手机中安装额外的解压缩软件（如不方便可以转到电脑端访问）。',
-                onConfirm: doOpenFile()
+                onConfirm: ()=>doOpenFile()
             });
         }else if(fileSize > 5242880){
             // Modal({
@@ -90,7 +90,7 @@ export default function  useFiles() {
             prettifyModal({
                 title:'大文件',
                 content:`当前文件共${renderFileSize(fileSize)},下载需消耗大量流量和时间，建议使用电脑端下载。`,
-                onConfirm: doOpenFile()
+                onConfirm: ()=>doOpenFile()
             });
         }else{
             doOpenFile();

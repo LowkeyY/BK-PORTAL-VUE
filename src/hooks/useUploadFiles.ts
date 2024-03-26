@@ -4,7 +4,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-11 12:50:29
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 18:39:22
+ * @LastEditTime: 2024-03-26 16:10:02
  * @FilePath: \BK-Portal-VUE\src\hooks\useUploadFiles.ts
  * @Description: 
  */
@@ -77,7 +77,6 @@ export default function useUploadFiles (callback:callback){
         });
     };
     const doUpload =async (fileList:any[])=>{
-        console.log(fileList);
         Loading('正在上传文件...');
         const results:any[] = [];
         for(const file of fileList){

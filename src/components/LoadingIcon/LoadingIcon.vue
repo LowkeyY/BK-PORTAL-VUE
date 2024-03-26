@@ -1,3 +1,11 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2023-12-27 15:57:23
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-03-26 15:46:57
+ * @FilePath: \BK-Portal-VUE\src\components\LoadingIcon\LoadingIcon.vue
+ * @Description: 
+-->
 
 <template>
     <view>
@@ -6,7 +14,7 @@
             <text>{{ text }}</text>
         </view>
         <view v-else>
-            <image style="height: 40rpx;" src="@/static/svg/loading2.svg" mode="heightFix" />
+            <image v-if="loading" style="height: 40rpx;" src="@/static/svg/loading2.svg" mode="heightFix" />
         </view>
     </view>
 </template>
