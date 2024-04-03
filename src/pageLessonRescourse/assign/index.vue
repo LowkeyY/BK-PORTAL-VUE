@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-19 16:12:14
+ * @LastEditTime: 2024-03-27 17:03:06
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
@@ -12,14 +12,14 @@
     <app-provider>
         <nav-bar :title="navTitle" right-text="资源反馈" @handle-right-click="handleRightClick" />
         <ComSkeleton type="text" :loading="useAssign.loading">
-            <view class="content">
-                <view class="title">{{ assignData.assignmentsName }}</view>
+            <view v-if="!isEmpty(assignData)" class="content">
+                <view class="title">{{ assignData['assignmentsName'] }}</view>
                 <!-- <view class="course-name">{{ assignData.coursesName }}</view> -->
-                <uni-notice-bar v-if="assignData._useScriptFunc&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
+                <uni-notice-bar v-if="assignData['_useScriptFunc']&&useApp._useJavaScriptMessage" show-close :text="useApp._useJavaScriptMessage.warn" />
                 <expand-content max-height="400rpx">
-                    <render-html :html="assignData.intro" :courseid="queryParams?.courseid" />
+                    <render-html :html="assignData['intro']" :courseid="queryParams?.courseid" />
                 </expand-content>
-                <files-content :show-title="false" :file-list="assignData.introattachments" @handle-download="handleDownload" />
+                <files-content :show-title="false" :file-list="assignData['introattachments']" @handle-download="handleDownload" />
                
                 <uni-section title="备注" type="line" style="background-color: transparent;">
                     <template #right>
@@ -27,10 +27,10 @@
                     </template>
                 </uni-section>
                 <status-info :data="assignData" />
-                <view v-if="assignData.gradingstatus === 'graded'" class="tab">
-                    <uni-segmented-control :current="currentTab" :values="['提交的作业', '成绩']" style-type="text" active-color="#2b83d7" @click-item="(e)=>currentTab=e.currentIndex" />
+                <view v-if="assignData['gradingstatus'] === 'graded'" class="tab">
+                    <uni-segmented-control :current="currentTab" :values="['提交的作业', '成绩']" style-type="text" active-color="#2b83d7" @click-item="(e:any)=>currentTab=e.currentIndex" />
                 </view>
-                <view v-if="assignData.gradingstatus !== 'graded'||currentTab===0">
+                <view v-if="assignData['gradingstatus'] !== 'graded'||currentTab===0">
                     <submited-content v-if="assignData.submitStatus !== 'new'" :data="assignData.submitDataType" />
                     <usability-info :data="assignData" />
                     <view class="actions">
@@ -166,7 +166,7 @@ onPullDownRefresh(()=>{
 });
 
 onShow(async ()=>{
-   
+    useAssign.$reset();
     const userid = useUser.moodleUserId;
     navTitle.value= getResourceType(modname);
     const assignParams = {

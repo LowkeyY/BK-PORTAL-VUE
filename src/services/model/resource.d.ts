@@ -1,4 +1,5 @@
 
+
 declare interface AssignParams {
     cmid:string|number,
     ssignId:string|number,
@@ -78,4 +79,32 @@ declare interface mdlresStateParams {
 declare interface folderParams {
     cmid:string,
     courseid:string
+}
+
+declare interface queryQuizParams {
+    cmid:string,
+    courseid:string,
+    quizid:string,
+    userid:string
+}
+
+declare interface queryQuizPageParams {
+    quizid:string|number,
+    attemptid?:string|number,
+    page?:string|number
+}
+
+declare interface queryQuizNavigateParams {
+    attemptid:string|number,
+}
+
+declare interface saveQuizParams {
+    attemptid:string|number,
+    timeup:string|number,
+    finishattempt:string|number,
+
+}
+
+declare interface queryQuizReviewParams {
+    attemptid:string|number,
 }

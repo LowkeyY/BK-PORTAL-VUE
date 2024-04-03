@@ -323,6 +323,28 @@
                     }
                 },
                 {
+                    "name": "quizPaper",
+                    "path": "quiz/quizPaper",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "quizReview",
+                    "path": "quiz/quizReview",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
                     "name": "assign",
                     "path": "assign/index",
                     "style": {

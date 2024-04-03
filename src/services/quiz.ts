@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-26 14:52:53
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-26 14:53:33
+ * @LastEditTime: 2024-04-03 10:57:45
  * @FilePath: \BK-Portal-VUE\src\services\quiz.ts
  * @Description: 
  */
@@ -14,52 +14,75 @@ import { StorageEnum } from '@/enums/storageEnum';
 const {CUNOVS_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 
-const QUERY_ASSIGN = `${CUNOVS_SERVER}/assignment/getInformation/${moodleToken}`; // 查询作业
-const QUERY_ASSIGN_COMMENTS = `${CUNOVS_SERVER}/assignment/getComments/${moodleToken}`; // 作业评语
-const SAVE_ASSIGN = `${CUNOVS_SERVER}/assignment/add/${moodleToken}`; // 保存作业   
-const SUBMIT_ASSIGN = `${CUNOVS_SERVER}/assignment/commit/${moodleToken}`; // 提交作业
+const QUERY_QUIZ = `${CUNOVS_SERVER}/quiz/${moodleToken}`; // 查询测验
+const QUERY_QUIZ_PAGE = `${CUNOVS_SERVER}/quiz/page/${moodleToken}`; // 查询上次浏览测验问题 
+const QUERY_QUIZ_PAGE_FIRST = `${CUNOVS_SERVER}/quiz/start/${moodleToken}`; // 初次答题查询问题
+const QUERY_QUIZ_REVIEW = `${CUNOVS_SERVER}/quiz/review/${moodleToken}`; // 回顾测验
+const QUERY_QUIZ_NAVIGATE = `${CUNOVS_SERVER}/quiz/summary/${moodleToken}`; // 查询问题列表
+const SAVE_QUIZ = `${CUNOVS_SERVER}/quiz/process/${moodleToken}`; // 保存测验  finishattempt:1 为最终提交
+
 /**
- * @description:查询作业
+ * @description:查询测验
  * @return {*}
  */
-export function queryAssignApi(data:AssignParams) {
+export function queryQuizApi(data:queryQuizParams) {
     return http.request({
-        url:`${QUERY_ASSIGN}`,
+        url:`${QUERY_QUIZ}`,
         data
     });
 }
 
 /**
- * @description:查询作业评语
+ * @description:查询上次浏览测验问题
  * @return {*}
  */
-export function queryAssignCommentsApi(data:AssignCommentsParams) {
+export function queryQuizPageApi(data:queryQuizPageParams) {
     return http.request({
-        url:`${QUERY_ASSIGN_COMMENTS}`,
+        url:`${QUERY_QUIZ_PAGE}`,
         data
     });
 }
 
 /**
- * @description:保存作业
+ * @description: 查询问题列表
  * @return {*}
  */
-export function saveAssignApi(data:saveAssignParams) {
+export function queryQuizNavigateApi(data:queryQuizNavigateParams) {
     return http.request({
-        url:`${SAVE_ASSIGN}`,
-        method:'post',
+        url:`${QUERY_QUIZ_NAVIGATE}`,
         data
     });
 }
 
 /**
- * @description: 提交作业
- * @param {saveAssignParams} data
+ * @description: 
  * @return {*}
  */
-export function submitAssignApi(data:submitAssignParams) {
+export function queryQuizPageFirstTimeApi(data:queryQuizPageParams) {
     return http.request({
-        url:`${SUBMIT_ASSIGN}`,
+        url:`${QUERY_QUIZ_PAGE_FIRST}`,
+        data
+    });
+}
+
+/**
+ * @description:查询测验回顾
+ * @return {*}
+ */
+export function queryQuizReviewApi(data:queryQuizReviewParams) {
+    return http.request({
+        url:`${QUERY_QUIZ_REVIEW}`,
+        data
+    });
+}
+
+/**
+ * @description:保存测验
+ * @return {*}
+ */
+export function saveQuizApi(data:saveQuizParams) {
+    return http.request({
+        url:`${SAVE_QUIZ}`,
         method:'post',
         data
     });

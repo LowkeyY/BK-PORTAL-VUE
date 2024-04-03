@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-18 15:12:47
+ * @LastEditTime: 2024-04-03 14:37:37
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
@@ -449,6 +449,25 @@ export const getAttendanceTime = (timeValue:number):string => {
     }
 
     return timeChange(time);
+};
+
+
+/**
+ * @description:  计算日期差
+ * @param {number} start
+ * @param {number} end
+ * @return {*}
+ */
+export const getDurationTime = (start:number, end:number) => {
+    const time = (end - start) * 1000;
+    const days = time / 1000 / 60 / 60 / 24;
+    const daysRound = Math.floor(days);
+    const hours = time / 1000 / 60 / 60 - (24 * daysRound);
+    const hoursRound = Math.floor(hours);
+    const minutes = time / 1000 / 60 - (24 * 60 * daysRound) - (60 * hoursRound);
+    const minutesRound = Math.floor(minutes);
+    const seconds = time / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+    return `${daysRound > 0 ? `${daysRound}天` : ''}${hoursRound > 0 ? `${hoursRound}小时` : ''}${minutesRound > 0 ? `${minutesRound}分钟` : ''}${seconds}秒`;
 };
 
 /**
