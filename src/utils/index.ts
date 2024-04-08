@@ -57,7 +57,7 @@ export const getPortalAvatar = (url: string, fileId: string) => {
     return defaultUserIcon;
 };
 /**
- * @description: 课程图片
+ * @description: 默认图片
  * @param path
  * @param curBaseUrl
  * @returns {*}
@@ -78,6 +78,18 @@ export function getImages(path: any = '', type = 'defaultImg', curBaseUrl = 'CUN
         ? `${baseUrl + (path.startsWith('/') ? '' : '/') + path}`
         : `${baseUrl + (path.startsWith('/') ? '' : '/') + path}?token=${moodleToken}`;
 }
+
+export const getErrorImg = (el: any, type = 'default') => {
+    if (el && el.target) {
+        if (type !== 'user') {
+            el.target.src = defaultImg;
+            el.target.onerror = null;
+        } else {
+            el.target.src = defaultUserIcon;
+            el.target.onerror = null;
+        }
+    }
+};
 
 /**
  * @description: 课程时间
@@ -109,7 +121,7 @@ export const changeLessonDate = (date: any) => {
  * @param {*} showWeek
  * @return {*}
  */
-export const getCommonDate = (date:number, details = true, showWeek = true):string => {
+export const getCommonDate = (date: number, details = true, showWeek = true): string => {
     if (date) {
         const preDate = new Date(date * 1000),
             week = '日一二三四五六'.charAt(preDate.getDay()),
@@ -134,14 +146,14 @@ export const getCommonDate = (date:number, details = true, showWeek = true):stri
  * @param {*} timemodified
  * @return {*}
  */
-export const getSurplusDay = (data:number, state:string, timemodified = 0) => {
+export const getSurplusDay = (data: number, state: string, timemodified = 0) => {
     const now = new Date().getTime();
-    const getDays = (time:number) => {
+    const getDays = (time: number) => {
         const days = time / 1000 / 60 / 60 / 24;
         const daysRound = Math.floor(days);
-        const hours = time / 1000 / 60 / 60 - (24 * daysRound);
+        const hours = time / 1000 / 60 / 60 - 24 * daysRound;
         const hoursRound = Math.floor(hours);
-        const minutes = time / 1000 / 60 - (24 * 60 * daysRound) - (60 * hoursRound);
+        const minutes = time / 1000 / 60 - 24 * 60 * daysRound - 60 * hoursRound;
         const minutesRound = Math.floor(minutes);
         // const seconds = time / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
         return `${daysRound > 0 ? `${daysRound}天` : ''}${hoursRound > 0 ? `${hoursRound}小时` : ''}${minutesRound}分钟`;
@@ -170,38 +182,37 @@ export const getSurplusDay = (data:number, state:string, timemodified = 0) => {
  * @param {*} timeValue
  * @return {*}
  */
-export const getMessageTime = (timeValue:number):string => {
-    const time:number = timeValue * 1000;
+export const getMessageTime = (timeValue: number): string => {
+    const time: number = timeValue * 1000;
 
-    function formatDateTime (time:number):string {
+    function formatDateTime(time: number): string {
         const date = new Date(time);
         const y = date.getFullYear();
-        let m:string|number = date.getMonth() + 1;
-        m = m < 10 ? (`0${m}`) : m;
-        let d:string|number = date.getDate();
-        d = d < 10 ? (`0${d}`) : d;
-        let h:string|number = date.getHours();
-        h = h < 10 ? (`0${h}`) : h;
-        let minute:string|number = date.getMinutes();
-        let second:string|number = date.getSeconds();
-        minute = minute < 10 ? (`0${minute}`) : minute;
-        second = second < 10 ? (`0${second}`) : second;
+        let m: string | number = date.getMonth() + 1;
+        m = m < 10 ? `0${m}` : m;
+        let d: string | number = date.getDate();
+        d = d < 10 ? `0${d}` : d;
+        let h: string | number = date.getHours();
+        h = h < 10 ? `0${h}` : h;
+        let minute: string | number = date.getMinutes();
+        let second: string | number = date.getSeconds();
+        minute = minute < 10 ? `0${minute}` : minute;
+        second = second < 10 ? `0${second}` : second;
         return `${y}-${m}-${d} ${h}:${minute}:${second}`;
     }
 
     // 判断传入日期是否为昨天
-    function isYestday (time:number) {
-        const date = (new Date()); // 当前时间
+    function isYestday(time: number) {
+        const date = new Date(); // 当前时间
         const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(); // 今天凌晨
         const yestday = new Date(today - 24 * 3600 * 1000).getTime();
         return time < today && yestday <= time;
     }
 
     // 判断传入日期是否属于今年
-    function isYear (time:number) {
+    function isYear(time: number) {
         const takeNewYear = new Date().getFullYear().toString(); // 当前时间的年份
-        const takeTimeValue = formatDateTime(time)
-            .substring(0, 4); // 传入时间的年份
+        const takeTimeValue = formatDateTime(time).substring(0, 4); // 传入时间的年份
         return takeTimeValue === takeNewYear;
     }
 
@@ -209,27 +220,29 @@ export const getMessageTime = (timeValue:number):string => {
     // 3600000 1小时
     // 86400000 24小时
     // 对传入时间进行时间转换
-    function timeChange (time:number) {
+    function timeChange(time: number) {
         const timeNew = new Date().getTime(); // 当前时间
         const timeDiffer = timeNew - time; // 与当前时间误差
         let returnTime = '';
 
-        if (timeDiffer <= 60000) { // 一分钟内
+        if (timeDiffer <= 60000) {
+            // 一分钟内
             returnTime = '刚刚';
-        } else if (timeDiffer > 60000 && timeDiffer < 3600000) { // 1小时内
+        } else if (timeDiffer > 60000 && timeDiffer < 3600000) {
+            // 1小时内
             returnTime = `${Math.floor(timeDiffer / 60000)}分钟前`;
-        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) { // 今日
-            returnTime = formatDateTime(time)
-                .substring(11, 16);
-        } else if (timeDiffer > 3600000 && isYestday(time) === true) { // 昨天
-            returnTime = `昨天${formatDateTime(time)
-                .substring(11, 16)}`;
-        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === true) {	// 今年
-            returnTime = formatDateTime(time)
-                .substring(5, 16);
-        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === false) { // 不属于今年
-            returnTime = formatDateTime(time)
-                .substring(0, 10);
+        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) {
+            // 今日
+            returnTime = formatDateTime(time).substring(11, 16);
+        } else if (timeDiffer > 3600000 && isYestday(time) === true) {
+            // 昨天
+            returnTime = `昨天${formatDateTime(time).substring(11, 16)}`;
+        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === true) {
+            // 今年
+            returnTime = formatDateTime(time).substring(5, 16);
+        } else if (timeDiffer > 86400000 && isYestday(time) === false && isYear(time) === false) {
+            // 不属于今年
+            returnTime = formatDateTime(time).substring(0, 10);
         }
 
         return returnTime;
@@ -244,7 +257,7 @@ export const getMessageTime = (timeValue:number):string => {
  * @param {*} showWeek
  * @return {*}
  */
-export const getFileIcon = (fileName:string):string => {
+export const getFileIcon = (fileName: string): string => {
     // const fileExtension:string = fileName.toLowerCase();
     // 定义文件类型与对应图标的映射关系
     // const iconMap:Record<string, string> = {
@@ -263,22 +276,22 @@ export const getFileIcon = (fileName:string):string => {
     const excelReg = /\.xlsx?$/i;
     const imageReg = /\.(jpg|jpeg|png|gif|bmp)$/i;
     const rarReg = /\.(zip|rar|7z)$/i;
-    const fileExtension = () =>{
-        if(pdfReg.test(fileName)){
+    const fileExtension = () => {
+        if (pdfReg.test(fileName)) {
             return 'PDF.svg';
-        }else if(wordReg.test(fileName)){
+        } else if (wordReg.test(fileName)) {
             return 'DOCX.svg';
-        }else if(excelReg.test(fileName)){
+        } else if (excelReg.test(fileName)) {
             return 'EXCEL.svg';
-        }else if(imageReg.test(fileName)){
+        } else if (imageReg.test(fileName)) {
             return 'IMAGE.svg';
-        }else if(rarReg.test(fileName)){
+        } else if (rarReg.test(fileName)) {
             return 'RAR.svg';
-        }else{
+        } else {
             return 'file.svg';
         }
     };
-    const icon:string=fileExtension();
+    const icon: string = fileExtension();
     return `/static/svg/fileType/${icon}`;
 };
 
@@ -287,7 +300,7 @@ export const getFileIcon = (fileName:string):string => {
  * @param {string} type
  * @return {*}
  */
-export const getTaskIcon = (type:string) => {
+export const getTaskIcon = (type: string) => {
     if (type === 'assign') {
         return '/static/svg/resourceIcon/homework.svg';
     } else if (type === 'quiz') {
@@ -303,7 +316,7 @@ export const getTaskIcon = (type:string) => {
  * @param {*} str
  * @return {*}
  */
-export const urlEncode = (str:string|number):string => {
+export const urlEncode = (str: string | number): string => {
     str = (str + '').toString();
     return encodeURIComponent(str)
         .replace(/!/g, '%21')
@@ -319,29 +332,29 @@ export const urlEncode = (str:string|number):string => {
  * @param {*} type
  * @return {*}
  */
-export const pattern = (type:string) => {
+export const pattern = (type: string) => {
     const obj = {
-        href:/[a-zA-z]+:\/\/[^\\">]*/g,
-        svg:/mymobile/ig,
-        phone:/^1\d{10}$/,
+        href: /[a-zA-z]+:\/\/[^\\">]*/g,
+        svg: /mymobile/gi,
+        phone: /^1\d{10}$/,
         // eslint-disable-next-line no-useless-escape
-        email:/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
-        zip:/\.zip|.rar|.7z$/i
+        email: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
+        zip: /\.zip|.rar|.7z$/i,
     };
     return obj[type];
 };
-
 
 /**
  * @description: 转换中文
  * @param {*} num
  * @return {*}
  */
-export const toChineseNum=(num:number) => {
+export const toChineseNum = (num: number) => {
     const chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
     // const chnUnitSection = ['', '万', '亿', '万亿', '亿亿'];
     const chnUnitChar = ['', '十', '百', '千'];
-    let strIns = '', chnStr = '';
+    let strIns = '',
+        chnStr = '';
     let unitPos = 0;
     let zero = true;
     while (num > 0) {
@@ -359,39 +372,37 @@ export const toChineseNum=(num:number) => {
         }
         unitPos++;
         num = Math.floor(num / 10);
-
     }
     return `[第${chnStr}场]`;
 };
-
 
 /**
  * @description: 考勤时间
  * @param {*} timeValue
  * @return {*}
  */
-export const getAttendanceTime = (timeValue:number):string => {
-    const time:number = timeValue * 1000;
+export const getAttendanceTime = (timeValue: number): string => {
+    const time: number = timeValue * 1000;
 
-    function formatDateTime (time:number):string {
+    function formatDateTime(time: number): string {
         const date = new Date(time);
         const y = date.getFullYear();
-        let m:string|number = date.getMonth() + 1;
-        m = m < 10 ? (`0${m}`) : m;
-        let d:string|number = date.getDate();
-        d = d < 10 ? (`0${d}`) : d;
-        let h:string|number = date.getHours();
-        h = h < 10 ? (`0${h}`) : h;
-        let minute:string|number = date.getMinutes();
-        let second:string|number = date.getSeconds();
-        minute = minute < 10 ? (`0${minute}`) : minute;
-        second = second < 10 ? (`0${second}`) : second;
+        let m: string | number = date.getMonth() + 1;
+        m = m < 10 ? `0${m}` : m;
+        let d: string | number = date.getDate();
+        d = d < 10 ? `0${d}` : d;
+        let h: string | number = date.getHours();
+        h = h < 10 ? `0${h}` : h;
+        let minute: string | number = date.getMinutes();
+        let second: string | number = date.getSeconds();
+        minute = minute < 10 ? `0${minute}` : minute;
+        second = second < 10 ? `0${second}` : second;
         return `${y}-${m}-${d} ${h}:${minute}:${second}`;
     }
 
     // 判断传入日期是否为昨天
-    function isYestday (time:number) {
-        const date = (new Date()); // 当前时间
+    function isYestday(time: number) {
+        const date = new Date(); // 当前时间
         const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(); // 今天凌晨
         const yestday = new Date(today - 24 * 3600 * 1000).getTime();
         return time < today && yestday <= time;
@@ -401,47 +412,51 @@ export const getAttendanceTime = (timeValue:number):string => {
     // 3600000 1小时
     // 86400000 24小时
     // 对传入时间进行时间转换
-    function timeChange (time:number) {
+    function timeChange(time: number) {
         const timeNew = Date.parse(new Date()); // 当前时间
         const timeDiffer = timeNew - time; // 与当前时间误差
         let returnTime = {};
 
-        if (timeDiffer <= 120000) { // 一分钟内
+        if (timeDiffer <= 120000) {
+            // 一分钟内
             returnTime = {
                 time: '刚刚',
-                color: '#00bd06'
+                color: '#00bd06',
             };
-        } else if (timeDiffer > 120000 && timeDiffer < 300000) { // 1-5分钟
+        } else if (timeDiffer > 120000 && timeDiffer < 300000) {
+            // 1-5分钟
             returnTime = {
                 time: `${Math.floor(timeDiffer / 60000)}分钟前`,
-                color: '#ffa22f'
+                color: '#ffa22f',
             };
-        } else if (timeDiffer > 300000 && timeDiffer < 600000) { // 5-10
+        } else if (timeDiffer > 300000 && timeDiffer < 600000) {
+            // 5-10
             returnTime = {
                 time: `${Math.floor(timeDiffer / 60000)}分钟前`,
-                color: '#ffa22f'
+                color: '#ffa22f',
             };
-        } else if (timeDiffer > 600000 && timeDiffer < 3600000) { // 1小时内
+        } else if (timeDiffer > 600000 && timeDiffer < 3600000) {
+            // 1小时内
             returnTime = {
                 time: `${Math.floor(timeDiffer / 60000)}分钟前`,
-                color: '#ff2222'
+                color: '#ff2222',
             };
-        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) { // 今日
+        } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && isYestday(time) === false) {
+            // 今日
             returnTime = {
-                time: formatDateTime(time)
-                    .substr(11, 5),
-                color: '#ff2222'
+                time: formatDateTime(time).substr(11, 5),
+                color: '#ff2222',
             };
-        } else if (timeDiffer > 3600000 && isYestday(time) === true) { // 昨天
+        } else if (timeDiffer > 3600000 && isYestday(time) === true) {
+            // 昨天
             returnTime = {
-                time: `昨天${formatDateTime(time)
-                    .substr(11, 5)}`,
-                color: '#ff2222'
+                time: `昨天${formatDateTime(time).substr(11, 5)}`,
+                color: '#ff2222',
             };
         } else if (timeDiffer > 86400000 && isYestday(time) === false) {
             returnTime = {
                 time: formatDateTime(time),
-                color: '#ff2222'
+                color: '#ff2222',
             };
         }
 
@@ -451,44 +466,42 @@ export const getAttendanceTime = (timeValue:number):string => {
     return timeChange(time);
 };
 
-
 /**
  * @description:  计算日期差
  * @param {number} start
  * @param {number} end
  * @return {*}
  */
-export const getDurationTime = (start:number, end:number) => {
+export const getDurationTime = (start: number, end: number) => {
     const time = (end - start) * 1000;
     const days = time / 1000 / 60 / 60 / 24;
     const daysRound = Math.floor(days);
-    const hours = time / 1000 / 60 / 60 - (24 * daysRound);
+    const hours = time / 1000 / 60 / 60 - 24 * daysRound;
     const hoursRound = Math.floor(hours);
-    const minutes = time / 1000 / 60 - (24 * 60 * daysRound) - (60 * hoursRound);
+    const minutes = time / 1000 / 60 - 24 * 60 * daysRound - 60 * hoursRound;
     const minutesRound = Math.floor(minutes);
-    const seconds = time / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+    const seconds = time / 1000 - 24 * 60 * 60 * daysRound - 60 * 60 * hoursRound - 60 * minutesRound;
     return `${daysRound > 0 ? `${daysRound}天` : ''}${hoursRound > 0 ? `${hoursRound}小时` : ''}${minutesRound > 0 ? `${minutesRound}分钟` : ''}${seconds}秒`;
 };
 
 /**
- * @description: 
+ * @description:
  * @param {*} fileSize
  * @return {*}
  */
-export const renderFileSize = (fileSize:number) => {
-  
+export const renderFileSize = (fileSize: number) => {
     if (fileSize < 1024) {
         return `${fileSize}B`;
-    } else if (fileSize < (1024 * 1024)) {
-        let temp:number|string = fileSize / 1024;
+    } else if (fileSize < 1024 * 1024) {
+        let temp: number | string = fileSize / 1024;
         temp = temp.toFixed(2);
         return `${temp}KB`;
-    } else if (fileSize < (1024 * 1024 * 1024)) {
-        let temp:number|string = fileSize / (1024 * 1024);
+    } else if (fileSize < 1024 * 1024 * 1024) {
+        let temp: number | string = fileSize / (1024 * 1024);
         temp = temp.toFixed(2);
         return `${temp}MB`;
     }
-    let temp:number|string = fileSize / (1024 * 1024 * 1024);
+    let temp: number | string = fileSize / (1024 * 1024 * 1024);
     temp = temp.toFixed(2);
     return `${temp}GB`;
 };
@@ -497,9 +510,9 @@ export const renderFileSize = (fileSize:number) => {
  * @description: 获取页面参数
  * @return {*}
  */
-export const getCurPageParam=()=>{
+export const getCurPageParam = () => {
     const pages = getCurrentPages();
-    const curPage:any = pages[pages.length-1];
+    const curPage: any = pages[pages.length - 1];
     const curParam = curPage.options || curPage.$route.query; // h5:curPage.$route.query
     return curParam;
 };
@@ -509,7 +522,7 @@ export const getCurPageParam=()=>{
  * @param {any} res
  * @return {*}
  */
-export const parseJSON=(res:any)=>{
+export const parseJSON = (res: any) => {
     try {
         return JSON.parse(res);
     } catch (e) {
@@ -522,7 +535,7 @@ export const parseJSON=(res:any)=>{
  * @param date
  * @returns {string}
  */
-export const isToday = (date:number):boolean => {
+export const isToday = (date: number): boolean => {
     if (date) {
         const currentDate = new Date();
         const lessonDate = new Date(date * 1000);
@@ -540,11 +553,41 @@ export const isToday = (date:number):boolean => {
  * @param {string} id
  * @return {*}
  */
-export const  findNameByCourses = (course:any[], id:string) => {
+export const findNameByCourses = (course: any[], id: string) => {
     let name = '';
     if (id && course.length) {
-        const selectedCourse:any = course.filter((c:any) => c.id === id);
+        const selectedCourse: any = course.filter((c: any) => c.id === id);
         name = selectedCourse.length ? (selectedCourse[0] || {}).fullname : '';
     }
     return name || '';
+};
+
+/**
+ * @description: 发帖次数限制
+ * @param {number} num
+ * @return {*}
+ */
+export const getDurationDay = (num: number) => {
+    const days: number = num / 60 / 60 / 24;
+    const daysRound: number = Math.floor(days);
+    return daysRound >= 7 ? '一周' : `${daysRound}天`;
+};
+
+/**
+ * @description: 转换内存
+ * @param {number} fileSize
+ * @return {*}
+ */
+export const renderSize = (fileSize: number) => {
+    if (fileSize < 1024) {
+        return `${fileSize}B`;
+    } else if (fileSize < 1024 * 1024) {
+        const temp = (fileSize / 1024).toFixed(2);
+        return `${temp}KB`;
+    } else if (fileSize < 1024 * 1024 * 1024) {
+        const temp = (fileSize / (1024 * 1024)).toFixed(2);
+        return `${temp}MB`;
+    }
+    const temp = (fileSize / (1024 * 1024 * 1024)).toFixed(2);
+    return `${temp}GB`;
 };
