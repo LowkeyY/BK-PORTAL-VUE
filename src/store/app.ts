@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-13 12:07:27
+ * @LastEditTime: 2024-04-10 13:06:34
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
@@ -66,9 +66,11 @@ export const useAppStore = defineStore({
             const sortStr = state.gridsSort;
             isArray(sortStr.split(',')) && sortStr.split(',')
                 .map((item:string) => {
-                    arr.push(
-                        bkStudentGirds.find(ev => ev.id === item)
-                    );
+                    if(bkStudentGirds.find(ev => ev.id === item)){
+                        arr.push(
+                            bkStudentGirds.find(ev => ev.id === item)
+                        );
+                    }
                 });
             return [...arr,moreGird];
         }

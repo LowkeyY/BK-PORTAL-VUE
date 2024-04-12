@@ -1,6 +1,12 @@
 
 import cheerio, { load } from 'cheerio';
 
+const replaceFormItem = (str)=>{
+    // uni-app 渲染html不支持原生表单 ，替换一下
+    const regex =  /<(input|select)(?:(?!\btype\s*=\s*['"]?hidden\b)[^>])*?>/gi;
+    
+    return str.replace(regex, '____________');
+};
 export function getQuizInfo(html, type) {
     const $ = load(html);
     const obj = {};
@@ -17,9 +23,11 @@ export function getQuizInfo(html, type) {
         .text()}`;
     obj.grade = `${$('.grade')
         .text()}`;
-    obj.qtext = `${$('.qtext').length ? $('.qtext')
-        .html() : ''}`;
+    obj.qtext = `${$('.qtext').length ? replaceFormItem($('.qtext')
+        .html()) : ''}`;
     obj.prompt = `${$('.prompt')
+        .text()}`;
+    obj.validationerror = `${$('.validationerror')
         .text()}`;
     return obj;
 }
@@ -76,7 +84,7 @@ export function choiceQuestion(html) {
                     value: $('.answer input[type="radio"]')
                         .eq(index)
                         .val(),
-                    checked: $('.answer input[type="radio"]')
+                    selected: $('.answer input[type="radio"]')
                         .eq(index)
                         .prop('checked'),
                     type: 'radio',
@@ -114,7 +122,7 @@ export function choiceQuestion(html) {
                     value: $('.answer input[type="checkbox"]')
                         .eq(index)
                         .val(),
-                    checked: $('.answer input[type="checkbox"]')
+                    selected: $('.answer input[type="checkbox"]')
                         .eq(index)
                         .prop('checked'),
                     type: 'checkbox',
@@ -139,7 +147,7 @@ export function matchQuestion(html) {
             .children('option')
             .each((i, ele) => {
                 arr[i] = {
-                    label: $('.answer tbody tr select')
+                    text: $('.answer tbody tr select')
                         .find('option')
                         .eq(i)
                         .text(),
@@ -158,12 +166,12 @@ export function matchQuestion(html) {
     let items = [];
     $('.answer tbody >tr select')
         .each((index, ele) => {
-            let answers = ele.children.map(child => {
+            let options = ele.children.map(child => {
                 const { attribs: { selected = '', value = '' }, children = [] } = child;
                 if (children.length > 0) {
-                    const label = value === '' ? '请选择' : children[0].data;
+                    const text = value === '' ? '请选择' : children[0].data;
                     return {
-                        label,
+                        text,
                         value,
                         selected: selected === 'selected'
                     };
@@ -173,14 +181,17 @@ export function matchQuestion(html) {
                 question: $('.text')
                     .eq(index)
                     .text(),
-                answer: answers,
+                options,
                 name: $('.answer select')
                     .eq(index)
                     .attr('name'),
                 currect: $('.answer select')
                     .eq(index)
                     .siblings('i')
-                    .prop('title') || ''
+                    .prop('title') || '',
+                disabled:$('.answer select')
+                    .eq(index)
+                    .attr('disabled')
             });
         });
     return items;
@@ -200,6 +211,7 @@ export function shortanswerQusetion(html) {
         items.value = el.val();
         items.currect = el.siblings('i')
             .prop('title') || '';
+        items.readonly =  el.attr('readonly');
     }
     return items;
 }
@@ -221,7 +233,57 @@ export function essayQusetion(html) {
     }
     return items;
 }
-export function getQuizText(html) {
-    const quizText = cheerio('div', html);
-    return quizText.length ? quizText.html() : html;
+
+export function multianswerQusetion(html){
+    const $ = load(html);
+    const formsDom = $('.form-control'); // 获取问题节点
+    formsDom;
+    const question = $('.content').html();
+
+    const items = {};
+    const forms = [];
+    formsDom.map((index, node) => { // 解析表单对象
+        if (node.attribs) {
+            forms.push({
+                ...node.attribs,
+                currect:node.next  ? node.next.attribs.title || '' : ''
+            });
+        }
+    });
+    items.forms = forms;
+    items.question=replaceFormItem(question);
+    return items;
 }
+export function gapselectQusetion(html){
+    const $ = load(html);
+    const formsDom = $('select'); // 获取问题节点
+    formsDom;
+    const items = {};
+    const forms = [];
+    formsDom.map((index, node) => { // 解析表单对象
+        const options = node.children.map((it) => {
+            const { attribs: { selected = '', value = '' }, children = [] } = it;
+            // if (selected === 'selected') selectedValue = value;
+            if (children.length > 0) {
+                const text = value === '' ? '请选择' : children[0].data;
+                return {
+                    text,
+                    value,
+                    selected: selected === 'selected'
+                };
+            }
+        });
+        if (node.attribs) {
+            forms.push({
+                ...node.attribs,
+                options,
+                currect:node.next && node.next.next ? node.next.next.attribs.title || '' : ''
+            });
+        }
+    });
+    items.forms = forms;
+    return items;
+}
+
+
+

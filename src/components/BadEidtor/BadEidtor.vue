@@ -49,7 +49,8 @@
                 </view>
                 <editor
                     id="editor" class="ql-container" placeholder="请输入..." show-img-size show-img-toolbar show-img-resize
-                    @statuschange="onStatusChange" @ready="onEditorReady" @blur="blur"
+                    :read-only="readonly" @statuschange="onStatusChange" @ready="onEditorReady"
+                    @blur="blur"
                 >
                 </editor>
             </view>
@@ -63,6 +64,10 @@ const props = defineProps({
     modelValue: {
         type: String,
         default: ''
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     },
     limit: {
         type: [String,Number],

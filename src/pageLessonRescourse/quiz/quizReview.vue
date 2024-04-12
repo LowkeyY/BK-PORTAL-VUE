@@ -1,3 +1,11 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2024-04-03 13:31:59
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-04-12 17:48:24
+ * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\quiz\quizReview.vue
+ * @Description: 
+-->
 
 
 <template>
@@ -15,7 +23,7 @@
                 <uni-section :title="additionaldata.title" type="line" />
                 <render-html :html="additionaldata.content" space /> 
             </view>
-            <quiz-paper :questions="useQuiz.getReviewQuestions" :form-data="formData" />
+            <quiz-form-render :questions="useQuiz.getReviewQuestions" :form-data="formData" />
         </ComSkeleton>
     </app-provider>
 </template>

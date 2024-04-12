@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-14 15:05:57
+ * @LastEditTime: 2024-04-10 13:12:44
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
  * @Description:
 -->
@@ -43,9 +43,12 @@ const sortResult = ref(useApp.gridsSort);
 const homeGrids = computed(()=>{
     const arr: any[] = [];
     sortArr.value.map((item:string) => {
-        arr.push(
-            bkStudentGirds.find(ev => ev.id === item)
-        );
+        if(bkStudentGirds.find(ev => ev.id === item)){
+            arr.push(
+                bkStudentGirds.find(ev => ev.id === item)
+            );
+        }
+      
     });
     return arr;
 });

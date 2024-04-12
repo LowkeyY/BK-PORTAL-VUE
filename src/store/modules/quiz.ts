@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-26 17:58:12
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-03 16:09:09
+ * @LastEditTime: 2024-04-12 17:57:25
  * @FilePath: \BK-Portal-VUE\src\store\modules\quiz.ts
  * @Description: 
  */
@@ -11,12 +11,12 @@
 import {defineStore} from 'pinia';
 import {Toast,prettifyModal} from '@/utils/uniapi/prompt';
 import {queryQuizApi,queryQuizPageFirstTimeApi,queryQuizReviewApi,queryQuizPageApi,queryQuizNavigateApi,saveQuizApi} from '@/services/quiz';
-import { getQuizText,getQuizInfo,choiceQuestion,matchQuestion, getTimes, shortanswerQusetion, essayQusetion} from '@/utils/analysis';
+import { getQuizInfo,choiceQuestion,matchQuestion, getTimes, shortanswerQusetion, essayQusetion,multianswerQusetion,gapselectQusetion} from '@/utils/analysis';
 import {ErrorPrompt} from '@/enums/appEnum';
 import {isArray} from '@/utils/is';
 import { router } from '@/router';
 
-interface UserState {
+interface QuizState {
     quizData: Record<string,any>;
     paperData: Record<string,any>;
     reviewData: Record<string,any>; 
@@ -30,26 +30,69 @@ interface UserState {
     saveLoading:boolean;
     reviewLoading:boolean;
 }
+interface QuizDataTmp {
+     name:string;
+     html: any; 
+     type: string; 
+     choose?: any; 
+     info: any; 
+     formulation: any;
+     sequencecheck:any;
+     slot:number 
+    }
 const formatData = (data:any[],formData:Record<string,any>)=>{
     const res:any[] = [];
-    data.map((item: { html: any; type: string; choose: any; info: any; formulation: any;sequencecheck:any }) => {
+    data.map((item: QuizDataTmp) => {
         const obj:Record<string,any> = {};
-        obj.html = getQuizText(item.html);
         if (item.type === 'multichoice' || item.type === 'truefalse' || item.type === 'multichoiceset') {
             // 单选 判断 多选
-            obj.choose = choiceQuestion(item.html);
-            if(isArray(choiceQuestion(item.html))&&choiceQuestion(item.html).length){
-                const {name}=choiceQuestion(item.html)[0];
-                const value =choiceQuestion(item.html).find(item=>item.checked)?.value||null;
+            obj.options = choiceQuestion(item.html); 
+            if(isArray(obj.options)&&obj.options.length){
+                let value;
+                let name;
+                const isCheckbox = obj.options.find(item=>item.type==='checkbox'); 
+                if(isCheckbox){
+                    // 多选设置value 为对象
+                    name = `${item.type}_${item.slot}`; // 多选name
+                    const valueObj:Record<string,boolean> ={};
+                    obj.options.forEach(item=>{
+                        valueObj[item.name]=item.selected;
+                    });
+                    value = valueObj;
+                }else{
+                    name = obj.options[0].name;
+                    value =obj.options.find(item=>item.selected)?.value||'';
+                }
                 formData[name]=value; 
                 obj.name=name;
             }
         } else if (item.type === 'essay') {
-            obj.choose = essayQusetion(item.html);
+            obj.config = essayQusetion(item.html);
+            obj.name = obj.config.name;
+            formData[obj.name]=obj.config.value; 
         } else if (item.type === 'match') {
-            obj.choose = matchQuestion(item.html);
+            obj.questions = matchQuestion(item.html);
+            obj.questions.forEach((question:Record<string,any>)=>{
+                formData[question.name] = question.options.find((option:Record<string,any>)=>option.selected===true)?.value||'';
+            });
         } else if (item.type === 'shortanswer') {
-            obj.choose = shortanswerQusetion(item.html);
+            obj.config = shortanswerQusetion(item.html);
+            obj.name=obj.config.name;
+            formData[obj.name]=obj.config.value; 
+        }else if (item.type === 'multianswer') {
+            const config = multianswerQusetion(item.html);
+            obj.question = config.question;
+            obj.forms = config.forms;
+            obj.forms.forEach((question:Record<string,any>)=>{
+                formData[question.name] = question.value||'';
+            });
+        }else if (item.type === 'gapselect') {
+            const config = gapselectQusetion(item.html);
+            obj.forms = config.forms;
+            config.forms.forEach((question:Record<string,any>)=>{
+                formData[question.name] = question.options.find((option:Record<string,any>)=>option.selected===true)?.value||'';
+            });
+      
         }
         obj.info = getQuizInfo(item.html, item.type);
         obj.formulation = getTimes(item.html);
@@ -58,11 +101,12 @@ const formatData = (data:any[],formData:Record<string,any>)=>{
         res.push(obj);
     });
     console.log(res);
+    console.log(formData);
     return res;
 };
 export const useQuizStore = defineStore({
     id: 'quiz',
-    state: (): UserState => ({
+    state: (): QuizState => ({
         quizData:{},
         paperData:{},
         reviewData:{},

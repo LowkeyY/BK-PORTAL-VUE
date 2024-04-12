@@ -2,38 +2,40 @@
  * @Author: Lowkey
  * @Date: 2024-04-01 11:40:57
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-03 15:33:39
+ * @LastEditTime: 2024-04-12 16:39:15
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\quiz\components\QuestionBank.vue
  * @Description: 
 -->
 <template>
-    <quiz-paper ref="quizPaperRef" :questions="useQuiz.getQuestions" :form-data="formData" />
-    <view class="actions">
-        <view v-if="useQuiz.quizData.navmethod === 'sequential'">
-            <button v-if="useQuiz.paperData.nextpage>0" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
-        </view>
-        <view v-else>
-            <button v-if="useQuiz.paperData.nextpage===1" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
-            <view v-else-if="useQuiz.paperData.nextpage>0" class="btns">
-                <view><button :loading="useQuiz.saveLoading" @click="()=>handleChangePage('prev')">上一题</button></view>
-                <view>
-                    <button v-if="useQuiz.paperData.nextpage>0" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
-                    <button v-else :loading="useQuiz.saveLoading" type="primary" @click="onFinish">提交</button>
+    <view class="content">
+        <quiz-form-render ref="quizFormRef" :questions="useQuiz.getQuestions" :form-data="formData" />
+        <view class="actions">
+            <view v-if="useQuiz.quizData.navmethod === 'sequential'">
+                <button v-if="useQuiz.paperData.nextpage>0" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
+            </view>
+            <view v-else>
+                <button v-if="useQuiz.paperData.nextpage===1" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
+                <view v-else-if="useQuiz.paperData.nextpage>0" class="btns">
+                    <view><button :loading="useQuiz.saveLoading" @click="()=>handleChangePage('prev')">上一题</button></view>
+                    <view>
+                        <button v-if="useQuiz.paperData.nextpage>0" :loading="useQuiz.saveLoading" type="primary" @click="()=>handleChangePage()">下一题</button>
+                        <button v-else :loading="useQuiz.saveLoading" type="primary" @click="onFinish">提交</button>
+                    </view>
+                </view>
+                <view v-else class="btns">
+                    <view><button v-if="useQuiz.currentPage>0" :loading="useQuiz.saveLoading" @click="()=>handleChangePage('prev')">上一题</button></view>
+                    <view> <button :loading="useQuiz.saveLoading" type="primary" @click="onFinish">提交</button></view>
                 </view>
             </view>
-            <view v-else class="btns">
-                <view><button v-if="useQuiz.currentPage>0" :loading="useQuiz.saveLoading" @click="()=>handleChangePage('prev')">上一题</button></view>
-                <view> <button :loading="useQuiz.saveLoading" type="primary" @click="onFinish">提交</button></view>
+        </view>
+        <uni-drawer ref="drawerRef" mode="right">
+            <view class="scroll-view">
+                <scroll-view class="scroll-view-box" scroll-y="true">
+                    <QuizNavigate @handle-change-navigate="handleChangeNavigate" @handle-finish="onFinish" />
+                </scroll-view>
             </view>
-        </view>
+        </uni-drawer>
     </view>
-    <uni-drawer ref="drawerRef" mode="right">
-        <view class="scroll-view">
-            <scroll-view class="scroll-view-box" scroll-y="true">
-                <QuizNavigate @handle-change-navigate="handleChangeNavigate" @handle-finish="onFinish" />
-            </scroll-view>
-        </view>
-    </uni-drawer>
 </template>
 
 <script setup name="QuestionBank" lang="ts">
@@ -49,26 +51,16 @@ defineProps({
 const useQuiz = useQuizStore();
 
 const drawerRef = ref();
-const quizPaperRef = ref();
+const quizFormRef = ref();
 const formData = computed(()=>useQuiz.formData);
 
 const showNavigate = ()=>{
     drawerRef.value.open();
 };
 const getPageItemsResponses = (questions:any[]) => {
-   
     const responses:Record<string,any> = {};
     questions && questions.map(dataItem => {
-        if (dataItem.type === 'multichoice' || dataItem.type === 'truefalse') {
-            responses[dataItem.formulation] = dataItem.sequencecheck;
-        } else if (dataItem.type === 'shortanswer') {
-            responses[dataItem.formulation] = dataItem.sequencecheck;
-        } else if (dataItem.type === 'essay') {
-            responses[dataItem.formulation] = dataItem.sequencecheck;
-        } else {
-
-            responses[dataItem.formulation] = dataItem.sequencecheck;
-        }
+        responses[dataItem.formulation] = dataItem.sequencecheck;
     });
     return responses;
 };
@@ -143,12 +135,14 @@ const navSaveCallback =(page:number)=>{
  * @return {*}
  */
 const onSave = (changeType:string,type='progress',page=0) =>{
-    const {formRef} = quizPaperRef.value;
+    const {formRef} = quizFormRef.value;
     formRef.validate().then((data:Record<string,any>) => {
+      
         const answerInfo = useQuiz.getAnswerInfo;
         const {attemptid} = answerInfo;
         const savaData = getSubmitVal({
-            ...checkSubmitData(data), ...getPageItemsResponses(useQuiz.getQuestions)
+            ...checkSubmitData(data), 
+            ...getPageItemsResponses(useQuiz.getQuestions)
         });
         const params = {
             ...savaData,
@@ -156,6 +150,7 @@ const onSave = (changeType:string,type='progress',page=0) =>{
             timeup: type === 'auto' ? 1 : 0,  // 原逻辑type就没有auto的场景，finishattempt 1 代表最后提交，0为保存当前提交。
             finishattempt: type === 'auto' ? 1 : 0,
         };
+        console.log(savaData);
         let callback = ()=>{};
         if(changeType==='navigate'){
             callback=()=>navSaveCallback(page);
@@ -188,6 +183,9 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+.content {
+  padding-bottom: 80rpx;
+}
 .actions {
   padding: 0 60rpx;
   margin: 60rpx 0 0;
