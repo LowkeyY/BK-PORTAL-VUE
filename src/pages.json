@@ -280,6 +280,28 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "addForum",
+                    "path": "forum/add",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "forumDetail",
+                    "path": "forum/detail",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
             ]
         },
@@ -302,8 +324,7 @@
                     "name": "forum",
                     "path": "forum/index",
                     "style": {
-                        "navigationStyle": "custom",
-                        "enablePullDownRefresh": true
+                        "navigationStyle": "custom"
                     },
                     "meta": {
                         "ignoreAuth": true,

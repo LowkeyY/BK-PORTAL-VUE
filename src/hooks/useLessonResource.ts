@@ -4,35 +4,34 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-03-22 17:36:26
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
- * @Description: 
+ * @Description:
  */
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import { router } from '@/router';
-import {Toast,Loading,HideLoading,prettifyModal} from '@/utils/uniapi/prompt';
-import {resourceType} from '@/utils/constants';
+import { Toast, Loading, HideLoading, prettifyModal } from '@/utils/uniapi/prompt';
+import { resourceType } from '@/utils/constants';
 import storage from '@/utils/storage';
 import { StorageEnum } from '@/enums/storageEnum';
 import { useOpenUrl } from './useOpenUrl';
 import useFiles from './useFiles';
 
-const {CUNOVS_SERVER} =getBaseUrl();
+const { CUNOVS_SERVER } = getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const QUERY_URL = `${CUNOVS_SERVER}/url/${moodleToken}`; // 请求url资源
 const QUERY_RESOURCE = `${CUNOVS_SERVER}/resource/${moodleToken}`;
 const UPDATE_URL_STATE = `${CUNOVS_SERVER}/url/view/${moodleToken}`; // 更新URL资源状态
 const UPDATE_RESOURCE_STATE = `${CUNOVS_SERVER}/resource/view/${moodleToken}`; // 更新URL资源状态
-const {openFile} = useFiles();
+const { openFile } = useFiles();
 
 export default function useLessonResource() {
-  
-    const getResourceType = (type:string)=>{
-        return resourceType[type]||'资源活动';
+    const getResourceType = (type: string) => {
+        return resourceType[type] || '资源活动';
     };
-    const changeRouter  =(pathName:string,params:Record<string,any>)=>{
+    const changeRouter = (pathName: string, params: Record<string, any>) => {
         router.push({
-            name:pathName,
-            params
+            name: pathName,
+            params,
         });
     };
 
@@ -41,15 +40,15 @@ export default function useLessonResource() {
      * @param {Record} params
      * @param {*} any
      * @return {*}
-     */    
-    const queryUrl = (params:Record<string,any>)=>{
-        const {courseid} = params;
-        http.get(QUERY_URL,params).then((res:Record<string,any>)=>{
-            const {success,data,message='获取资源失败'} = res;
-            if(success&&data.length){
+     */
+    const queryUrl = (params: Record<string, any>) => {
+        const { courseid } = params;
+        http.get(QUERY_URL, params).then((res: Record<string, any>) => {
+            const { success, data, message = '获取资源失败' } = res;
+            if (success && data.length) {
                 const targetParams = data[0];
-                handleResourceClick(targetParams,courseid);
-            }else{
+                handleResourceClick(targetParams, courseid);
+            } else {
                 Toast(message);
             }
         });
@@ -60,12 +59,12 @@ export default function useLessonResource() {
      * @param {string} urlid
      * @return {*}
      */
-    const updateUrlState = (urlid:string)=>{
-        http.get(UPDATE_URL_STATE,{urlid});
+    const updateUrlState = (urlid: string) => {
+        http.get(UPDATE_URL_STATE, { urlid });
     };
 
-    const updateResourceState = (resourceid:string)=>{
-        http.get(UPDATE_RESOURCE_STATE,{resourceid});
+    const updateResourceState = (resourceid: string) => {
+        http.get(UPDATE_RESOURCE_STATE, { resourceid });
     };
 
     /**
@@ -73,63 +72,82 @@ export default function useLessonResource() {
      * @param {Record} params
      * @param {*} any
      * @return {*}
-     */    
-    const queryFiles = (params:Record<string,any>)=>{
+     */
+    const queryFiles = (params: Record<string, any>) => {
         Loading('正在加载文件...');
-        const {courseid,cmid,instance,...others} = params;
+        const { courseid, cmid, instance, ...others } = params;
         const queryParams = {
             cmid,
             courseid,
-            resourceid: instance
+            resourceid: instance,
         };
-        http.get(QUERY_RESOURCE,queryParams).then((res:Record<string,any>)=>{
-            const {success,data,message='获取资源失败'} = res;
-            if(success){
-                handleResourceClick({...others,instance,contents:data,id:cmid},courseid);
-            }else{
-                Toast(message);
-            }
-        }).finally(()=>{
-            HideLoading();
-        });
+        http.get(QUERY_RESOURCE, queryParams)
+            .then((res: Record<string, any>) => {
+                const { success, data, message = '获取资源失败' } = res;
+                if (success) {
+                    handleResourceClick({ ...others, instance, contents: data, id: cmid }, courseid);
+                } else {
+                    Toast(message);
+                }
+            })
+            .finally(() => {
+                HideLoading();
+            });
     };
 
-    
-    const handleResourceClick = (params:any,courseid?:string|number)=>{
-        const { modname = '', modulename = '', name='',id = '', instance = '', httpurl = '', contents = [{}],coursewareID, tracking = '2', stats = {},href} = params as any;
+    const handleResourceClick = (params: any, courseid?: string | number) => {
+        const {
+            modname = '',
+            modulename = '',
+            name = '',
+            id = '',
+            instance = '',
+            httpurl = '',
+            contents = [{}],
+            coursewareID,
+            tracking = '2',
+            stats = {},
+            href,
+        } = params as any;
         const { state = 0 } = stats;
-        const modType =  modname || modulename;
-        const defaultParams:Record<string,any> = {
+        const modType = modname || modulename;
+        const defaultParams: Record<string, any> = {
             cmid: id,
             courseid,
             instance,
-            modname:modType
+            modname: modType,
         };
         switch (modType) {
-            case 'page': 
-            case 'forum': 
-            case 'quiz': 
-            case 'assign': 
-            case 'feedback': 
-            case 'choice': 
-            case 'folder': 
-                changeRouter(modType,defaultParams);
+            case 'page':
+            case 'forum':
+                changeRouter('forum', {
+                    ...defaultParams,
+                    forumid: instance,
+                    name,
+                });
                 break;
-              
+            case 'quiz':
+            case 'assign':
+            case 'feedback':
+            case 'choice':
+            case 'folder':
+                changeRouter(modType, defaultParams);
+                break;
+
             case 'svp':
             case 'superclass':
-                changeRouter('superClass',defaultParams);
+                changeRouter('superClass', defaultParams);
                 break;
             case 'resource':
                 if (Object.keys(contents[0]).length > 0) {
                     // 不需要请求源文件，下载文件
-                   
-                    const {fileurl='', filesize= 0} = contents[0];
+
+                    const { fileurl = '', filesize = 0 } = contents[0];
                     openFile({
-                        fileSize:filesize,
-                        fileUrl: `${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`
+                        fileSize: filesize,
+                        fileUrl: `${fileurl}${fileurl.indexOf('?') === -1 ? '?' : '&'}token=${moodleToken}`,
                     });
-                }else{
+                } else {
                     // 请求源文件
                     queryFiles(defaultParams);
                 }
@@ -143,7 +161,7 @@ export default function useLessonResource() {
                 useOpenUrl(httpurl);
                 break;
             case 'mdlres':
-                changeRouter('courseware',{
+                changeRouter('courseware', {
                     ...defaultParams,
                     coursewareID,
                     tracking,
@@ -151,7 +169,7 @@ export default function useLessonResource() {
                 });
                 break;
             case 'label':
-                if(href){
+                if (href) {
                     // Modal({
                     //     title:'不能查看此资源',
                     //     content:`请先按要求完成【${name}】`,
@@ -159,8 +177,8 @@ export default function useLessonResource() {
                     //     confirmText:'知道了'
                     // });
                     prettifyModal({
-                        title:'不能查看此资源',
-                        content:`请先按要求完成【${name}】`,
+                        title: '不能查看此资源',
+                        content: `请先按要求完成【${name}】`,
                     });
                 }
                 break;
@@ -173,29 +191,29 @@ export default function useLessonResource() {
                     //     confirmText:'知道了'
                     // });
                     prettifyModal({
-                        title:`移动端不兼容${getResourceType(modType)}`,
-                        content:'请使用网页版学习平台参与此活动。',
+                        title: `移动端不兼容${getResourceType(modType)}`,
+                        content: '请使用网页版学习平台参与此活动。',
                     });
                 }
         }
     };
-  
-    const handlerTagAHrefParseParam = (params:any, courseid?:string|number) => {
+
+    const handlerTagAHrefParseParam = (params: any, courseid?: string | number) => {
         const { modname = '' } = params;
 
         if (modname !== '') {
             let targetParams = '';
             if (modname === 'resource') {
-                const {
-                    fileurl = '', filesize=0, href = '', id = '', ...otherParams
-                } = params;
+                const { fileurl = '', filesize = 0, href = '', id = '', ...otherParams } = params;
                 if (id === '' && (fileurl !== '' || href !== '')) {
                     targetParams = {
-                        contents: [{
-                            fileurl: fileurl || href,
-                            filesize
-                        }],
-                        ...otherParams
+                        contents: [
+                            {
+                                fileurl: fileurl || href,
+                                filesize,
+                            },
+                        ],
+                        ...otherParams,
                     };
                 }
             }
@@ -207,21 +225,21 @@ export default function useLessonResource() {
     /**
      * @description: html 中A标签事件 Attribute 包含 exec_script_func 的标签不能解析，rich-text 事件只有A标签 和img标签
      * @return {*}
-     */    
-    const handlerLinkClick = (targetParams:Record<string,any>,courseid:string) =>{
+     */
+    const handlerLinkClick = (targetParams: Record<string, any>, courseid: string) => {
         let notHasError = false;
-        const {hrefparam} = targetParams;
-        if(hrefparam){
+        const { hrefparam } = targetParams;
+        if (hrefparam) {
             const params = JSON.parse(hrefparam);
             const { href = '' } = params;
-            if ((notHasError = (href && courseid)) !== '') {
+            if ((notHasError = href && courseid) !== '') {
                 handlerTagAHrefParseParam(params, courseid);
             }
             if (!!hrefparam && !notHasError) {
                 prettifyModal({
-                    modalType:'message',
-                    type:'error',
-                    content:'无法显示此资源, 请使用网页版学习平台查看此资源!'
+                    modalType: 'message',
+                    type: 'error',
+                    content: '无法显示此资源, 请使用网页版学习平台查看此资源!',
                 });
             }
         }
@@ -230,6 +248,6 @@ export default function useLessonResource() {
         getResourceType,
         handleResourceClick,
         handlerTagAHrefParseParam,
-        handlerLinkClick
+        handlerLinkClick,
     };
 }

@@ -4,20 +4,17 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-03-22 11:43:01
  * @FilePath: \BK-Portal-VUE\src\components\FilesContent\FilesContent.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
-    <view v-if="isArray(fileList)&&fileList.length">
-        <uni-section v-if="showTitle" title="附件" type="line" style="background-color: transparent;" />
+    <view v-if="isArray(fileList) && fileList.length">
+        <uni-section v-if="showTitle" title="附件" type="line" style="background-color: transparent" />
         <uni-list :border="true">
-            <uni-list-item
-                v-for="(file,index) in fileList" :key="index" ellipsis="1" clickable
-                @click="downloadFile(file)"
-            >
+            <uni-list-item v-for="(file, index) in fileList" :key="index" ellipsis="1" clickable @click="downloadFile(file, index)">
                 <template #header>
                     <view class="icon">
-                        <image :src="getFileIcon(file[propertyValue.fileName])" style="width: 60rpx;height: 80rpx;padding-right: 20rpx;" mode="scaleToFill" />
+                        <image :src="getFileIcon(file[propertyValue.fileName])" style="width: 60rpx; height: 80rpx; padding-right: 20rpx" mode="scaleToFill" />
                     </view>
                 </template>
                 <template #body>
@@ -25,7 +22,7 @@
                         <view class="name text-ellipsis-1">{{ file[propertyValue.fileName] }}</view>
                         <view class="info">
                             <view class="time">
-                                {{ getCommonDate(file[propertyValue.fileTime] / (propertyValue.fileTime==='uploadTime'?1000:1)) }}
+                                {{ getCommonDate(file[propertyValue.fileTime] / (propertyValue.fileTime === 'uploadTime' ? 1000 : 1)) }}
                             </view>
                             <view class="size">
                                 {{ renderFileSize(file[propertyValue.fileSize]) }}
@@ -49,60 +46,59 @@
 </template>
 
 <script setup name="FilesContent">
-import {getCommonDate, getFileIcon,renderFileSize} from '@/utils';
-import {isArray} from '@/utils/is';
+import { getCommonDate, getFileIcon, renderFileSize } from '@/utils';
+import { isArray } from '@/utils/is';
 
 defineProps({
     loading: {
         type: Boolean,
-        default: false
+        default: false,
     },
     showTitle: {
         type: Boolean,
-        default: true
+        default: true,
     },
-    fileList:{
-        type:Array,
-        default:()=>[]
+    fileList: {
+        type: Array,
+        default: () => [],
     },
     title: {
         type: String,
-        default: '附件'
+        default: '附件',
     },
-    propertyValue:{
+    propertyValue: {
         type: Object,
-        default:()=>({
-            fileName:'filename',
-            fileSize:'filesize',
-            fileTime:'timemodified',
-        })
-    }
+        default: () => ({
+            fileName: 'filename',
+            fileSize: 'filesize',
+            fileTime: 'timemodified',
+        }),
+    },
 });
 const emit = defineEmits(['handle-download']);
-const downloadFile = (file)=>{
-    emit('handle-download',file);
+const downloadFile = (file) => {
+    emit('handle-download', file);
 };
 </script>
 
 <style lang="scss" scoped>
 .icon {
-  width: 10%;
+    width: 10%;
 }
 .content {
-  width: 90%;
-  .name {
-    font-size: $uni-font-size-lg;
-    margin-bottom: 12rpx;
-  }
-  .info {
-    display: flex;
-    justify-content: space-between;
-    font-size: $uni-font-size-base;
-    color: $uni-color-subtitle;
-    .size {
-      color: #fdb121;
+    width: 90%;
+    .name {
+        font-size: $uni-font-size-lg;
+        margin-bottom: 12rpx;
     }
-  }
+    .info {
+        display: flex;
+        justify-content: space-between;
+        font-size: $uni-font-size-base;
+        color: $uni-color-subtitle;
+        .size {
+            color: #fdb121;
+        }
+    }
 }
 </style>
-
