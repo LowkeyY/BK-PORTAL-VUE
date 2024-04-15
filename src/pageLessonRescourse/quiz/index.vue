@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-29 12:37:01
+ * @LastEditTime: 2024-04-15 19:17:39
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\quiz\index.vue
  * @Description: 
 -->
@@ -68,6 +68,7 @@ import { isEmpty } from '@/utils/is';
 import {handleJumpToPage} from '@/utils/handle';
 
 const pageParams = getCurPageParam();
+
 const { courseid,modname,instance,cmid} = pageParams;
 const useUser = useUserStore();
 const useApp = useAppStore();
@@ -131,9 +132,10 @@ onPullDownRefresh(()=>{
         queryQuizData(queryParams.value);
     }
 });
-
-onShow(async ()=>{
+onUnload(()=>{
     useQuiz.$reset();
+});
+onShow(async ()=>{
     const userid = useUser.moodleUserId;
     navTitle.value= getResourceType(modname);
     const quizParams = {

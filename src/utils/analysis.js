@@ -91,7 +91,7 @@ export function choiceQuestion(html) {
                     disabled: $('.answer input[type="radio"]')
                         .eq(index)
                         .prop('disabled'),
-                    currect: $('.answer input[type="radio"]')
+                    correct: $('.answer input[type="radio"]')
                         .eq(index)
                         .siblings('i')
                         .prop('title') || ''
@@ -129,7 +129,7 @@ export function choiceQuestion(html) {
                     disabled: $('.answer input[type="checkbox"]')
                         .eq(index)
                         .prop('disabled'),
-                    currect: $('.answer input[type="checkbox"]')
+                    correct: $('.answer input[type="checkbox"]')
                         .eq(index)
                         .siblings('i')
                         .prop('title') || ''
@@ -185,7 +185,7 @@ export function matchQuestion(html) {
                 name: $('.answer select')
                     .eq(index)
                     .attr('name'),
-                currect: $('.answer select')
+                correct: $('.answer select')
                     .eq(index)
                     .siblings('i')
                     .prop('title') || '',
@@ -209,7 +209,7 @@ export function shortanswerQusetion(html) {
         items.id = el.prop('id');
         items.name = el.attr('name');
         items.value = el.val();
-        items.currect = el.siblings('i')
+        items.correct = el.siblings('i')
             .prop('title') || '';
         items.readonly =  el.attr('readonly');
     }
@@ -227,9 +227,13 @@ export function essayQusetion(html) {
         items.format = ipt.attr('name');
         items.formatVal = ipt.val();
         items.rows = textarea.prop('rows');
+        items.readonly=textarea.prop('readonly');
+        items.type = 'textarea';
     } else {
+        // 富文本
         const el = $('.answer .qtype_essay_editor');
         items.value = el.text();
+        items.type = 'editor';
     }
     return items;
 }
@@ -246,7 +250,7 @@ export function multianswerQusetion(html){
         if (node.attribs) {
             forms.push({
                 ...node.attribs,
-                currect:node.next  ? node.next.attribs.title || '' : ''
+                correct:node.next  ? node.next.attribs.title || '' : ''
             });
         }
     });
@@ -277,7 +281,7 @@ export function gapselectQusetion(html){
             forms.push({
                 ...node.attribs,
                 options,
-                currect:node.next && node.next.next ? node.next.next.attribs.title || '' : ''
+                correct:node.next && node.next.next ? node.next.next.attribs.title || '' : ''
             });
         }
     });

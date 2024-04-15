@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-29 12:19:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-03 13:33:16
+ * @LastEditTime: 2024-04-15 19:10:33
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\quiz\quizPaper.vue
  * @Description: 
 -->
@@ -52,12 +52,18 @@ const onSubmit = ()=>{
         timeup: 0, // 不知道1、0 的区别
         finishattempt: 1 // 最终提交
     };
-    const callback = (data)=>{
+    const callback = (data:Record<string,any>)=>{
         if(data.state === 'finished'){
             // 提交后回顾结果
+            router.replace({
+                name: 'quizReview',
+                params:{
+                    attemptid
+                },
+            });
         }
     };
-    useQuiz.saveQuiz(params);
+    useQuiz.saveQuiz(params,callback);
 };
 
 const handleSubmitQuiz = ()=>{

@@ -2,8 +2,8 @@
  * @Author: Lowkey
  * @Date: 2024-04-10 16:59:13
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-11 13:36:44
- * @FilePath: \BK-Portal-VUE\src\components\QuizPaper\LieCheckbox.vue
+ * @LastEditTime: 2024-04-15 18:48:17
+ * @FilePath: \BK-Portal-VUE\src\components\QuizFormRender\LieCheckbox.vue
  * @Description: 官方组件居然没加插槽扩展？！题目选项需要渲染html片段修改一下官方组件包括提交逻辑
 -->
 
@@ -40,7 +40,7 @@
                     </view>
                     <view class="checklist-content" :class="{'list-content':mode === 'list' && icon ==='left'}">
                         <!-- <text class="checklist-text" :style="item.styleIconText">{{ item[map.text] }}</text> -->
-                        <rich-text class="html-box" :nodes="parseHtml(item[map.text])" space />
+                        <rich-text class="html-box" :style="{color: setColor(item.correct)}" :nodes="parseHtml(item[map.text])" space />
                         <view v-if="mode === 'list' && icon === 'right'" class="checkobx__list" :style="item.styleBackgroud"></view>
                     </view>
                 </label>
@@ -454,13 +454,33 @@ export default {
             }
             return classles;
         },
+        setColor(state){
+            if(state === '不正确' || state === '错误'){
+                return '#e43d33';
+            }else if(state === '正确'){
+                return '#18bc37';
+            }else{
+                return '';
+            }
+        },
         setStyleIcon(item) {
             let styles = {};
             let classles = '';
+            // if (this.selectedColor) {
+            //     let selectedColor = this.selectedColor ? this.selectedColor : '#2979ff';
+            //     styles['background-color'] = item.selected ? selectedColor : '#fff';
+            //     styles['border-color'] = item.selected ? selectedColor : '#DCDFE6';
+
+            //     if (!item.selected && item.disabled) {
+            //         styles['background-color'] = '#F2F6FC';
+            //         styles['border-color'] = item.selected ? selectedColor : '#DCDFE6';
+            //     }
+            // }
+           
             if (this.selectedColor) {
                 let selectedColor = this.selectedColor ? this.selectedColor : '#2979ff';
-                styles['background-color'] = item.selected ? selectedColor : '#fff';
-                styles['border-color'] = item.selected ? selectedColor : '#DCDFE6';
+                styles['background-color'] = item.selected ? this.setColor(item.correct) : '#fff';
+                styles['border-color'] = item.selected ? this.setColor(item.correct) :  '#DCDFE6';
 
                 if (!item.selected && item.disabled) {
                     styles['background-color'] = '#F2F6FC';
@@ -480,7 +500,8 @@ export default {
                 if (this.mode === 'tag') {
                     styles.color = item.selected ? (this.selectedTextColor ? this.selectedTextColor : '#fff') : '#666';
                 } else {
-                    styles.color = item.selected ? (this.selectedTextColor ? this.selectedTextColor : selectedColor) : '#666';
+                    // styles.color = item.selected ? (this.selectedTextColor ? this.selectedTextColor : selectedColor) : '#666';
+                    styles.color = item.selected ? (this.selectedTextColor ? this.setColor(item.correct) : selectedColor) : '#666';
                 }
                 if (!item.selected && item.disabled) {
                     styles.color = '#999';

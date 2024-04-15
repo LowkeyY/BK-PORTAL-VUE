@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-04-03 15:03:58
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-12 18:18:41
+ * @LastEditTime: 2024-04-15 18:40:09
  * @FilePath: \BK-Portal-VUE\src\components\QuizFormRender\QuizFormRender.vue
  * @Description: 
 -->
@@ -13,7 +13,7 @@
                 <view class="card-header">
                     <view class="header-title">{{ item.info.title }}</view>
                     <view class="header-info">
-                        <view :style="{color:checkboxColor(item.info.state)}">{{ item.info.state }}</view>
+                        <view :style="{color:setColor(item.info.state)}">{{ item.info.state }}</view>
                         <view>{{ item.info.grade }}</view>
                     </view>
                 </view>
@@ -31,13 +31,14 @@
                         </view>
                     </template>
                     <view v-if="item.type === 'multichoice' || item.type === 'truefalse' || item.type === 'multichoiceset'">
-                        <lie-checkbox v-model="formData[item.name]" :selected-color="checkboxColor(item)" :multiple="item.options[0]?.type!=='radio'" :localdata="item.options" />
+                        <lie-checkbox v-model="formData[item.name]" selected-color="show" selected-text-color="show" :multiple="item.options[0]?.type!=='radio'" :localdata="item.options" />
                     </view>
                     <view v-if="item.type === 'essay'">
-                        <bad-eidtor v-model="formData[item.name]" :read-only="item.config.disabled" />
+                        <bad-eidtor v-if="item.config.type==='editor'" v-model="formData[item.name]" :readonly="item.config.readonly" />
+                        <uni-easyinput v-else v-model="formData[item.name]" type="textarea" placeholder="请输入回答" :disabled="item.config.readonly"></uni-easyinput>
                     </view>
                     <view v-if="item.type === 'shortanswer'">
-                        <uni-easyinput v-model="formData[item.name]" :disabled="item.config.readonly==='readonly'" focus placeholder="请输入回答"></uni-easyinput>
+                        <uni-easyinput v-model="formData[item.name]" :styles="{borderColor:setColor(item.config.correct),color:setColor(item.config.correct)}" :disabled="item.config.readonly==='readonly'" placeholder="请输入回答"></uni-easyinput>
                     </view>
                 </uni-forms-item>
                 <view v-else-if="item.type === 'match'">
@@ -51,7 +52,7 @@
                                 <rich-text :nodes="parseHtml(pickerItem.question)" space />
                             </view>
                             <uni-data-picker 
-                                v-model="formData[pickerItem.name]" :readonly="pickerItem.disabled==='disabled'" placeholder="请选择" :localdata="pickerItem.options"
+                                v-model="formData[pickerItem.name]" :class="{'picker-error':pickerItem.correct==='错误'||pickerItem.correct==='不正确','picker-correct':pickerItem.correct==='正确'}" :readonly="pickerItem.disabled==='disabled'" placeholder="请选择" :localdata="pickerItem.options"
                             >
                             </uni-data-picker>
                         </template>
@@ -67,7 +68,7 @@
                             <view class="label">
                                 {{ `回答${index+1}` }}
                             </view>
-                            <uni-easyinput v-if="form.type==='text'" v-model="formData[form.name]" :disabled="form.readonly==='readonly'" placeholder="请输入回答"></uni-easyinput>
+                            <uni-easyinput v-if="form.type==='text'" v-model="formData[form.name]" :styles="{borderColor:setColor(form.correct),color:setColor(form.correct)}" :disabled="form.readonly==='readonly'" placeholder="请输入回答"></uni-easyinput>
                             <!-- <uni-data-picker 
                                 v-model="formData[form.name]" placeholder="请选择" :localdata="pickerItem.options"
                             >
@@ -86,7 +87,7 @@
                                 {{ `回答${index+1}` }}
                             </view>
                             <uni-data-picker 
-                                v-model="formData[form.name]" :readonly="form.disabled==='disabled'" placeholder="请选择" :localdata="form.options"
+                                v-model="formData[form.name]" :class="{'picker-error':form.correct==='错误'||form.correct==='不正确','picker-correct':form.correct==='正确'}" :readonly="form.disabled==='disabled'" placeholder="请选择" :localdata="form.options"
                             >
                             </uni-data-picker>
                         </template>
@@ -103,7 +104,6 @@
 <script setup name="QuizFormRender" lang="ts">
 import parseHtml from '@/utils/html-parser.js';
 import LieCheckbox from './LieCheckbox.vue';
-import { isObject, isString } from '@/utils/is';
 const props = defineProps({
     questions: {
         type: Array<any>,
@@ -118,24 +118,14 @@ const { formData } = toRefs(props);
 
 const formRef = ref();
 const simpleForm = ['truefalse','multichoice','essay','shortanswer','multichoiceset'];
-const checkboxColor = (item:any) =>{
-    let state = '';
-    if(isString(item)){
-        state=item;
-    }else if(isObject(item)){
-        const selects = item.options.find((item:Record<string,any>)=>item.selected)||{};
-        const {currect=''} = selects;
-        state=currect;
-    }else{
-        return item;
-    }
-   
+const setColor = (state:string) =>{
+
     if(state === '不正确' || state === '错误'){
         return '#e43d33';
     }else if(state === '正确'){
         return '#18bc37';
     }else{
-        return '#007aff';
+        return '';
     }
 };
 defineExpose({
@@ -173,6 +163,9 @@ defineExpose({
   .second-bar {
     position: relative;
   }
+}
+::v-deep .is-disabled {
+  color: inherit;
 }
 .card-header {
   display: flex;
@@ -222,10 +215,30 @@ defineExpose({
     margin-bottom: 20rpx;
     color: $uni-color-subtitle;
   }
+  table {
+    height: auto;
+    overflow: auto hidden;
+  }
 }
 .error-text {
   border-top: 3px solid $uni-color-warning;
   color: $uni-color-warning;
   padding-top: 10rpx;
+}
+.picker-error {
+  ::v-deep .input-value-border {
+    border-color: $uni-color-error;
+  }
+  ::v-deep .text-color {
+    color: $uni-color-error;
+  }
+}
+.picker-correct {
+  ::v-deep .input-value-border {
+    border-color: $uni-color-success;
+  }
+  ::v-deep .text-color {
+    color: $uni-color-success;
+  }
 }
 </style>

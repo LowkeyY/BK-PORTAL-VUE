@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-04-02 15:17:02
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-02 18:37:49
+ * @LastEditTime: 2024-04-15 17:50:44
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\quiz\components\QuizNavigate.vue
  * @Description: 
 -->
@@ -73,7 +73,7 @@ const handleNavigateClick = (page:number)=>{
   border-left: 8rpx solid $uni-color-primary;
 }
 .actions {
-  padding: 0 60rpx;
+  padding: 0 60rpx 60rpx;
   margin: 60rpx 0 0;
   .goback {
     margin-bottom: 40rpx;

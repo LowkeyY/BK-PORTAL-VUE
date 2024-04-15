@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-27 17:03:06
+ * @LastEditTime: 2024-04-15 19:18:26
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
@@ -164,9 +164,10 @@ onPullDownRefresh(()=>{
         queryAssign(queryParams.value);
     }
 });
-
-onShow(async ()=>{
+onUnload(()=>{
     useAssign.$reset();
+});
+onShow(async ()=>{
     const userid = useUser.moodleUserId;
     navTitle.value= getResourceType(modname);
     const assignParams = {
