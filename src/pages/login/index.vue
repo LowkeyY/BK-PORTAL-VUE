@@ -62,7 +62,7 @@ const selectRolesRef = ref();
 const useStore = useAuthStore();
 const useUser = useUserStore();
 const loginForm = ref({
-    username: storage.get('username'),
+    username: storage.get('account'),
     password: '',
 });
 watch(() => useUser.roleList, newValue => {

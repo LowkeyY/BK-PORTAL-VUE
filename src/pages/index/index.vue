@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-30 13:19:58
+ * @LastEditTime: 2024-04-30 16:37:44
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -48,14 +48,12 @@ import { router } from '@/router';
 const useUser = useUserStore();
 const useAuth = useAuthStore();
 const useApp = useAppStore();
-const params:any = reactive({
-    searchData:{
-        userid:useUser.moodleUserId
-    },
+const taskParams:any = reactive({
+    searchData:{},
     searchApi: studentTaskListApi,
 });
 
-const { dataState,refresh,fetchList:fetchTaskList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params,{immediate:false});
+const { dataState,refresh,fetchList:fetchTaskList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(taskParams,{immediate:false});
 const noticeCont = ref(0);
 const grids = computed(()=>useApp.getGrids);
 
@@ -78,7 +76,8 @@ const init =async ()=>{
         // 北开用户请求学习平台Token
         await useAuth.queryMoodleToken();
     }
-    fetchTaskList(params);
+    taskParams.searchData={userid:useUser.moodleUserId};
+    fetchTaskList(taskParams);
     useApp.queryMoodleBaseInfo();
     useApp.queryGridsSort();
     queryMessageCounts();
