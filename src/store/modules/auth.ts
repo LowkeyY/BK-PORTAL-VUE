@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-29 19:43:54
+ * @LastEditTime: 2024-04-30 16:23:55
  * @FilePath: \BK-Portal-VUE\src\store\modules\auth.ts
  * @Description:
  */
@@ -194,6 +194,7 @@ export const useAuthStore = defineStore({
          * @description 登出
          */
         async loginOut(): Promise<any> {
+            const useUser = useUserStore();
             const keysToDelete = ['credential', 'portalToken', 'orgCode', 'portalUserId', 'userCode', 'moodleUserId', 'moodleToken', 'userLoginId'];
             await Promise.all(
                 keysToDelete.map((key) => {
@@ -208,6 +209,8 @@ export const useAuthStore = defineStore({
             );
             try {
                 const res = await logout();
+                useUser.$reset();
+                this.$reset();
                 return Promise.resolve(res);
             } catch (err: any) {
                 return Promise.reject(err);
