@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-09-11 11:32:00
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-02-29 16:21:53
+ * @LastEditTime: 2024-04-30 16:03:34
  * @FilePath: \BK-Portal-VUE\src\components\PullRefreshList\PullRefreshList.vue
  * @Description:
 -->
@@ -195,10 +195,11 @@ onMounted(() => {
 }
 .bottom-line {
   color: $uni-text-color-placeholder;
-  padding: 20rpx 0 60rpx;
+  padding: 20rpx 0 120rpx;
   text-align: center;
 }
 .hasMoreImg {
+  padding: 0 0 120rpx;
   width: 100%;
   text-align: center;
 }

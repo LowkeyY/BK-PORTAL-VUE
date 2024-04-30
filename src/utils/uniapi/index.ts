@@ -1,5 +1,3 @@
-import storage from '@/utils/storage';
-import { StorageEnum } from '@/enums/storageEnum';
 
 /**
  * @description 设置系统剪贴板的内容
@@ -53,10 +51,4 @@ export const px2rpx = (px: number) => {
     return px / (uni.upx2px(100) / 100);
 };
 
-/**
- * @description 判断是否是北开student
- */
-export const bkIdentity = () => {
-    const orgCode = storage.get(StorageEnum.ORG_CODE);
-    return orgCode === 'bjou_student';
-};
+

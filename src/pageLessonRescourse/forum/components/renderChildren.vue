@@ -1,17 +1,17 @@
 <template>
     <view class="child-container">
         <view v-for="(reply, index) in list" :key="index" class="item-container">
-            <view style="display: flex">
+            <view style="display: flex;">
                 <view class="item-top">
                     <img
                         :src="getImages(reply?.userpictureurl, 'defaultUserIcon')"
                         mode="widthFix"
-                        style="width: 80rpx; height: 80rpx; border-radius: 80rpx; padding-right: 20rpx"
+                        style="width: 80rpx; height: 80rpx; border-radius: 80rpx; padding-right: 20rpx;"
                         @error="(el) => getErrorImg(el, 'user')"
                     />
                     <view>
                         <view class="subject-text">{{ reply.subject }}</view>
-                        <view style="color: #717171; font-size: 24rpx">{{ `由 ${reply.userfullname} 发布` }}</view>
+                        <view style="color: #717171; font-size: 24rpx;"> {{ getCommonDate(reply.created) }}</view>
                     </view>
                 </view>
                 <view>{{ `#${reply.level}` }}</view>
@@ -19,21 +19,20 @@
             <view>
                 <render-html class="padding" :html="reply.message" />
                 <files-content
-                    class="padding"
                     v-if="reply.attachments !== ''"
+                    class="padding"
                     :show-title="false"
                     :file-list="reply.attachments"
                     @click="curAttachments = reply.attachments"
                     @handle-download="handleDownload"
                 />
-                <view class="padding" v-if="reply.aggregatelabel">
-                    {{ `${reply.aggregatelabel}${reply.aggregatestr === '' ? '-' : reply.aggregatestr}${reply.count ? `(${reply.count})` : ''}` }}
-                </view>
             </view>
             <view class="bottom">
-                <view style="color: #717171; font-size: 24rpx"> {{ getCommonDate(reply.created) }}</view>
-                <view class="reply" @click="handleReply(reply)" v-if="reply.canreply">
-                    <uni-icons type="chat" color="#2B83D7" size="26" style="padding-left: 10rpx"></uni-icons>
+                <view v-if="reply.aggregatelabel" class="padding">
+                    {{ `${reply.aggregatelabel}${reply.aggregatestr === '' ? '-' : reply.aggregatestr}${reply.count ? `(${reply.count})` : ''}` }}
+                </view>
+                <view v-if="reply.canreply" class="reply" @click="handleReply(reply)">
+                    <uni-icons type="chat" color="#2B83D7" size="26" style="padding-left: 10rpx;"></uni-icons>
                     <text>回复</text>
                 </view>
             </view>
@@ -82,51 +81,51 @@ const handleReply = (reply) => {
 
 <style scoped lang="scss">
 .padding {
-    padding: 5rpx 0;
+  padding: 5rpx 0;
 }
 .child-container {
-    margin: 1rpx;
+  margin: 1rpx;
 }
 .item-container {
-    border: 2rpx solid #ddd;
-    padding: 10rpx;
-    background-color: #fbfbfb;
+  border: 2rpx solid #ddd;
+  padding: 10rpx;
+  background-color: #fbfbfb;
 }
 .item-top {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  width: 90%;
+  .top-msg {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100rpx;
-    width: 90%;
-    .top-msg {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100rpx;
-    }
+  }
 }
 .aggregatelabel {
-    margin-top: 20px;
-    padding: 0 20px;
-    color: #717171;
+  margin-top: 20px;
+  padding: 0 20px;
+  color: #717171;
 }
 .reply {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    color: #2b83d7;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #2b83d7;
 }
 .subject-text {
-    font-size: 28rpx;
-    width: 550rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding-bottom: 5rpx;
+  font-size: 28rpx;
+  width: 550rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-bottom: 5rpx;
 }
 .bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 0;
 }
 </style>

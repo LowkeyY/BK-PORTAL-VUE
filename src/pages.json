@@ -34,6 +34,17 @@
             }
         },
         {
+            "name": "Template",
+            "path": "pages/template/index",
+            "style": {
+                "navigationStyle": "custom"
+            },
+            "meta": {
+                "ignoreAuth": true,
+                "tabBar": true
+            }
+        },
+        {
             "name": "Mine",
             "path": "pages/mine/index",
             "style": {
@@ -280,28 +291,6 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
-                },
-                {
-                    "name": "addForum",
-                    "path": "forum/add",
-                    "style": {
-                        "navigationStyle": "custom"
-                    },
-                    "meta": {
-                        "ignoreAuth": true,
-                        "tabBar": false
-                    }
-                },
-                {
-                    "name": "forumDetail",
-                    "path": "forum/detail",
-                    "style": {
-                        "navigationStyle": "custom"
-                    },
-                    "meta": {
-                        "ignoreAuth": true,
-                        "tabBar": false
-                    }
                 }
             ]
         },
@@ -323,6 +312,28 @@
                 {
                     "name": "forum",
                     "path": "forum/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "addForum",
+                    "path": "forum/addForum",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "forumDetail",
+                    "path": "forum/forumDetail",
                     "style": {
                         "navigationStyle": "custom"
                     },
@@ -449,6 +460,57 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pageOuchn",
+            "pages": [
+                {
+                    "name": "OuchnHome",
+                    "path": "index/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "OuchnList",
+                    "path": "ouchnList/index",
+                    "style": {
+                        "navigationBarTitleText": "历年试题",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "Examination",
+                    "path": "examination/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "OuchnCourse",
+                    "path": "course/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {
@@ -463,38 +525,70 @@
             "mp-html": "/components/mp-html/uni-app/components/mp-html/mp-html"
         }
     },
-    "tabBar": {
-        "color": "#949494",
-        "selectedColor": "#2B83D7",
-        "backgroundColor": "#FFF",
-        "borderStyle": "#e0e0e0",
-        "list": [
-            {
-                "pagePath": "pages/index/index",
-                "text": "首页",
-                "iconPath": "static/images/tabBar/homePage.png",
-                "selectedIconPath": "static/images/tabBar/homePage-o.png"
-            },
-            {
-                "pagePath": "pages/lessons/index",
-                "text": "课程",
-                "iconPath": "static/images/tabBar/lesson.png",
-                "selectedIconPath": "static/images/tabBar/lesson-o.png"
-            },
-            {
-                "pagePath": "pages/notifications/index",
-                "text": "通知·制度",
-                "iconPath": "static/images/tabBar/notice.png",
-                "selectedIconPath": "static/images/tabBar/notice-o.png"
-            },
-            {
-                "pagePath": "pages/mine/index",
-                "text": "我的",
-                "iconPath": "static/images/tabBar/mine.png",
-                "selectedIconPath": "static/images/tabBar/mine-o.png"
-            }
-        ]
-    },
+    // "tabBar": {
+    //     "color": "#949494",
+    //     "selectedColor": "#2B83D7",
+    //     "backgroundColor": "#FFF",
+    //     "borderStyle": "#e0e0e0"
+    // "list": [
+    //     {
+    //         "pagePath": "pages/index/index",
+    //         "text": "首页",
+    //         "iconPath": "static/images/tabBar/homePage.png",
+    //         "selectedIconPath": "static/images/tabBar/homePage-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/lessons/index",
+    //         "text": "课程",
+    //         "iconPath": "static/images/tabBar/lesson.png",
+    //         "selectedIconPath": "static/images/tabBar/lesson-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/notifications/index",
+    //         "text": "通知·制度",
+    //         "iconPath": "static/images/tabBar/notice.png",
+    //         "selectedIconPath": "static/images/tabBar/notice-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/mine/index",
+    //         "text": "我的",
+    //         "iconPath": "static/images/tabBar/mine.png",
+    //         "selectedIconPath": "static/images/tabBar/mine-o.png"
+    //     }
+    // ]
+    // "list": [
+    //     {
+    //         "pagePath": "pages/notifications/index",
+    //         "text": "首页",
+    //         "iconPath": "static/images/tabBar/homePage.png",
+    //         "selectedIconPath": "static/images/tabBar/homePage-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/index/index",
+    //         "text": "学习平台",
+    //         "iconPath": "static/images/tabBar/moodle.png",
+    //         "selectedIconPath": "static/images/tabBar/moodle-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/lessons/index",
+    //         "text": "直播课程",
+    //         "iconPath": "static/images/tabBar/live.png",
+    //         "selectedIconPath": "static/images/tabBar/live-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/template/index",
+    //         "text": "教师日历",
+    //         "iconPath": "static/images/tabBar/schedule.png",
+    //         "selectedIconPath": "static/images/tabBar/schedule-o.png"
+    //     },
+    //     {
+    //         "pagePath": "pages/mine/index",
+    //         "text": "我的",
+    //         "iconPath": "static/images/tabBar/mine.png",
+    //         "selectedIconPath": "static/images/tabBar/mine-o.png"
+    //     }
+    // ]
+    // },
     "easycom": {
         "autoscan": true,
         "custom": {

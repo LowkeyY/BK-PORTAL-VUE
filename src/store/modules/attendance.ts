@@ -1,3 +1,4 @@
+
 import {defineStore} from 'pinia';
 import {Toast} from '@/utils/uniapi/prompt';
 import {attendanceCourseListApi} from '@/services/list';
@@ -7,7 +8,7 @@ interface UserState {
     attendanceCourseList: Array<any>;
     attendanceData:Record<string,any>;
 }
-const useUser = useUserStore();
+
 export const useAttendanceCourseStore = defineStore({
     id: 'attendanceCourse',
     state: (): UserState => ({
@@ -16,6 +17,7 @@ export const useAttendanceCourseStore = defineStore({
     }),
     actions: {
         async queryAttendanceCourseList(): Promise<any> {
+            const useUser = useUserStore();
             const attendanceParams:AttendanceCourseParams = {
                 userid:useUser.moodleUserId,
             };

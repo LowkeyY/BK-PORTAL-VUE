@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:32:44
+ * @LastEditTime: 2024-04-30 15:42:52
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
@@ -201,6 +201,40 @@ export const bkStudentGirds:Grids[] = [
     },
 ];
 
+export const gkStudentGirds = [
+    // {
+    //     id: '1',
+    //     icon:'studentStatusGK',
+    //     text: '学籍信息',
+    //     path: 'studentStatusGK'
+    // },
+    {
+        id: '2',
+        icon: 'examinationGK',
+        text: '考试成绩',
+        path: 'Examination'
+    },
+    {
+        id: '3',
+        icon: 'courseGK',
+        text: '已选课程',
+        path: 'OuchnCourse'
+    },
+    {
+        id: '4',
+        icon: 'schoolCalendarGK',
+        text: '历年试题',
+        path: 'OuchnList',
+        queryType: 'gklnst'
+    },
+    {
+        id: '5',
+        icon: 'archivesGK',
+        text: '常见问题',
+        path: 'OuchnList',
+        queryType: 'gkcjwt'
+    }
+];
 export const moreGird = {
     id: '99',
     icon: 'more',
@@ -337,3 +371,51 @@ export const availabilityinfoHtmlStyles = {
     a:'font-size: 24rpx;',
     ul:'padding: 0 0 0 1em;margin: 0.1em 0 !important;font-size: 24rpx;',
 };
+
+export const bkStudentTabBar = [
+    {
+        'pagePath': 'pages/index/index',
+        'text': '首页',
+        'iconPath': '/static/images/tabBar/homePage.png',
+        'selectedIconPath': '/static/images/tabBar/homePage-o.png'
+    },
+    {
+        'pagePath': 'pages/lessons/index',
+        'text': '课程',
+        'iconPath': '/static/images/tabBar/lesson.png',
+        'selectedIconPath': '/static/images/tabBar/lesson-o.png'
+    },
+    {
+        'pagePath': 'pages/notifications/index',
+        'text': '通知·制度',
+        'iconPath': '/static/images/tabBar/notice.png',
+        'selectedIconPath': '/static/images/tabBar/notice-o.png'
+    },
+    {
+        'pagePath': 'pages/mine/index',
+        'text': '我的',
+        'iconPath': '/static/images/tabBar/mine.png',
+        'selectedIconPath': '/static/images/tabBar/mine-o.png'
+    }
+];
+
+export const gkStudentTabBar = [
+    {
+        'pagePath': 'pageOuchn/index/index',
+        'text': '首页',
+        'iconPath': '/static/images/tabBar/homePage.png',
+        'selectedIconPath': '/static/images/tabBar/homePage-o.png'
+    },
+    {
+        'pagePath': 'pages/notifications/index',
+        'text': '通知',
+        'iconPath': '/static/images/tabBar/notice.png',
+        'selectedIconPath': '/static/images/tabBar/notice-o.png'
+    },
+    {
+        'pagePath': 'pages/mine/index',
+        'text': '我的',
+        'iconPath': '/static/images/tabBar/mine.png',
+        'selectedIconPath': '/static/images/tabBar/mine-o.png'
+    }
+];

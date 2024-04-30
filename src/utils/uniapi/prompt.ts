@@ -4,7 +4,7 @@
  * https://uniapp.dcloud.io/api/ui/prompt.html
  */
 import { createApp } from '@/main';
-const {app} = createApp();
+
 /**
  * 显示消息提示框
  * @param title
@@ -103,6 +103,7 @@ interface typeOptions{
     onCancel?:Function
 }
 export function  prettifyModal(options:typeOptions){
+    const {app} = createApp();
     const {title,content,type,modalType,onConfirm,onCancel} = options;
     app._context.config.globalProperties.$showPopup({
         title,

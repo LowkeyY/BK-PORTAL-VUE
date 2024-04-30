@@ -1,7 +1,7 @@
 
 
 <script lang="ts" setup>
-
+import {isBjouUser} from '@/utils';
 import {getInformationApi, informationCollectionApi} from '@/services/notifications';
 import {portalFileDownload,portalEnclosureDownload} from '@/services/app';
 import {getCommonDate} from '@/utils';
@@ -60,7 +60,7 @@ onLoad(async option => {
             <view class="information-msg">
                 <text>{{ `来源：${curInformation.informationSource}` }}</text>
                 <text>发布时间：{{ getCommonDate(curInformation.createDate / 1000, false) }}</text>
-                <view>
+                <view v-if="isBjouUser()">
                     <uni-icons
                         :type="curInformation.isCollection?'star-filled':'star'" size="22"
                         :color="curInformation.isCollection?'#ff9c15':'#999'" @click="handelCollection"

@@ -2,13 +2,14 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-03 14:37:37
+ * @LastEditTime: 2024-04-26 19:40:33
  * @FilePath: \BK-Portal-VUE\src\utils\index.ts
  * @Description:
  */
-import { isObject } from '@/utils/is';
 import storage from './storage';
+import { isObject } from '@/utils/is';
 import { StorageEnum } from '@/enums/storageEnum';
+import { UserRoleEnums } from '@/enums/appEnum';
 import { getBaseUrl } from '@/utils/env';
 import defaultUserIcon from '../static/images/default/userIcon.png';
 import defaultImg from '../static/images/default/default.png';
@@ -41,7 +42,15 @@ export function setStorage(obj: any) {
  * @return {*}
  */
 export function isBjouUser(): boolean {
-    return storage.get(StorageEnum.ORG_CODE) === 'bjou_student';
+    return storage.get(StorageEnum.ORG_CODE) === UserRoleEnums.BJOU_STUDENT;
+}
+
+/**
+ * @description: 是否是国开用户
+ * @return {*}
+ */
+export function isOuchnUser(): boolean {
+    return storage.get(StorageEnum.ORG_CODE) === UserRoleEnums.OUCHN_STUDENT;
 }
 
 /**
@@ -513,7 +522,8 @@ export const renderFileSize = (fileSize: number) => {
 export const getCurPageParam = () => {
     const pages = getCurrentPages();
     const curPage: any = pages[pages.length - 1];
-    const curParam = curPage.options || curPage.$route.query; // h5:curPage.$route.query
+    const curParam = curPage.$page.options || curPage.$route.query; // h5:curPage.$route.query
+  
     return curParam;
 };
 

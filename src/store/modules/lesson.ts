@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 16:58:36
+ * @LastEditTime: 2024-04-26 18:51:16
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -23,8 +23,6 @@ interface UserState {
     collapseActiveIndex:string[];
     courseid:string
 }
-const useUser = useUserStore();
-
 
 export const useLessonStore = defineStore({
     id: 'lesson',
@@ -105,6 +103,7 @@ export const useLessonStore = defineStore({
             }
         },
         async queryAttendanceCourse(payload:Record<string,string>): Promise<any> {
+            const useUser = useUserStore();
             const {courseid=''} = payload;
             const params:AttendanceCourseParams = {
                 courseid,
@@ -120,6 +119,7 @@ export const useLessonStore = defineStore({
             }
         },
         async queryDurationCourse(payload:Record<string,string>): Promise<any> {
+            const useUser = useUserStore();
             const {courseid=''} = payload;
             const params:AttendanceCourseParams = {
                 courseid,
@@ -135,6 +135,7 @@ export const useLessonStore = defineStore({
             }
         },
         async queryAttendanceRefresh(payload:Record<string,string>): Promise<any> {
+            const useUser = useUserStore();
             const {courseid=''} = payload;
             const params:AttendanceCourseParams = {
                 courseid,

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-14 14:43:01
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 11:49:45
+ * @LastEditTime: 2024-04-30 13:19:58
  * @FilePath: \BK-Portal-VUE\src\pages\index\index.vue
  * @Description: 
 -->
@@ -25,24 +25,26 @@
         </view>
         <uni-section type="line" title="本周未完成任务" />
         <!-- <view class="uni-padding-wrap">
-            <uni-segmented-control :current="0" :values="['任务', '待办']" style-type="text" active-color="#2b83d7" />
+            <uni-segmented-control :current="0" :values="['本周任务', '我的待办']" style-type="text" active-color="#2b83d7" />
         </view> -->
         <pull-refresh-list :loading="loading" :list-data="dataState.listData" :has-more="hasMore" :has-more-loading="hasMoreLoading" :is-refresh="isRefresh" @on-refresh="refresh" @load-more="loadMore">
             <student-task-list :list="dataState.listData" />
         </pull-refresh-list>
     </view>
+    <tab-bar />
 </template>
 <script setup lang="ts">
-
 import { useUserStore } from '@/store/modules/user';
 import { useAuthStore } from '@/store/modules/auth';
 import { useAppStore } from '@/store/app';
-import {isBjouUser} from '@/utils';
+import {isBjouUser, isOuchnUser} from '@/utils';
 import {messageCountsApi} from '@/services/app';
 import {studentTaskListApi} from '@/services/list';
 import {handleGridsClick,handleJumpToPage} from '@/utils/handle';
 import useRefreshList from '@/hooks/useRefreshList';
 import StudentTaskList from './components/StudentTaskList.vue';
+import { router } from '@/router';
+
 const useUser = useUserStore();
 const useAuth = useAuthStore();
 const useApp = useAppStore();
@@ -53,7 +55,7 @@ const params:any = reactive({
     searchApi: studentTaskListApi,
 });
 
-const { dataState,refresh, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params);
+const { dataState,refresh,fetchList:fetchTaskList, loadMore, hasMore, isRefresh,loading ,hasMoreLoading} = useRefreshList(params,{immediate:false});
 const noticeCont = ref(0);
 const grids = computed(()=>useApp.getGrids);
 
@@ -76,12 +78,20 @@ const init =async ()=>{
         // 北开用户请求学习平台Token
         await useAuth.queryMoodleToken();
     }
+    fetchTaskList(params);
     useApp.queryMoodleBaseInfo();
     useApp.queryGridsSort();
     queryMessageCounts();
 };
 
 onShow(()=>{
+    if(isOuchnUser()){
+        // 国开用户
+        router.replace({
+            name:'OuchnHome'
+        });
+        return;
+    }
     init();
 });
 </script>

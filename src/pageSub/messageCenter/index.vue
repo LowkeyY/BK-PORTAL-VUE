@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-17 13:52:11
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-30 13:20:15
+ * @LastEditTime: 2024-04-22 11:24:21
  * @FilePath: \BK-Portal-VUE\src\pageSub\messageCenter\index.vue
  * @Description: 
 -->
@@ -23,8 +23,8 @@
 import Activity from './components/Activity.vue';
 import PrivateLetter from './components/PrivateLetter.vue';
 const current = ref(0);
-const courses =ref(['课程活动', '平台私信']) ;
-
+const courses =ref(['课程活动', '平台私信','消息中心']) ;
+// const courses =ref(['专业责任教师', '课程责任教师','辅导教师','导学教师']) ;
 const onClickItem = (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;

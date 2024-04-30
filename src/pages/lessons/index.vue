@@ -33,7 +33,7 @@
                                 />
                                 <uni-tag
                                     v-if="curLesson.isAttendance"
-                                    style="margin-left: 10rpx"
+                                    style="margin-left: 10rpx;"
                                     type="success"
                                     text="考勤课"
                                     size="small"
@@ -101,6 +101,7 @@
             </view>
         </pull-refresh-list>
     </view>
+    <tab-bar />
 </template>
 
 <script setup lang="ts">

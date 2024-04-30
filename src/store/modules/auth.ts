@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2023-12-20 14:27:35
+ * @LastEditTime: 2024-04-29 19:43:54
  * @FilePath: \BK-Portal-VUE\src\store\modules\auth.ts
  * @Description:
  */
@@ -12,6 +12,7 @@ import { logout, singleSignOnApi, portalLoginApi, portalTokenApi, checkFirstLogi
 import { setStorage } from '@/utils/index';
 import { useUserStore } from '@/store/modules/user';
 import { StorageEnum } from '@/enums/storageEnum';
+import { UserRoleEnums } from '@/enums/appEnum';
 import storage from '@/utils/storage';
 import { Toast } from '@/utils/uniapi/prompt';
 import { router } from '@/router';
@@ -130,6 +131,7 @@ export const useAuthStore = defineStore({
          * @return {*}
          */
         async checkFirstLogin(): Promise<any> {
+            const useUser = useUserStore();
             const params = {
                 // eslint-disable-next-line camelcase
                 access_token: this.portalToken,
@@ -140,10 +142,21 @@ export const useAuthStore = defineStore({
                     const { firstLogin } = data;
                     if (firstLogin) {
                         // 第一次登录
-                    } else {
                         router.replaceAll({
                             name: 'Home',
                         });
+                    } else {
+                        if(useUser.orgCode===UserRoleEnums.BJOU_STUDENT){
+                            // 跳转北开学生首页
+                            router.replaceAll({
+                                name: 'Home',
+                            });
+                        }else if(useUser.orgCode===UserRoleEnums.OUCHN_STUDENT){
+                            router.replaceAll({
+                                name: 'OuchnHome',
+                            });
+                        }
+                       
                     }
                 } else {
                     Toast(message);

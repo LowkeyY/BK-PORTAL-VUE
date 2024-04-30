@@ -41,8 +41,10 @@
                 <a>登录提示</a>
                 <a>忘记密码？</a>
             </view>
-            <button :loading="userStore.loadingState" type="primary" @click="submit">登录</button>
-            <view class="tip-box"></view>
+            <button :loading="useStore.loadingState" type="primary" @click="submit">登录</button>
+            <view>
+                <select-roles ref="selectRolesRef" @select-role="handleLoginByRole" />
+            </view>
         </view>
     </view>
 </template>
@@ -50,14 +52,23 @@
 <script setup>
 
 import { useAuthStore } from '@/store/modules/auth';
-
+import { useUserStore } from '@/store/modules/user';
+import {setStorage} from '@/utils';
+import { StorageEnum } from '@/enums/storageEnum';
 import storage from '@/utils/storage';
 
 const loginFormRef = ref();
-const userStore = useAuthStore();
+const selectRolesRef = ref();
+const useStore = useAuthStore();
+const useUser = useUserStore();
 const loginForm = ref({
     username: storage.get('username'),
     password: '',
+});
+watch(() => useUser.roleList, newValue => {
+    if(newValue.length>1){
+        selectRolesRef.value.toggle();
+    }
 });
 const rules = {
     username: {
@@ -81,7 +92,7 @@ const submit = () => {
    
     loginFormRef.value.validate().then(() => {
        
-        userStore
+        useStore
             .singleSignOn(loginForm.value)
             .then((res) => {
             
@@ -93,6 +104,11 @@ const submit = () => {
             })
             .catch(() => { console.log(2);});
     });
+};
+const handleLoginByRole = (role) =>{
+    useUser.orgCode=role;
+    setStorage({[StorageEnum.ORG_CODE]:role});
+    useStore.checkFirstLogin();
 };
 </script>
 <style lang="scss" scoped>

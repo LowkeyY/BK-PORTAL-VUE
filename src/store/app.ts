@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-10 13:06:34
+ * @LastEditTime: 2024-04-29 17:46:23
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
@@ -73,7 +73,8 @@ export const useAppStore = defineStore({
                     }
                 });
             return [...arr,moreGird];
-        }
+        },
+
     },
     actions: {
         async queryMoodleBaseInfo(): Promise<any> {

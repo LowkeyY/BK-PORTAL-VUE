@@ -2,23 +2,27 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-22 16:01:36
+ * @LastEditTime: 2024-04-30 10:47:44
  * @FilePath: \BK-Portal-VUE\src\store\modules\user.ts
  * @Description: 
  */
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
 import {setStorage} from '@/utils';
-import { userRoleApi,userInfoApi,portalUserInfoApi } from '@/services/user';
+import { userRoleApi,portalUserInfoApi } from '@/services/user';
 import { StorageEnum } from '@/enums/storageEnum';
+import { UserRoleEnums } from '@/enums/appEnum';
 import { Toast } from '@/utils/uniapi/prompt';
+import {bkStudentTabBar,gkStudentTabBar } from '@/utils/constants';
 import storage from '@/utils/storage';
 
 interface UserState {
     moodleUserId: string;
     portalUserId: string;
     portalUserName:string;
-    userCode:string
+    userCode:string,
+    orgCode:string,
+    roleList:any[]
 }
 
 
@@ -28,9 +32,22 @@ export const useUserStore = defineStore({
         moodleUserId:storage.get(StorageEnum.MOODLE_USER_ID)||'',
         portalUserId:storage.get(StorageEnum.PORTAL_USER_ID)||'',
         userCode:storage.get(StorageEnum.USER_CODE)||'',
-        portalUserName:storage.get(StorageEnum.USER_CODE)||''
+        orgCode:storage.get(StorageEnum.ORG_CODE)||'',
+        portalUserName:storage.get(StorageEnum.USER_CODE)||'',
+        roleList:[]
     }),
-    getters: {},
+    getters: {
+        getUserTabBar:(state):any[]=>{
+            if(state.orgCode===UserRoleEnums.BJOU_STUDENT){
+                return bkStudentTabBar;
+            }else if(state.orgCode===UserRoleEnums.OUCHN_STUDENT){
+                return gkStudentTabBar;
+            }else{
+                return [];
+            }
+           
+        }
+    },
     actions: {
         /**
          * @description: 
@@ -43,11 +60,12 @@ export const useUserStore = defineStore({
                 if(code===0){
                     if(data.length>1){
                         // 多重身份
-                        
+                        this.roleList=data;
                     }
                     if(data.length===1){
                         const {orgCode} = data[0];
                         // 保存登录角色
+                        this.orgCode=orgCode;
                         setStorage({[StorageEnum.ORG_CODE]:orgCode});
                         useStore.checkFirstLogin();
                     }   
