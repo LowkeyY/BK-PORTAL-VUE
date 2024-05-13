@@ -8,7 +8,15 @@
  */
 
 import { defineStore } from 'pinia';
-import { logout, singleSignOnApi, portalLoginApi, portalTokenApi, checkFirstLoginApi, moodleTokenApi } from '@/services/login';
+import {
+    logout,
+    singleSignOnApi,
+    portalLoginApi,
+    portalTokenApi,
+    checkFirstLoginApi,
+    moodleTokenApi,
+    getCaptchaImg
+} from '@/services/login';
 import { setStorage } from '@/utils/index';
 import { useUserStore } from '@/store/modules/user';
 import { StorageEnum } from '@/enums/storageEnum';
@@ -20,8 +28,10 @@ import CryptoJS from 'crypto-js';
 
 interface AuthState {
     loading?: boolean;
+    isShowCode?: boolean;
     portalToken?: string;
     moodleToken?: string;
+    captchaImg?:any;
 }
 
 // 加密key
@@ -39,23 +49,44 @@ export const useAuthStore = defineStore({
     id: 'auth',
     state: (): AuthState => ({
         loading: false,
+        isShowCode:false,
         portalToken: storage.get(StorageEnum.PORTAL_TOKEN) || '',
         moodleToken: storage.get(StorageEnum.MOODLE_TOKEN) || '',
+        captchaImg:null
     }),
     getters: {
         loadingState: (state) => state.loading,
     },
     actions: {
         /**
+         * @description: 获取验证码
+         * @return {*}
+         */
+        async handleCaptchaImg(payload: CaptchaImgParams): Promise<any> {
+            getCaptchaImg(payload).then(res=>{
+                const {success,data}=res;
+                if(success){
+                    if(data){
+                        const arrayBuffer = new Uint8Array(data);
+                        const base64 = 'data:image/png;base64,'+uni.arrayBufferToBase64(arrayBuffer);
+                        this.captchaImg=base64;
+                    }
+                }
+            });
+        },
+        /**
          * @description: 单点登录
          * @return {*}
          */
         async singleSignOn(payload: SsoParams): Promise<any> {
             this.loading = true;
-            const { username, password } = payload;
+            const { username, password, } = payload;
+            const info = uni.getSystemInfoSync();
             const params = {
-                username,
+                ...payload,
                 password: encryptSHA1(password),
+                systemType:info.system,
+                capathkey:username
             };
 
             try {
@@ -69,13 +100,18 @@ export const useAuthStore = defineStore({
                         [StorageEnum.CREDENTIAL]: password,
                         [StorageEnum.USER_LOGIN_ID]: loginId,
                     });
+                    this.isShowCode=false;
                     // 门户登录
                     this.portalLogin({ username: loginId, password: secret });
                 } else if (code === -2) {
                     // 需要验证码
+                    this.isShowCode=true;
+                    this.handleCaptchaImg(username);
+                    this.loading = false;
                     Toast(message);
                 } else {
                     this.loading = false;
+                    this.isShowCode=false;
                     Toast(message);
                 }
             } catch (err: any) {
@@ -139,11 +175,12 @@ export const useAuthStore = defineStore({
             try {
                 const { data, message = '请稍后再试', code } = await checkFirstLoginApi(params as AccessTokenParams);
                 if (code === 0) {
-                    const { firstLogin } = data;
+                    const { firstLogin,userId } = data;
                     if (firstLogin) {
                         // 第一次登录
-                        router.replaceAll({
-                            name: 'Home',
+                        router.push({
+                            name: 'firstLogin',
+                            params: {userId}
                         });
                     } else {
                         if(useUser.orgCode===UserRoleEnums.BJOU_STUDENT){
@@ -156,7 +193,7 @@ export const useAuthStore = defineStore({
                                 name: 'OuchnHome',
                             });
                         }
-                       
+
                     }
                 } else {
                     Toast(message);
@@ -215,6 +252,6 @@ export const useAuthStore = defineStore({
             } catch (err: any) {
                 return Promise.reject(err);
             }
-        },
+        }
     },
 });

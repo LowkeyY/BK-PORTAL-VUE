@@ -4,17 +4,18 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-04-30 10:47:44
  * @FilePath: \BK-Portal-VUE\src\store\modules\user.ts
- * @Description: 
+ * @Description:
  */
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
-import {setStorage} from '@/utils';
-import { userRoleApi,portalUserInfoApi } from '@/services/user';
+import {isBjouUser, setStorage} from '@/utils';
+import {userRoleApi, portalUserInfoApi, userInfoApi, ouchnUserInfoApi} from '@/services/user';
 import { StorageEnum } from '@/enums/storageEnum';
 import { UserRoleEnums } from '@/enums/appEnum';
 import { Toast } from '@/utils/uniapi/prompt';
 import {bkStudentTabBar,gkStudentTabBar } from '@/utils/constants';
 import storage from '@/utils/storage';
+import {isArray} from "@/utils/is";
 
 interface UserState {
     moodleUserId: string;
@@ -22,7 +23,9 @@ interface UserState {
     portalUserName:string;
     userCode:string,
     orgCode:string,
-    roleList:any[]
+    roleList:any[],
+    ouchnUserInfo?:any,
+    curUserInfo?:any,
 }
 
 
@@ -34,7 +37,9 @@ export const useUserStore = defineStore({
         userCode:storage.get(StorageEnum.USER_CODE)||'',
         orgCode:storage.get(StorageEnum.ORG_CODE)||'',
         portalUserName:storage.get(StorageEnum.USER_CODE)||'',
-        roleList:[]
+        roleList:[],
+        ouchnUserInfo:{},
+        curUserInfo:{}
     }),
     getters: {
         getUserTabBar:(state):any[]=>{
@@ -45,14 +50,14 @@ export const useUserStore = defineStore({
             }else{
                 return [];
             }
-           
+
         }
     },
     actions: {
         /**
-         * @description: 
+         * @description:
          * @return {*}
-         */        
+         */
         async queryUserRoleApi(): Promise<any> {
             const useStore = useAuthStore();
             try {
@@ -68,8 +73,8 @@ export const useUserStore = defineStore({
                         this.orgCode=orgCode;
                         setStorage({[StorageEnum.ORG_CODE]:orgCode});
                         useStore.checkFirstLogin();
-                    }   
-                               
+                    }
+
                 }else {
                     Toast(message);
                 }
@@ -77,7 +82,7 @@ export const useUserStore = defineStore({
                 return Promise.reject(err);
             }
         },
-       
+
         async queryPortalUserInfoApi(): Promise<any> {
             const useStore = useAuthStore();
             const params = {
@@ -95,7 +100,7 @@ export const useUserStore = defineStore({
                         [StorageEnum.PORTAL_USER_NAME]:userName,
                     };
                     this.updateState(infos);
-                    setStorage(infos);              
+                    setStorage(infos);
                 }else {
                     Toast(message);
                 }
@@ -108,6 +113,27 @@ export const useUserStore = defineStore({
                 ...this.$state,
                 ...payload
             };
+        },
+        async queryInfo(): Promise<any> {
+            const useStore = useAuthStore();
+            const params = {
+                // eslint-disable-next-line camelcase
+                access_token: useStore.portalToken,
+            };
+            const { code, message, data } = isBjouUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
+            if (code===0) {
+                this.curUserInfo = data;
+            } else {
+                Toast(message);
+            }
+        },
+        async queryOuchnInfo() : Promise<any>{
+            const { code, message, data } = await ouchnUserInfoApi();
+            if (code===0) {
+                this.ouchnUserInfo = isArray(data) ? data[0] : {};
+            } else {
+                Toast(message);
+            }
         }
     },
 });

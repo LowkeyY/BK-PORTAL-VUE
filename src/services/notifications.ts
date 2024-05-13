@@ -63,3 +63,13 @@ export function informationCollectionListApi(data:any,params:SetPageParams) {
         data,
     });
 }
+/**
+ * @description: 获取校历
+ * @return {*}
+ */
+export function getBkxlInformationApi(data:any) {
+    return http.request({
+        url:`${PORTAL_SERVER}/mobile/information/informations`,
+        data,
+    });
+}

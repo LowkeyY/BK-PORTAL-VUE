@@ -38,6 +38,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectRoles: typeof import('./src/components/SelectRoles/SelectRoles.vue')['default']
+    SendCodeButton: typeof import('./src/components/sendCodeButton/sendCodeButton.vue')['default']
     StatusBar: typeof import('./src/components/StatusBar/StatusBar.vue')['default']
     TabBar: typeof import('./src/components/TabBar/TabBar.vue')['default']
     Test: typeof import('./src/components/Test/index.vue')['default']

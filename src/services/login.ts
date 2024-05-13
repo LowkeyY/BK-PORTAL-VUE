@@ -17,14 +17,15 @@ const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const SSO = `${PORTAL_SERVER}/sso`; // !!!!!!!!!!!!!!!!!!!!!!!!单点登录sso接口 PORTAL_SERVER !!!!!!!!!!!!!!!
 const LOGIN = `${PORTAL_SERVER}/login`;
 const PORTAL_TOKEN = `${PORTAL_SERVER}/oauth/userToken`;
-const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`; 
+const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`;
 const MOODLE_TOKEN = `${CUNOVS_SERVER}/config/getBkUser`; // 获取学习平台Token
 const LOGIN_OUT = `/logout/${moodleToken}`; // 退出
+const LOGIN_INFO = `${CUNOVS_SERVER}/login/info`; // 登录信息
 const GET_PCLOGIN_CODE = `${SSO_SERVER}/security/encodeFix`; // 集成单点登录，获取PC端登录密码
 const PC_LOGIN = `${SSO_SERVER}/security_check`; // 模拟PC登录获取pc端cookie 用于集成单点登录
 const PAYMENT_LOGIN = `${CUNOVS_SERVER}/other/sso/jwgl`; // 缴费系统单点登录
 
-/* 
+/*
  * sso单点登录
  * @param params
  */
@@ -91,7 +92,7 @@ export function logout() {
 }
 
 /**
- * @description: 
+ * @description:
  * @return {*}
  */
 export function getPCLoginCodeApi(data:PcLoginCodeParams) {
@@ -101,7 +102,7 @@ export function getPCLoginCodeApi(data:PcLoginCodeParams) {
     });
 }
 /**
- * @description: 
+ * @description:
  * @return {*}
  */
 export function pcLoginApi(data:PcLoginParams) {
@@ -117,5 +118,77 @@ export function getPaymentCodeApi(data:PaymentLoginParams) {
         url: PAYMENT_LOGIN,
         method: 'post',
         data,
+    });
+}
+
+/**
+ * 登录提示
+ */
+export function loginInfo() {
+    return http.request({
+        url: LOGIN_INFO,
+    });
+}
+
+
+/**
+ * 登录提示
+ */
+export function getCaptchaImg(capatcaKey:any) {
+    return http.request({
+        url: `${SSO_SERVER}/captcha/img?capatcaKey=${capatcaKey}`,
+        responseType: 'arraybuffer'
+    });
+}
+
+
+/**
+ * 登录获取手机邮箱号
+ */
+export function getResetTypes(data:GetResetTypesParams) {
+    return http.request({
+        url: `${SSO_SERVER}/cipherreset/getResetTypes`,
+        data
+    });
+}
+
+/**
+ * 发送验证码
+ */
+export function sendCode(data:any) {
+    return http.request({
+        url: `${SSO_SERVER}/wx/portal/sendCode`,
+        data
+    });
+}
+
+/**
+ * 修改绑定手机邮箱
+ */
+export function updatePhoneOrEmail(data:any) {
+    return http.request({
+        url: `${SSO_SERVER}/wx/portal/updatePhoneOrEmail`,
+        data
+    });
+}
+
+/**
+ * 验证密码
+ */
+export function validRule(data:any) {
+    return http.request({
+        url: `${SSO_SERVER}/sso/validcharactersstrength`,
+        method:'post',
+        data
+    });
+}
+
+/**
+ * 第一次登录设置密码
+ */
+export function updatePassword(data:any) {
+    return http.request({
+        url: `${SSO_SERVER}/user/updatePassword`,
+        data
     });
 }

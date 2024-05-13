@@ -21,6 +21,7 @@ interface RequestOptions {
     data?: Record<string, any>;
     contentType?:string;
     XMLHttpRequest?:boolean;
+    responseType?:any;
   }
 
 
@@ -40,9 +41,32 @@ const doDecode = (json:string) => {
         return json;
     }
 };
-const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FORM_URLENCODED,XMLHttpRequest=false }:RequestOptions):Promise<any> => {
-   
+const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FORM_URLENCODED,XMLHttpRequest=false,responseType=null }:RequestOptions):Promise<any> => {
+
     return new Promise((reslove, reject) => {
+        // 验证码
+        if(responseType&&responseType==='arraybuffer'){
+            uni.request({
+                url: url,
+                method: 'GET',
+                responseType: 'arraybuffer',
+                success: successData => {
+                    // eslint-disable-next-line prefer-const
+                    let { data: responseData, statusCode } = successData as {data:any,statusCode:number};
+                    if (statusCode === 200) {
+                        reslove({
+                            success:true,
+                            statusCode,
+                            data:responseData
+                        });
+                    }
+                },
+                fail: msg => {
+                    reject(msg);
+                }
+            });
+            return;
+        }
         const header:Record<string, string> =  {
             'Content-Type': contentType,
         };
@@ -59,27 +83,27 @@ const request = async({ url, method='GET', data, contentType=ContentTypeEnum.FOR
             success: successData => {
                 // eslint-disable-next-line prefer-const
                 let { data: responseData, statusCode } = successData as {data:any,statusCode:number};
-               
+
                 if (statusCode === 200) { // 部分接口没有success状态，手动添加
                     typeof (responseData) === 'string' && (responseData = doDecode(responseData));
-                  
+
                     if( isArray(responseData&&responseData.length)){
                         // 数组不结构
                         reslove({
-                            success:true, 
+                            success:true,
                             statusCode,
                             data:responseData
                         });
                     }else{
                         reslove({
-                            success:true, 
+                            success:true,
                             statusCode,
                             ...responseData
                         });
                     }
-                  
+
                 } else if (statusCode === 401) {
-                  
+
                     toLogin();
                 } else {
                     const { message = '网络连接失败，请稍后重试' } = responseData as {message?:string};

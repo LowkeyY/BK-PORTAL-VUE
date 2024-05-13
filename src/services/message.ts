@@ -8,6 +8,8 @@ const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 
 const ACTIVITY_MESSAGE = `${CUNOVS_SERVER}/msg/notices/${moodleToken}`; // 课程活动消息
 const PRIVATE_MESSAGE = `${CUNOVS_SERVER}/msg/messageList/${moodleToken}`; // 课程活动消息
+const MESSAGE_CONVERSATION = `${CUNOVS_SERVER}/msg/messages/${moodleToken}`; // 消息对话
+
 /**
  * @description:课程活动消息
  * @return {*}
@@ -29,3 +31,15 @@ export function privateMessageApi(data:PrivateMessageParams) {
         data,
     });
 }
+
+/**
+ * @description:消息对话
+ * @return {*}
+ */
+export function getConversationApi(data:MessageConversationParams) {
+    return http.request({
+        url:MESSAGE_CONVERSATION,
+        data,
+    });
+}
+

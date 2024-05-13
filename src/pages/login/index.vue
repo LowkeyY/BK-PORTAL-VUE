@@ -35,17 +35,36 @@
                             </view>
                         </template>
                     </uni-forms-item>
+                    <uni-forms-item v-show="useStore.isShowCode" name="captchaCode">
+                        <template #default>
+                            <view class="form-item radius">
+                                <uni-easyinput v-model="loginForm.captchaCode" :input-border="true" trim="all" type="text" placeholder="验证码" />
+                                <img
+                                    style="width: 40%; height: 100%;margin-left: 10rpx;" :src="useStore.captchaImg" alt=""
+                                    @click="handleGetCaptchaImg"
+                                />
+                            </view>
+                        </template>
+                    </uni-forms-item>
                 </uni-forms>
             </view>
             <view class="extra-content">
-                <a>登录提示</a>
-                <a>忘记密码？</a>
+                <a @click="handleLoginInfo">登录提示</a>
+                <a @click="handleSetPassword">忘记密码？</a>
             </view>
             <button :loading="useStore.loadingState" type="primary" @click="submit">登录</button>
             <view>
                 <select-roles ref="selectRolesRef" @select-role="handleLoginByRole" />
             </view>
         </view>
+        <uni-popup ref="infoPopupRef" type="center" background-color="#fff">
+            <slot name="default">
+                <view class="infoMsg">
+                    <rich-text style="color: #888;font-size: 24rpx;text-align: left;" :nodes="loginInfoMsg"></rich-text>
+                    <view class="infoMsgConfirm" @click="handleInfoConfirm">确认</view>
+                </view>
+            </slot>
+        </uni-popup>
     </view>
 </template>
 
@@ -53,14 +72,19 @@
 
 import { useAuthStore } from '@/store/modules/auth';
 import { useUserStore } from '@/store/modules/user';
-import {setStorage} from '@/utils';
+import {getErrorImg, setStorage} from '@/utils';
 import { StorageEnum } from '@/enums/storageEnum';
 import storage from '@/utils/storage';
+import {loginInfo} from '@/services/login';
+import {handleJumpToPage} from '@/utils/handle';
 
 const loginFormRef = ref();
+const infoPopupRef = ref();
 const selectRolesRef = ref();
 const useStore = useAuthStore();
 const useUser = useUserStore();
+const loginInfoMsg = ref('');
+const captchaImg = ref();
 const loginForm = ref({
     username: storage.get('account'),
     password: '',
@@ -82,20 +106,19 @@ const rules = {
     password: {
         rules: [
             { required: true, errorMessage: '请输入密码' },
-            { minLength: 6, maxLength: 18, errorMessage: '姓名长度在 {minLength} 到 {maxLength} 个字符' },
+            { minLength: 6, maxLength: 18, errorMessage: '密码长度在 {minLength} 到 {maxLength} 个字符' },
         ],
     },
 };
 const router = useRouter();
 
 const submit = () => {
-   
+
     loginFormRef.value.validate().then(() => {
-       
+
         useStore
             .singleSignOn(loginForm.value)
             .then((res) => {
-            
                 if (res) {
                     router.replaceAll({
                         name: 'Home',
@@ -110,11 +133,43 @@ const handleLoginByRole = (role) =>{
     setStorage({[StorageEnum.ORG_CODE]:role});
     useStore.checkFirstLogin();
 };
+
+const handleLoginInfo =async () => {
+    const {success,data}=await loginInfo();
+    if(success){
+        loginInfoMsg.value=data;
+    }
+    infoPopupRef.value.open();
+};
+
+const handleSetPassword = () => {
+    handleJumpToPage('resetPassword');
+};
+const handleInfoConfirm = () => {
+    infoPopupRef.value.close();
+};
+const handleGetCaptchaImg = () => {
+    useStore.handleCaptchaImg(loginForm.value.username);
+};
+
 </script>
 <style lang="scss" scoped>
 ::v-deep .uni-easyinput__content {
   height: 100%;
-  border-radius: 0 8px 8px 0;
+}
+::v-deep .uni-popup .uni-popup__wrapper {
+  width: 600rpx;
+  border-radius: 10rpx;
+  padding: 40rpx 20rpx 20rpx;
+}
+::v-deep .container .content {
+  text-align: left;
+}
+.infoMsgConfirm {
+  margin-top: 40rpx;
+  border-top: 2rpx solid #e0e0e0;
+  padding-top: 20rpx;
+  color: #2b83d7;
 }
 .container {
   margin: 0 auto;
@@ -143,6 +198,9 @@ const handleLoginByRole = (role) =>{
       .form-item {
         display: flex;
         height: 44px;
+        .radius {
+          border-radius: 8px 0 0 8px;
+        }
         .icon {
           width: 44px;
           height: 44px;

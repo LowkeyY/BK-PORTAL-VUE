@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-04-30 12:22:05
  * @FilePath: \BK-Portal-VUE\src\components\SelectRoles\SelectRoles.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
@@ -35,6 +35,7 @@ defineExpose({
 
 <style scoped lang="scss">
 .popup-content {
+  width: 700rpx;
   .action-item {
     text-align: center;
     font-size: $uni-font-size-lg;

@@ -8,7 +8,7 @@ import { useUserStore } from '@/store/modules/user';
 import { UserRoleEnums } from '@/enums/appEnum';
 import { getPortalAvatar } from '@/utils';
 import { getBaseUrl } from '@/utils/env';
-import {handleGridsClick} from '@/utils/handle';
+import {handleGridsClick, handleJumpToPage} from '@/utils/handle';
 import { isArray } from '@/utils/is';
 import {setStorage} from '@/utils';
 import { StorageEnum } from '@/enums/storageEnum';
@@ -32,35 +32,35 @@ const goSettings = () => {
     router.push({ name: 'settings' });
 };
 
-const queryInfo =async () =>{
-    loading.value = true;
-    const params = {
-        // eslint-disable-next-line camelcase
-        access_token: useStore.portalToken,
-    };
-    const { code, message, data } = isBjouUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
-    if (code===0) {
-        curUserInfo.value = data;
-    } else {
-        Toast(message);
-    }
-    loading.value = false;
-};
-const queryOuchnInfo =async () =>{
-    loading.value = true;
-    const { code, message, data } = await ouchnUserInfoApi();
-    if (code===0) {
-        ouchnUserInfo.value = isArray(data) ? data[0] : {};
-    } else {
-        Toast(message);
-    }
-    loading.value = false;
-};
+// const queryInfo =async () =>{
+//     loading.value = true;
+//     const params = {
+//         // eslint-disable-next-line camelcase
+//         access_token: useStore.portalToken,
+//     };
+//     const { code, message, data } = isBjouUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
+//     if (code===0) {
+//         curUserInfo.value = data;
+//     } else {
+//         Toast(message);
+//     }
+//     loading.value = false;
+// };
+// const queryOuchnInfo =async () =>{
+//     loading.value = true;
+//     const { code, message, data } = await ouchnUserInfoApi();
+//     if (code===0) {
+//         ouchnUserInfo.value = isArray(data) ? data[0] : {};
+//     } else {
+//         Toast(message);
+//     }
+//     loading.value = false;
+// };
 const queryUserRole = async ()=>{
     try {
         const { data=[], message= '请稍后再试', code } = await userRoleApi();
         if(code===0){
-            useUser.roleList = data;            
+            useUser.roleList = data;
         }else {
             Toast(message);
         }
@@ -83,14 +83,21 @@ const handleLoginByRole = (role:string) =>{
             });
         }
     }
-   
+
+};
+const handlePersonalInfo = () => {
+    handleJumpToPage('editPersonalInfo');
 };
 onShow(async () => {
-    queryInfo();
-    queryUserRole();
+    loading.value=true;
+    await useUser.queryInfo();
+    await queryUserRole();
+    curUserInfo.value=useUser.curUserInfo;
     if(isOuchnUser()){
-        queryOuchnInfo();
+        await useUser.queryOuchnInfo();
+        ouchnUserInfo.value=useUser.ouchnUserInfo;
     }
+    loading.value=false;
 });
 </script>
 
@@ -168,7 +175,7 @@ onShow(async () => {
         <view class="userinfo-box">
             <uni-section class="mb-10" type="line" title="个人信息">
                 <template #right>
-                    <uni-icons type="compose" size="22" color="#2979ff"></uni-icons>
+                    <uni-icons type="compose" size="22" color="#2979ff" @click="handlePersonalInfo"></uni-icons>
                 </template>
             </uni-section>
         </view>

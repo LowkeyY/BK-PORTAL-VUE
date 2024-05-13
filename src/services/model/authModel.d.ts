@@ -1,4 +1,6 @@
-
+declare interface CaptchaImgParams {
+    capatcaKey: string;
+}
 declare interface SsoParams {
     username: string;
     password: string;
@@ -33,4 +35,8 @@ declare interface PcLoginParams {
 declare interface PaymentLoginParams {
     head: string;
     data:string;
+}
+
+declare interface GetResetTypesParams {
+    userId: string|number;
 }
