@@ -2,14 +2,29 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-20 12:33:04
+ * @LastEditTime: 2024-05-07 15:54:41
  * @FilePath: \BK-Portal-VUE\src\components\NavBar\NavBar.vue
  * @Description: 
 -->
 <template>
     <view class="contaner">
-        <status-bar />
-        <uni-nav-bar class="nav-bar" :dark="dark" color="#fff" background-color="#2b83d7" :border="false" :shadow="shadow" :title="title" left-icon="left" :right-text="rightText" @click-left="handleLeftClick" @click-right="handleRightClick">
+        <view class="nav-status">
+            <status-bar />
+        </view>
+        <uni-nav-bar
+            class="nav-bar"
+            :style="{ top: height }"
+            :dark="dark"
+            color="#fff"
+            background-color="#2b83d7"
+            :border="false"
+            :shadow="shadow"
+            :title="title"
+            left-icon="left"
+            :right-text="rightText"
+            @click-left="handleLeftClick"
+            @click-right="handleRightClick"
+        >
             <template #left>
                 <slot name="left"></slot>
             </template>
@@ -19,7 +34,12 @@
         </uni-nav-bar>
         <uni-popup ref="alertDialogRef" type="dialog">
             <uni-popup-dialog
-                type="warn" cancel-text="取消" confirm-text="确定" title="返回？" :content="modalContent" @confirm="dialogConfirm"
+                type="warn"
+                cancel-text="取消"
+                confirm-text="确定"
+                title="返回？"
+                :content="modalContent"
+                @confirm="dialogConfirm"
                 @close="dialogClose"
             ></uni-popup-dialog>
         </uni-popup>
@@ -27,71 +47,81 @@
 </template>
 
 <script setup name="Nav">
+import { useSystem } from '@/hooks/app/useSystem';
+import { px2rpx } from '@/utils/uniapi';
+const height = `${px2rpx(useSystem().statusBarHeight || 0)}rpx`;
 const router = useRouter();
-const props =defineProps({
+const props = defineProps({
     dark: {
         type: Boolean,
-        default: false
+        default: false,
     },
     shadow: {
         type: Boolean,
-        default: false
+        default: false,
     },
     title: {
         type: String,
-        default: '(●◡●)'
+        default: '(●◡●)',
     },
-    rightText:{
+    rightText: {
         type: String,
-        default: ''
+        default: '',
     },
-    showModal:{
+    showModal: {
         type: Boolean,
-        default: false
+        default: false,
     },
-    modalContent:{
+    modalContent: {
         type: String,
-        default: '返回后不会保存当前操作!'
+        default: '返回后不会保存当前操作!',
     },
     useLeftClick: {
         type: Boolean,
-        default: false
+        default: false,
     },
 });
-const emit = defineEmits(['handle-right-click','handle-left-click']);
+const emit = defineEmits(['handle-right-click', 'handle-left-click']);
 const alertDialogRef = ref(null);
-const handleLeftClick = ()=>{
-    if(props.useLeftClick){
+const handleLeftClick = () => {
+    if (props.useLeftClick) {
         emit('handle-left-click');
-        return; 
+        return;
     }
-    if(props.showModal){
+    if (props.showModal) {
         alertDialogRef.value.open();
-        return; 
+        return;
     }
     router.back();
 };
-const handleRightClick = ()=>{
+const handleRightClick = () => {
     emit('handle-right-click');
 };
-const dialogConfirm = ()=>{
+const dialogConfirm = () => {
     router.back();
 };
-const dialogClose = ()=>{
+const dialogClose = () => {
     alertDialogRef.value.close();
 };
 </script>
 
 <style lang="scss" scoped>
 .contaner {
-  width: 100%;
-  height: 88rpx;
-  .nav-bar {
     width: 100%;
-    position: fixed;
-    z-index: 99;
-    top: 0;
-    left: 0;
-  }
+    height: 88rpx;
+    .nav-status {
+        width: 100%;
+        position: fixed;
+        z-index: 99;
+        top: 0;
+        left: 0;
+    }
+    .nav-bar {
+        width: 100%;
+        position: fixed;
+        z-index: 99;
+        top: 0;
+        left: 0;
+    }
 }
 </style>

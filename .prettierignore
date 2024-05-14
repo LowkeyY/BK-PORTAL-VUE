@@ -14,3 +14,4 @@
 /src/manifest.json
 .eslintcache
 pnpm-lock.yaml
+components.d.ts

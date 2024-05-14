@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 14:23:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:03:48
+ * @LastEditTime: 2024-05-08 16:17:42
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
  * @Description:
 -->
@@ -10,11 +10,11 @@
 <template>
     <app-provider>
         <view class="header">
-            <view class="btn">
+            <view class="btn" :style="{ top: statusBarHeight }">
                 <uni-icons class="back" type="left" size="24" color="#fff" @click="router.back"></uni-icons>
                 <uni-tag text="课程反馈" type="warning" />
             </view>
-            <img class="course-img" :src="getImages(lessonData.courseImage)" mode="aspectFill" @error="(el) => getErrorImg(el, 'user')" />
+            <image class="course-img" :src="getImages(lessonData.courseImage)" mode="aspectFill" @error="(el) => getErrorImg(el, 'user')" />
             <view class="course-info">
                 <view class="course-name">{{ lessonData.fullname }}</view>
                 <view class="course-tips">
@@ -58,7 +58,9 @@ import LiveCourseList from './components/LiveCourseList.vue';
 import { getLiveCourseFilterList } from '@/hooks/useLiveCourse';
 import { useLiveCourseStore } from '@/store/modules/liveCourse';
 import AttendanceDetails from '@/components/AttendanceDetails/AttendanceDetails.vue';
-
+import { useSystem } from '@/hooks/app/useSystem';
+import { px2rpx } from '@/utils/uniapi';
+const statusBarHeight = `${20 + px2rpx(useSystem().statusBarHeight || 0)}rpx`;
 const { setLog, setCourseRecordLog } = useSetLog();
 const useLesson = useLessonStore();
 const useLiveCourse = useLiveCourseStore();
@@ -102,10 +104,10 @@ const ALL_TABS = [
         name: '直播列表',
         key: 'liveCourseList',
     },
-    // {
-    //     name: '课程管理',
-    //     key: 'liveCourse',
-    // },
+    {
+        name: '课程管理',
+        key: 'liveCourse',
+    },
 ];
 
 const tabs = computed(() => {

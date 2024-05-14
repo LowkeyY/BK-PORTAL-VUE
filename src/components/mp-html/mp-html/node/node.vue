@@ -64,7 +64,7 @@
           </block>
         </view>
       </view>
-      <my-audio v-else-if="n.name=='audio'" :class="n.attrs.class" :style="n.attrs.style" :aid="n.attrs.id" :author="n.attrs.author" :controls="n.attrs.controls" :autoplay="n.attrs.autoplay" :loop="n.attrs.loop" :name="n.attrs.name" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" data-source="audio" @play="play" @error="mediaError" /><txv-video v-else-if="n.name=='txv-video'" :vid="n.attrs.vid" :playerid="n.attrs.vid" :id="n.attrs.vid" :class="n.attrs.class" :style="n.attrs.style" controls :data-i="i" @play="play" @error="mediaError" />
+      <my-audio v-else-if="n.name=='audio'" :class="n.attrs.class" :style="n.attrs.style" :aid="n.attrs.id" :author="n.attrs.author" :controls="n.attrs.controls" :autoplay="n.attrs.autoplay" :loop="n.attrs.loop" :name="n.attrs.name" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" data-source="audio" @play="play" @error="mediaError" />
       <!-- 富文本 -->
       <!-- #ifdef H5 || ((MP-WEIXIN || MP-QQ || APP-PLUS || MP-360) && VUE2) -->
       <rich-text v-else-if="!n.c&&!handler.isInline(n.name, n.attrs.style)" :id="n.attrs.id" :style="n.f" :user-select="opts[4]" :nodes="[n]" />
@@ -189,7 +189,15 @@ myAudio,
      * @param {Event} e
      */
     play (e) {
-      this.root.$emit('play')
+      const i = e.currentTarget.dataset.i
+      const node = this.childs[i]
+      this.root.$emit('play', {
+        source: node.name,
+        attrs: {
+          ...node.attrs,
+          src: node.src[this.ctrl[i] || 0]
+        }
+      })
       // #ifndef APP-PLUS
       if (this.root.pauseVideo) {
         let flag = false

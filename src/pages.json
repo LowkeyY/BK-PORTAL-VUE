@@ -34,6 +34,17 @@
             }
         },
         {
+            "name": "BjouSchedule",
+            "path": "pages/bjouSchedule/index",
+            "style": {
+                "navigationStyle": "custom"
+            },
+            "meta": {
+                "ignoreAuth": true,
+                "tabBar": false
+            }
+        },
+        {
             "name": "Template",
             "path": "pages/template/index",
             "style": {
@@ -646,6 +657,66 @@
                 {
                     "name": "OuchnCourse",
                     "path": "course/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pageTeacher",
+            "pages": [
+                {
+                    "name": "TeacherHome",
+                    "path": "index/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": true
+                    }
+                },
+                {
+                    "name": "Moodle",
+                    "path": "moodle/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "TeacherLiveCourse",
+                    "path": "teacherLiveCourse/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "TeacherSchedule",
+                    "path": "teacherSchedule/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "TeacherMine",
+                    "path": "teacherMine/index",
                     "style": {
                         "navigationStyle": "custom"
                     },

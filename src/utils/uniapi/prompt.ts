@@ -1,4 +1,3 @@
-
 /**
  * 交互反馈
  * https://uniapp.dcloud.io/api/ui/prompt.html
@@ -94,23 +93,24 @@ export function ActionSheet(options: UniApp.ShowActionSheetOptions) {
  * @param {Function} onConfirm
  * @return {*}
  */
-interface typeOptions{
-    title?:string
-    content?:string
-    type?:string
-    modalType?:string,
-    onConfirm?:Function,
-    onCancel?:Function
+interface typeOptions {
+    title?: string;
+    content?: string;
+    type?: string;
+    modalType?: string;
+    onConfirm?: Function;
+    onCancel?: Function;
 }
-export function  prettifyModal(options:typeOptions){
-    const {app} = createApp();
-    const {title,content,type,modalType,onConfirm,onCancel} = options;
+export function prettifyModal(options: typeOptions) {
+    const { app } = createApp();
+    const { title, content, type, modalType, onConfirm, onCancel } = options;
+
     app._context.config.globalProperties.$showPopup({
         title,
         content,
         type,
         onConfirm,
         modalType,
-        onCancel
+        onCancel,
     });
 }

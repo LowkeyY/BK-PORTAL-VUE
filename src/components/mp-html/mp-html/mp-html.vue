@@ -12,7 +12,7 @@
 
 <script>
 /**
- * mp-html v2.4.3
+ * mp-html v2.5.0
  * @description 富文本组件
  * @tutorial https://github.com/jin-yufeng/mp-html
  * @property {String} container-style 容器的样式
@@ -42,9 +42,8 @@ import node from './node/node'
 // #endif
 import Parser from './parser'
 import audio from './audio/index.js'
-import style from './style/index.js'
-import txvVideo from './txv-video/index.js'
-const plugins=[audio,style,txvVideo,]
+import imgCache from './img-cache/index.js'
+const plugins=[audio,imgCache,]
 // #ifdef APP-PLUS-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -59,6 +58,7 @@ export default {
     }
   },
   props: {
+    ImgCache: Boolean,
     containerStyle: {
       type: String,
       default: ''

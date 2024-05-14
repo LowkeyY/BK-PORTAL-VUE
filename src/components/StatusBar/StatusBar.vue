@@ -2,30 +2,32 @@
  * @Author: Lowkey
  * @Date: 2024-01-15 15:57:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-15 16:02:16
+ * @LastEditTime: 2024-05-07 13:23:14
  * @FilePath: \BK-Portal-VUE\src\components\StatusBar\StatusBar.vue
  * @Description: 
 -->
 <template>
     <view>
-        <!--#ifdef APP_PLUSE-->
-        <view class="status-bar" />
+        <view class="status-bar" :style="{ height: height }" />
     </view>
-    <!--#edif-->
 </template>
 
 <script setup name="StatusBar" lang="ts">
+import { useSystem } from '@/hooks/app/useSystem';
+import { px2rpx } from '@/utils/uniapi';
+const height = `${px2rpx(useSystem().statusBarHeight || 0)}rpx`;
+console.log(height);
 defineProps({
     text: {
         type: String,
-        default: '-'
-    }
+        default: '-',
+    },
 });
 </script>
 
 <style lang="scss" scoped>
 .status-bar {
-  background-color: $uni-color-primary;
-  height: var(--status-bar-height);
+    width: 100%;
+    background-color: $uni-color-primary;
 }
 </style>

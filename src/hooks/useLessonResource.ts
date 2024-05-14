@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 14:26:07
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:36:26
+ * @LastEditTime: 2024-05-07 19:38:06
  * @FilePath: \BK-Portal-VUE\src\hooks\useLessonResource.ts
  * @Description:
  */
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import { router } from '@/router';
-import { Toast, Loading, HideLoading, prettifyModal } from '@/utils/uniapi/prompt';
+import { Toast, Loading, HideLoading, Modal } from '@/utils/uniapi/prompt';
 import { resourceType } from '@/utils/constants';
 import storage from '@/utils/storage';
 import { StorageEnum } from '@/enums/storageEnum';
@@ -170,30 +170,30 @@ export default function useLessonResource() {
                 break;
             case 'label':
                 if (href) {
-                    // Modal({
-                    //     title:'不能查看此资源',
-                    //     content:`请先按要求完成【${name}】`,
-                    //     showCancel:false,
-                    //     confirmText:'知道了'
-                    // });
-                    prettifyModal({
+                    Modal({
                         title: '不能查看此资源',
                         content: `请先按要求完成【${name}】`,
+                        showCancel: false,
+                        confirmText: '知道了',
                     });
+                    // prettifyModal({
+                    //     title: '不能查看此资源',
+                    //     content: `请先按要求完成【${name}】`,
+                    // });
                 }
                 break;
             default: // 默认提示无法显示
                 if (modType !== '') {
-                    // Modal({
-                    //     title:`移动端不兼容${getResourceType(modType)}`,
-                    //     content:'请使用网页版学习平台参与此活动。',
-                    //     showCancel:false,
-                    //     confirmText:'知道了'
-                    // });
-                    prettifyModal({
+                    Modal({
                         title: `移动端不兼容${getResourceType(modType)}`,
                         content: '请使用网页版学习平台参与此活动。',
+                        showCancel: false,
+                        confirmText: '知道了',
                     });
+                    // prettifyModal({
+                    //     title: `移动端不兼容${getResourceType(modType)}`,
+                    //     content: '请使用网页版学习平台参与此活动。',
+                    // });
                 }
         }
     };
@@ -236,11 +236,17 @@ export default function useLessonResource() {
                 handlerTagAHrefParseParam(params, courseid);
             }
             if (!!hrefparam && !notHasError) {
-                prettifyModal({
-                    modalType: 'message',
-                    type: 'error',
-                    content: '无法显示此资源, 请使用网页版学习平台查看此资源!',
+                Modal({
+                    title: '无法显示此资源',
+                    content: '请使用网页版学习平台查看此资源!',
+                    showCancel: false,
+                    confirmText: '知道了',
                 });
+                // prettifyModal({
+                //     modalType: 'message',
+                //     type: 'error',
+                //     content: '无法显示此资源, 请使用网页版学习平台查看此资源!',
+                // });
             }
         }
     };

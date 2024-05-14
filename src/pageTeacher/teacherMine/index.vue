@@ -1,9 +1,9 @@
 <!--
  * @Author: Lowkey
- * @Date: 2023-12-13 18:09:46
+ * @Date: 2024-05-13 16:56:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-08 18:06:03
- * @FilePath: \BK-Portal-VUE\src\pages\template\index.vue
+ * @LastEditTime: 2024-05-13 16:56:51
+ * @FilePath: \BK-Portal-VUE\src\pageTeacher\index\index.vue
  * @Description: 
 -->
 <script lang="ts" setup></script>
