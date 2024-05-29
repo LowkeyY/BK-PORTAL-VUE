@@ -31,12 +31,12 @@
                 <view v-if="reply.aggregatelabel" class="padding">
                     {{ `${reply.aggregatelabel}${reply.aggregatestr === '' ? '-' : reply.aggregatestr}${reply.count ? `(${reply.count})` : ''}` }}
                 </view>
-                <view v-if="reply.canreply" class="reply" @click="handleReply(reply)">
-                    <uni-icons type="chat" color="#2B83D7" size="26" style="padding-left: 10rpx;"></uni-icons>
-                    <text>回复</text>
+                <view class="rating">
+                    <score-combox style="width: 45%;height: 100%;" :rate-range="rateRange"/>
+                    <button type="primary" class="reply-btn" @click="handleReply">回复</button>
                 </view>
             </view>
-            <render-children v-if="reply.children?.length > 0" :list="reply.children" />
+            <render-children :candidates="rateRange" v-if="reply.children?.length > 0" :list="reply.children" />
         </view>
     </view>
 </template>
@@ -46,12 +46,17 @@ import { useForumStore } from '@/store/modules/forum';
 import { getCommonDate, getErrorImg, getImages } from '@/utils';
 import useLessonResource from '@/hooks/useLessonResource';
 import { handleJumpToPage } from '@/utils/handle';
+import ScoreCombox from "@/components/ScoreCombox/ScoreCombox.vue";
 
 defineProps({
     list: {
         type: Array,
         default: () => [],
     },
+    rateRange:{
+        type: Array,
+        default: () => [],
+    }
 });
 
 const { handlerTagAHrefParseParam } = useLessonResource();
@@ -81,7 +86,8 @@ const handleReply = (reply) => {
 
 <style scoped lang="scss">
 .padding {
-  padding: 5rpx 0;
+  padding: 10rpx 0;
+    margin: 10rpx 0;
 }
 .child-container {
   margin: 1rpx;
@@ -127,5 +133,17 @@ const handleReply = (reply) => {
   justify-content: space-between;
   align-items: center;
   padding: 10rpx 0;
+}
+.rating {
+    display: flex;
+    width: 60%;
+    height: 70rpx;
+    .reply-btn {
+        height: 100%;
+        width: 45%;
+        line-height: 70rpx;
+        text-align: center;
+        font-size: 28rpx;
+    }
 }
 </style>

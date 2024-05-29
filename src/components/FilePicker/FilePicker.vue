@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-03-15 17:53:19
  * @FilePath: \BK-Portal-VUE\src\components\FilePicker\FilePicker.vue
- * @Description: 
+ * @Description:
 -->
 <template>
     <view>
@@ -64,15 +64,15 @@
         </view>
         <uni-popup ref="popupRef" background-color="#fff">
             <view class="popup-content">
-                <uni-file-picker return-type="object" :auto-upload="false" :limit="maxFiles" file-mediatype="all" :list-styles="{display:'none'}" @select="handleSelect">
+                <uni-file-picker return-type="object" :auto-upload="false" :limit="maxFiles" :file-mediatype="fileMediatype" :list-styles="{display:'none'}" @select="handleSelect">
                     <template #default>
                         <view class="action-item">
                             <uni-icons type="folder-add-filled" size="36rpx" color="#555"></uni-icons>
                             选择文件
-                        </view> 
+                        </view>
                     </template>
                 </uni-file-picker>
-                <view class="action-item">
+                <view v-if="isShowMic" class="action-item">
                     <uni-icons type="mic-filled" size="36rpx" color="#555"></uni-icons>
                     录制音频
                 </view>
@@ -107,6 +107,14 @@ const props = defineProps({
     uploadFileList:{
         type:Array<any>,
         default:()=>[]
+    },
+    fileMediatype:{
+        type:String,
+        default:'all'
+    },
+    isShowMic:{
+        type:Boolean,
+        default:true
     }
 });
 const popupRef = ref();
@@ -128,7 +136,7 @@ const fileTypeKind = computed(()=>{
  * @return {*}
  */
 const appendFiles = (files:any[]):any[]=>{
- 
+
     return Array.from(new Set([...uploadFiles.value, ...files].map(file => file.name)))
         .map(name => {
             const file1 = uploadFiles.value.find(file => file.name === name);
@@ -146,11 +154,11 @@ const handleSelect = (e:any)=>{
     const {size,extname} = file;
     if(!validateFileType(extname)){
         Toast(`不能上传${extname}类型的文件。`);
-        return; 
+        return;
     }
     if(size>props.maxSize){
         Toast('文件过大，不能上传。');
-        return; 
+        return;
     }
     nextTick(()=>{
         uploadFiles.value= appendFiles(e.tempFiles);
@@ -164,6 +172,9 @@ const handleSelect = (e:any)=>{
  */
 const validateFileType = (string:string):boolean=>{
     const extname = `.${string}`;
+    if(fileTypeItem.value.length===0){
+        return true;
+    }
     if(fileTypeItem.value.includes(extname)){
         return true;
     }
@@ -193,7 +204,7 @@ const getAllowTypes = (kind:string)=>{
         res.value = allowFileTypes[kind].value.join(',');
     }
     return res;
-}; 
+};
 
 // const change = (e)=>{
 //     // console.log(e);

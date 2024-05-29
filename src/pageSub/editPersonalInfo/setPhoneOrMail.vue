@@ -51,6 +51,22 @@ const receiveNumber=ref('');
 const curCode=ref('');
 const loading=ref(false);
 const handleEdit =async () => {
+    if(!receiveNumber.value){
+        Toast(`请输入${type==='phone'?'手机号码':'邮箱'}`);
+        return;
+    }
+    if(type==='phone'&&!(/^1[3456789]\d{9}$/.test(receiveNumber.value))){
+        Toast('请输入正确的手机号码');
+        return;
+    }
+    if(type==='email'&&!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(receiveNumber.value))){
+        Toast('请输入正确的邮箱');
+        return;
+    }
+    if(!curCode.value){
+        Toast('请输入验证码');
+        return;
+    }
     loading.value=true;
     try {
         let curParams={

@@ -7,7 +7,7 @@
                     <uni-easyinput v-model="formData.subject" placeholder="请输入主题" :input-border="false" />
                 </uni-forms-item>
                 <uni-forms-item class="form-item">
-                    <uni-easyinput v-model="formData.message" type="textarea" :input-border="false" placeholder="请输入主题内容" />
+                    <bad-eidtor v-model="formData.message" />
                 </uni-forms-item>
                 <view v-if="params.type === 'add' && isArray(getGroups(groups, params.course)) && getGroups(groups, params.course).length > 0">
                     {{ getGroups(groups, params.course)[0].label }}
@@ -25,7 +25,7 @@
                         :upload-file-list="fileList"
                         :max-size="Number(params.maxbytes)"
                         :max-files="Number(params.maxattachments)"
-                        :allow-types="allowTypes"
+                        :isShowMic="false"
                     />
                 </view>
                 <view style="padding: 20rpx 0">
@@ -50,7 +50,6 @@ const router = useRouter();
 const params = ref({});
 const submitParams = ref({});
 const fileList = ref([]);
-const allowTypes = ref('.jpg,.jpeg,.png,.JPG,.JPEG,.gif');
 const formData = reactive({
     subject: '',
     message: '',
@@ -74,11 +73,11 @@ const doSubmitAfterUpload = (response: any[]) => {
         };
         params.value.type === 'add'
             ? useForum.addForum(subParams, () => {
-                  router.back();
-              })
+                router.back();
+            })
             : useForum.addPost(subParams, () => {
-                  router.back();
-              });
+                router.back();
+            });
     }
 };
 const { doUpload } = useUploadFiles({ successCallback: doSubmitAfterUpload });
@@ -99,7 +98,6 @@ const getGroups = (groups, id) => {
 
 const confirmSubmit = (data) => {
     const { fileList, value } = data;
-    console.log(fileList, value);
     const { message = '' } = value;
     const str = message.replace(/\n/g, '<br/>').replace(/( )/g, '\u3000');
     if (fileList.lenth > 0) {
@@ -115,11 +113,11 @@ const confirmSubmit = (data) => {
         };
         params.value.type === 'add'
             ? useForum.addForum(submitParams.value, () => {
-                  router.back();
-              })
+                router.back();
+            })
             : useForum.addPost(submitParams.value, () => {
-                  router.back();
-              });
+                router.back();
+            });
     }
 };
 const handelSubmit = async () => {
@@ -140,7 +138,7 @@ const handelSubmit = async () => {
                 courseid: params.value.course ? params.value.course : '',
                 forumid: params.value.id,
                 discussion: params.value.discussionid ? params.value.discussionid : '',
-                groupid: curGroup,
+                groupid: params.value.course,
                 ...formData,
             },
         };

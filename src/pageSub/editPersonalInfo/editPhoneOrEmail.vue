@@ -61,6 +61,10 @@ const email=ref('');
 const loading=ref(false);
 
 const handleNext =async () => {
+    if(!curCode.value){
+        Toast('你还未输入验证码');
+        return;
+    }
     loading.value=true;
     try{
         const params={

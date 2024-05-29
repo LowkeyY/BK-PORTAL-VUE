@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { addForumApi, postAddApi, queryForumApi, queryForumCommentsApi } from '@/services/forum';
 import { Toast } from '@/utils/uniapi/prompt';
+import {forumDataParmas, forumDetailParams, forumParams} from '@/services/model/resource';
 
 interface UserState {
     forumData: Record<string, any>;
@@ -9,6 +10,7 @@ interface UserState {
     parent: Record<string, any>;
     replyList: any[];
     loading: boolean;
+    detailLoading: boolean;
     saveLoading: boolean;
     submitLoading: boolean;
     refreshing: boolean;
@@ -38,6 +40,7 @@ export const useForumStore = defineStore({
         posts: [],
         parent: {},
         loading: false,
+        detailLoading: false,
         saveLoading: false,
         submitLoading: false,
         replyList: [],
@@ -60,6 +63,7 @@ export const useForumStore = defineStore({
             }
         },
         async queryForumComments(params: forumDetailParams): Promise<any> {
+            this.detailLoading=true;
             try {
                 const res = await queryForumCommentsApi(params);
                 const {
@@ -93,9 +97,12 @@ export const useForumStore = defineStore({
                 }
             } catch (err: any) {
                 return Promise.reject(err);
+            }finally {
+                this.detailLoading=false;
+                uni.stopPullDownRefresh();
             }
         },
-        async addForum(data: forumData, callback: Function): Promise<any> {
+        async addForum(data: forumDataParmas, callback: Function): Promise<any> {
             this.submitLoading = true;
             try {
                 const res = await addForumApi(data);
@@ -111,7 +118,7 @@ export const useForumStore = defineStore({
                 this.submitLoading = false;
             }
         },
-        async addPost(data: forumData, callback: Function): Promise<any> {
+        async addPost(data: forumDataParmas, callback: Function): Promise<any> {
             this.submitLoading = true;
             try {
                 const res = await postAddApi(data);

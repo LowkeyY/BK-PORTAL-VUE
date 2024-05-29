@@ -490,7 +490,8 @@
                     "name": "forumDetail",
                     "path": "forum/forumDetail",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -572,6 +573,39 @@
                     "style": {
                         "navigationStyle": "custom",
                         "enablePullDownRefresh": true
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "feedbackDetails",
+                    "path": "feedback/feedbackDetails",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "feedbackResult",
+                    "path": "feedback/feedbackResult",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "feedbackResultDetails",
+                    "path": "feedback/feedbackResultDetails",
+                    "style": {
+                        "navigationStyle": "custom"
                     },
                     "meta": {
                         "ignoreAuth": true,

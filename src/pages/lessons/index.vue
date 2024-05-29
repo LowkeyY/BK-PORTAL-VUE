@@ -148,10 +148,10 @@ const handleGoContent = (data)=>{
     handleJumpToPage('lessonContent',{courseid:id,attendanceType});
 };
 onShow( () => {
-    setTimeout(()=>{
-        params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
-        fetchList(params);
-    },0);
+// setTimeout(()=>{
+    //     params.searchApi=current.value===0?courseListOpenApi:courseListDueApi;
+    //     fetchList(params);
+    // },0);
 });
 
 onLoad(async () => {

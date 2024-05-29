@@ -1,3 +1,5 @@
+import {queryChoiceApi} from "@/services/choice";
+
 declare interface AssignParams {
     cmid: string | number;
     ssignId: string | number;
@@ -90,7 +92,7 @@ declare interface forumParams {
 declare interface forumDetailParams {
     discussionid: string | number;
 }
-declare interface forumData {
+declare interface forumDataParmas {
     subject: string | number;
     message: string | number;
     courseid?: string | number;
@@ -125,4 +127,31 @@ declare interface saveQuizParams {
 
 declare interface queryQuizReviewParams {
     attemptid: string | number;
+}
+
+declare interface queryFeedbackParams {
+    id: string;
+    cmid: string;
+    courseid: string;
+}
+declare interface queryFeedbackQuestion {
+    id: string;
+    page?: number|string;
+}
+declare interface queryResponseFeedbackQuestion {
+    userid: number|string;
+    groupid: number|string;
+    anonymous: number|string;
+    cmid: number|string;
+    id: number|string;
+}
+
+declare interface queryChoiceParams {
+    voteId: string;
+    courseid: string;
+}
+
+declare interface submitChoiceParams {
+    voteId: string;
+    choiceid: string;
 }

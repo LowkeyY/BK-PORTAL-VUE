@@ -139,8 +139,9 @@ const refresh = async (callback: () => void) => {
 };
 
 const handeAddForum = (forumData) => {
-    const { maxattachments, maxbytes, id, course, groupid } = forumData;
-    const params = { maxattachments, maxbytes, id, course, type: 'add', groupid };
+    console.log(forumData)
+    const { maxattachments, maxbytes, id, course, groupid,name } = forumData;
+    const params = { maxattachments, maxbytes, id, course, type: 'add', groupid,subject:name };
     handleJumpToPage('addForum', params);
 };
 
