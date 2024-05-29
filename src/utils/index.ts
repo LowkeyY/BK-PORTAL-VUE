@@ -54,6 +54,14 @@ export function isOuchnUser(): boolean {
 }
 
 /**
+ * @description: 是否是教师用户
+ * @return {*}
+ */
+export function isTeacherUser(): boolean {
+    return storage.get(StorageEnum.ORG_CODE) === UserRoleEnums.BJOU_TEACHER;
+}
+
+/**
  * @description: 获取头像
  * @param url
  * @param fileId

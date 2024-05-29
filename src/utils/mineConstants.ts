@@ -1,3 +1,11 @@
+/*
+ * @Author: Lowkey
+ * @Date: 2023-12-27 15:57:23
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-05-20 11:47:52
+ * @FilePath: \BK-Portal-VUE\src\utils\mineConstants.ts
+ * @Description: 
+ */
 export const bkMineGirds = [
     {
         id: '1',
@@ -22,6 +30,13 @@ export const bkMineGirds = [
     },
     {
         id: '4',
+        icon: 'myFeedback',
+        text: '我的反馈',
+        path: 'Suggestion',
+        auth: '',
+    },
+    {
+        id: '5',
         icon: 'collect',
         text: '收藏',
         path: 'myCollections',

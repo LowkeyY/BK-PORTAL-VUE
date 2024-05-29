@@ -2,12 +2,12 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-07 15:54:41
+ * @LastEditTime: 2024-05-29 19:21:43
  * @FilePath: \BK-Portal-VUE\src\components\NavBar\NavBar.vue
  * @Description: 
 -->
 <template>
-    <view class="contaner">
+    <view class="contaner" :style="{ height: `${88 + px2rpx(useSystem().statusBarHeight || 0)}rpx` }">
         <view class="nav-status">
             <status-bar />
         </view>
@@ -108,7 +108,7 @@ const dialogClose = () => {
 <style lang="scss" scoped>
 .contaner {
     width: 100%;
-    height: 88rpx;
+    //   height: 88rpx;
     .nav-status {
         width: 100%;
         position: fixed;

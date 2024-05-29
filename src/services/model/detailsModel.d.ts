@@ -1,7 +1,7 @@
 
 
 declare interface GradeDetailsParams {
-    userId:string|number,
+    userid:string|number,
     courseid?:string|number
 }
 

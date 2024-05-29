@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-10 13:12:44
+ * @LastEditTime: 2024-05-29 16:26:17
  * @FilePath: \BK-Portal-VUE\src\pageSub\menuManagement\components\MenuSort.vue
  * @Description:
 -->
@@ -10,7 +10,7 @@
     <view class="menu-container">
         <view class="tips">可以将常用的学习菜单添加到首页，拖动可调整菜单顺序</view>
         <drag-menu :list="homeGrids" :column="5" :aspect-ratio="1" after ghost longpress @change="handleSortchange" @handle-click="handleRemoveClick">
-            <template #grid="{oindex, content, active}">
+            <template #grid="{ oindex, content, active }">
                 <view class="grid">
                     <image class="icon" :src="`/static/images/grids/${content.icon}.svg`" mode="aspectFix" />
                     <text class="text">{{ content.text }}</text>
@@ -40,73 +40,72 @@ const sortArr = ref(useApp.gridsSort.split(',')); // 排序数组
 const sortResult = ref(useApp.gridsSort);
 
 // 首页菜单过滤“更多”
-const homeGrids = computed(()=>{
+const homeGrids = computed(() => {
     const arr: any[] = [];
-    sortArr.value.map((item:string) => {
-        if(bkStudentGirds.find(ev => ev.id === item)){
-            arr.push(
-                bkStudentGirds.find(ev => ev.id === item)
-            );
+    sortArr.value.map((item: string) => {
+        if (bkStudentGirds.find((ev) => ev.id === item)) {
+            arr.push(bkStudentGirds.find((ev) => ev.id === item));
         }
-      
     });
     return arr;
 });
 // 未显示在首页的菜单
-const filterGrids = computed(()=>{
-    return  bkStudentGirds.filter(item=>!sortArr.value.includes(item.id));
+const filterGrids = computed(() => {
+    return bkStudentGirds.filter((item) => !sortArr.value.includes(item.id));
 });
 
-const handleSortchange =(v:any )=> {
-    sortResult.value = v.map((item:Record<string,any>)=>item.content.id).join(',');
+const handleSortchange = (v: any) => {
+    sortResult.value = v.map((item: Record<string, any>) => item.content.id).join(',');
 };
-const handleAddClick = (item:any)=>{
-    sortArr.value = [...sortArr.value,item.id];
-    sortResult.value=sortArr.value.join(',');
+const handleAddClick = (item: any) => {
+    sortArr.value = [...sortArr.value, item.id];
+    sortResult.value = sortArr.value.join(',');
 };
-const handleRemoveClick = (item:any)=>{
-    const {content:{id}}  = item;
-    if(sortArr.value.length<2){
+const handleRemoveClick = (item: any) => {
+    const {
+        content: { id },
+    } = item;
+    if (sortArr.value.length < 2) {
         Toast('请至少保留一个菜单');
         return;
     }
-    sortArr.value=sortArr.value.filter(item=>item!==id);
-    sortResult.value=sortArr.value.join(',');
+    sortArr.value = sortArr.value.filter((item) => item !== id);
+    sortResult.value = sortArr.value.join(',');
 };
 defineExpose({
-    sortResult
+    sortResult,
 });
 </script>
 
 <style lang="scss" scoped>
 .menu-container {
-  padding-top: 10px;
-  .tips {
-    font-size: $uni-font-size-sm;
-    color: $uni-text-color-placeholder;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    .icon {
-      width: 28px;
-      height: 28px;
+    padding-top: 10px;
+    .tips {
+        font-size: $uni-font-size-sm;
+        color: $uni-text-color-placeholder;
+        text-align: center;
+        margin-bottom: 20px;
     }
-    .text {
-      margin-top: 20rpx;
-      font-size: 22rpx;
-      color: $uni-text-color;
+    .grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        .icon {
+            width: 28px;
+            height: 28px;
+        }
+        .text {
+            margin-top: 20rpx;
+            font-size: $uni-font-size-m;
+            color: $uni-text-color;
+        }
+        .grid-dot {
+            position: absolute;
+            top: -5px;
+            right: 8px;
+        }
     }
-    .grid-dot {
-      position: absolute;
-      top: -5px;
-      right: 8px;
-    }
-  }
 }
 </style>

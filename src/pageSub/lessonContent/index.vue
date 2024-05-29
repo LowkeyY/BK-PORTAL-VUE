@@ -1,23 +1,13 @@
-<!--
- * @Author: Lowkey
- * @Date: 2024-01-22 14:23:14
- * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-08 16:17:42
- * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\index.vue
- * @Description:
--->
-
 <template>
     <app-provider>
         <view class="header">
             <view class="btn" :style="{ top: statusBarHeight }">
                 <uni-icons class="back" type="left" size="24" color="#fff" @click="router.back"></uni-icons>
-                <uni-tag text="课程反馈" type="warning" />
             </view>
             <image class="course-img" :src="getImages(lessonData.courseImage)" mode="aspectFill" @error="(el) => getErrorImg(el, 'user')" />
             <view class="course-info">
                 <view class="course-name">{{ lessonData.fullname }}</view>
-                <view class="course-tips">
+                <view v-if="!isTeacherUser()" class="course-tips">
                     <view class="tips-item">
                         <view class="item-title">成绩</view>
                         <view>{{ lessonData.graderaw }}</view>
@@ -31,6 +21,9 @@
                         <view>{{ changeLessonDate(lessonData.enddate) }}</view>
                     </view>
                 </view>
+                <view v-else>
+                    <exchange-roles />
+                </view>
             </view>
         </view>
         <uni-notice-bar v-if="lessonData._useScriptFlag || lessonData._useScriptFunc" scrollable :text="useApp._useJavaScriptMessage?.info" />
@@ -40,20 +33,21 @@
             <Tour-content v-if="currentTab.key === 'tour'" class="lesson-content" />
             <Lesson-content v-if="currentTab.key === 'content'" class="lesson-content" />
             <attendance-details v-if="currentTab.key === 'attendance'" class="lesson-content" />
-            <Live-content v-if="currentTab.key === 'liveCourse'" class="lesson-content" />
+            <lesson-management v-if="currentTab.key === 'lessonManagement'" class="lesson-content" />
             <Live-course-list v-if="currentTab.key === 'liveCourseList'" class="live" :live-list="curLiveCourses" />
         </view>
+        <fixed-btn :suggestion-params="suggestionParams" />
     </app-provider>
 </template>
 <script lang="ts" setup>
 import { useLessonStore } from '@/store/modules/lesson';
 import { useAppStore } from '@/store/app';
 import { useSetLog } from '@/hooks/useSetLog';
-import { getImages, changeLessonDate, getErrorImg } from '@/utils';
+import { getImages, changeLessonDate, getErrorImg, isTeacherUser } from '@/utils';
 import TourContent from './components/TourContent.vue';
 import LessonContent from './components/LessonContent.vue';
 // import AttendanceContent from './components/AttendanceContent.vue';
-import LiveContent from './components/LiveContent.vue';
+import LessonManagement from './components/lessonManagement.vue';
 import LiveCourseList from './components/LiveCourseList.vue';
 import { getLiveCourseFilterList } from '@/hooks/useLiveCourse';
 import { useLiveCourseStore } from '@/store/modules/liveCourse';
@@ -68,7 +62,6 @@ const useApp = useAppStore();
 const router = useRouter();
 const loading = ref(false);
 const lessonData: Record<string, any> = computed(() => useLesson.lessonData);
-
 // eslint-disable-next-line camelcase
 const day_pass = computed(() => {
     const { attendance = {} } = lessonData.value;
@@ -87,13 +80,18 @@ const current = ref(1); // 默认展示学习
 const curLiveCourses = ref<any[]>([]);
 // eslint-disable-next-line camelcase
 const showAttendance = computed(() => (lessonData.value.isAttendance && day_pass.value !== '0') || lessonData.value.attendanceType === '2');
+
+const suggestionParams = computed(() => ({
+    courseid: lessonData.value.id,
+    suggestionType: 'lessonContent',
+}));
 const ALL_TABS = [
     {
-        name: '课程导学',
+        name: `${isTeacherUser() ? '课程信息' : '课程导学'}`,
         key: 'tour',
     },
     {
-        name: '课程学习',
+        name: `${isTeacherUser() ? '课程内容' : '课程学习'}`,
         key: 'content',
     },
     {
@@ -106,7 +104,7 @@ const ALL_TABS = [
     },
     {
         name: '课程管理',
-        key: 'liveCourse',
+        key: 'lessonManagement',
     },
 ];
 
@@ -115,9 +113,9 @@ const tabs = computed(() => {
         if (item.key === 'liveCourseList') {
             return curLiveCourses.value.length > 0;
         } else if (item.key === 'attendance') {
-            return showAttendance.value;
-        } else if (item.key === 'liveCourse') {
-            return true;
+            return showAttendance.value && !isTeacherUser();
+        } else if (item.key === 'lessonManagement') {
+            return isTeacherUser();
         } else {
             return true;
         }
@@ -183,7 +181,7 @@ onLoad(async (options) => {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: $uni-font-size-base;
+            font-size: $uni-font-size-m;
             padding: 0 20rpx;
             margin-top: 16rpx;
             .tips-item {

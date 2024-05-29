@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-30 16:31:07
+ * @LastEditTime: 2024-05-29 15:29:44
  * @FilePath: \BK-Portal-VUE\src\store\modules\auth.ts
  * @Description:
  */
@@ -30,7 +30,8 @@ interface AuthState {
     loading?: boolean;
     isShowCode?: boolean;
     portalToken?: string;
-    moodleToken?: string;
+    moodleToken: string;
+    userLoginId: string;
     captchaImg?:any;
 }
 
@@ -52,6 +53,7 @@ export const useAuthStore = defineStore({
         isShowCode:false,
         portalToken: storage.get(StorageEnum.PORTAL_TOKEN) || '',
         moodleToken: storage.get(StorageEnum.MOODLE_TOKEN) || '',
+        userLoginId:storage.get(StorageEnum.USER_LOGIN_ID)|| '',
         captchaImg:null
     }),
     getters: {
@@ -100,6 +102,7 @@ export const useAuthStore = defineStore({
                         [StorageEnum.CREDENTIAL]: password,
                         [StorageEnum.USER_LOGIN_ID]: loginId,
                     });
+                    this.userLoginId=loginId;
                     this.isShowCode=false;
                     // 门户登录
                     this.portalLogin({ username: loginId, password: secret });
@@ -192,6 +195,10 @@ export const useAuthStore = defineStore({
                             router.replaceAll({
                                 name: 'OuchnHome',
                             });
+                        }else if(useUser.orgCode===UserRoleEnums.BJOU_TEACHER){
+                            router.replaceAll({
+                                name: 'TeacherHome',
+                            });
                         }
 
                     }
@@ -210,7 +217,7 @@ export const useAuthStore = defineStore({
         async queryMoodleToken(): Promise<any> {
             const userCode = storage.get(StorageEnum.USER_CODE);
             const account = storage.get(StorageEnum.ACCOUNT);
-            const loginId = storage.get(StorageEnum.USER_LOGIN_ID);
+            const loginId = this.userLoginId;
             const queryName = userCode || (loginId.length > 11 ? account : loginId); // 由于测试账号没有学号，保证测试账号能登录
             const params = {
                 username: queryName,
@@ -220,6 +227,7 @@ export const useAuthStore = defineStore({
                 const { token = '', message = '学习平台Tokne获取失败', success } = await moodleTokenApi(params as MoodleTokenParams);
                 if (success) {
                     setStorage({ [StorageEnum.MOODLE_TOKEN]: token });
+                    this.moodleToken=token;
                 } else {
                     Toast(message);
                 }

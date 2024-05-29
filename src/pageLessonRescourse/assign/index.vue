@@ -2,14 +2,14 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-13 12:07:56
+ * @LastEditTime: 2024-05-23 14:48:23
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\index.vue
  * @Description: 
 -->
 
 <template>
     <app-provider>
-        <nav-bar :title="navTitle" right-text="资源反馈" @handle-right-click="handleRightClick" />
+        <nav-bar :title="navTitle" />
         <ComSkeleton type="text" :loading="useAssign.loading">
             <view v-if="!isEmpty(assignData)" class="content">
                 <view class="title">{{ assignData['assignmentsName'] }}</view>
@@ -90,6 +90,7 @@
                     </view>
                 </view>
             </view>
+            <fixed-btn :suggestion-params="suggestionParams" top="40rpx" />
         </ComSkeleton>
     </app-provider>
 </template>
@@ -120,9 +121,11 @@ const queryParams = ref<AssignParams>();
 const currentTab = ref(0);
 const pageParams = getCurPageParam();
 const { courseid, modname, instance, cmid } = pageParams;
-const handleRightClick = () => {
-    console.log(23);
-};
+const suggestionParams = computed(() => ({
+    ...pageParams,
+    resourceName: assignData.value.assignmentsName,
+    suggestionType: 'lessonContent',
+}));
 
 const handleDownload = (file: Record<string, any>): void => {
     const { fileurl, filesize } = file;

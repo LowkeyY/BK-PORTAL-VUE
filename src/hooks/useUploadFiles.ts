@@ -4,7 +4,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-11 12:50:29
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-26 16:10:02
+ * @LastEditTime: 2024-05-17 18:59:15
  * @FilePath: \BK-Portal-VUE\src\hooks\useUploadFiles.ts
  * @Description: 
  */
@@ -18,16 +18,16 @@ import {isArray} from '@/utils/is';
 
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const platform = CURRENT_PLATFORM;
-const {MOODLE_SERVER} =getBaseUrl();
+const {MOODLE_SERVER,MANAGE_SERVER} =getBaseUrl();
 
 interface callback {
     successCallback:Function,
     errorCallback?:Function
 }
 
-export default function useUploadFiles (callback:callback){
-    const {successCallback} =callback;
+export default function useUploadFiles (callback?:callback){
     const URL = `${MOODLE_SERVER}/webservice/upload.php`;
+    const SUGGESTION_URL = `${MANAGE_SERVER}/file/upload`;
     const successData = ref<Record<string,any>>({});
     const itemid = ref(0);
    
@@ -120,12 +120,64 @@ export default function useUploadFiles (callback:callback){
             }
         }
         // 全部上传完成后执行回调方法
-        successCallback(results);
-      
+        if(callback){
+            const {successCallback} = callback;
+            successCallback(results);
+        }
     };
-   
+    const uploadSuggestionFiles =  (file:Record<string,any>,name:string,formData:Record<string,any>)=>{
+        const {path} = file;
+  
+        return  new Promise((resolve,reject)=>{
+            uni.uploadFile({
+                url: SUGGESTION_URL,
+                filePath:path,
+                method: 'POST',
+                timeout: 10000,
+                name,
+                formData,
+                success: resData => { 
+                   const { statusCode, data} = resData as any;
+                   const resultData = parseJSON(data);
+                   if(statusCode===200){
+                    resolve(resultData.data);
+                   } else {
+                    Toast('上传失败，请稍后重试');
+                          
+                }
+                },
+                fail: error => {
+                    Toast('上传失败，请稍后重试');
+                    reject(error);
+        
+                }
+            });
+        });
+    };
+    const doUploadSuggestionFiles =async (imgList:any[])=>{
+        Loading('正在上传图片...');
+        const results:any[] = [];
+        for(const [index,value] of imgList.entries()){
+           const formData = {formNames:`opinionFile_${index}`};
+           const name = `opinionFile_${index}`;
+          try {
+            if(value.status==='ready'){
+                const result =  await uploadSuggestionFiles(value,name,formData);
+                results.push(result);
+            }
+          } catch (error) {
+            throw error;
+            }finally{
+                HideLoading();
+            }
+        }
+        return results;
+    };
     return {
         doUpload,
+        uploadSuggestionFiles,
+        doUploadSuggestionFiles,
         successData
     };
 }
+

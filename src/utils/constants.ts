@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-09 14:27:50
+ * @LastEditTime: 2024-05-28 13:26:45
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
@@ -127,7 +127,7 @@ export const bkStudentGirds: Grids[] = [
     {
         id: '3',
         icon: 'paymentPlatform',
-        text: '交费平台',
+        text: '缴费平台',
         path: 'payment',
     },
 
@@ -233,12 +233,68 @@ export const gkStudentGirds = [
         queryType: 'gkcjwt',
     },
 ];
+
 export const moreGird = {
     id: '99',
     icon: 'more',
     text: '更多',
     path: 'menuManagement',
 };
+
+
+export const teacherPortalGirds: any[] = [
+    {
+        id: '2',
+        text: '通知公告',
+        path: 'schoolCalendar',
+    },
+    {
+        id: '4',
+        text: '校历',
+        path: 'oauth'
+    },
+    {
+        id: '5',
+        text: '意见反馈',
+        path: 'oauth',
+    },
+    {
+        id: '6',
+        text: '规章制度',
+        path: 'oauth',
+    },
+    {
+        id: '8',
+        text: '常用文档',
+        path: 'oauth',
+    },
+    {
+        id: '9',
+        text: '问卷调查',
+        path: 'oauth',
+    },
+];
+
+export const teacherGirds = [
+    {
+        id: '1',
+        icon:'lessons',
+        text: '课程',
+        path: 'TeacherLessons'
+    },
+    {
+        id: '2',
+        icon: 'report',
+        text: '报表查询',
+        path: 'EduReport',
+    },
+    {
+        id: '3',
+        icon: 'addressBook',
+        text: '联系人',
+        path: '',
+    },
+];
 
 export const resourceType: Record<string, string> = {
     resource: '文件',
@@ -473,9 +529,44 @@ export const teacherTabBar = [
         selectedIconPath: '/static/images/tabBar/schedule-o.png',
     },
     {
-        pagePath: 'pageTeacher/mine/index',
+        pagePath: 'pages/mine/index',
         text: '我的',
         iconPath: '/static/images/tabBar/mine.png',
         selectedIconPath: '/static/images/tabBar/mine-o.png',
+    },
+];
+
+export const reportList = [
+    {
+        name: '学习平台考勤周报',
+        path: '',
+    },
+    {
+        name: '学习平台考勤统计',
+        path: '',
+    },
+    {
+        name: '辅导教师回帖情况统计',
+        path: '',
+    },
+    {
+        name: '辅导教师评分情况统计',
+        path: '',
+    },
+    {
+        name: '直播课堂统计',
+        path: 'LiveCourseReport',
+    },
+];
+
+
+export const afterReportList = [
+    {
+        name: '结课报告',
+        path: '',
+    },
+    {
+        name: '辅导教师结课报告',
+        path: '',
     },
 ];

@@ -1,7 +1,23 @@
+<!--
+ * @Author: Lowkey
+ * @Date: 2023-12-27 15:57:23
+ * @LastEditors: Lowkey
+ * @LastEditTime: 2024-05-17 12:32:13
+ * @FilePath: \BK-Portal-VUE\src\pageSub\settings\index.vue
+ * @Description: 
+-->
 <template>
     <view>
         <uni-list v-for="(item, index) in settings" :key="item.id" :index="index">
-            <uni-list-item :show-extra-icon="true" :extra-icon="item.extraIcon" :title="item.text" :right-text="item.value" :show-arrow="item.showArrow" />
+            <uni-list-item
+                :show-extra-icon="true"
+                :extra-icon="item.extraIcon"
+                :title="item.text"
+                :right-text="item.value"
+                :show-arrow="item.showArrow"
+                clickable
+                @click="() => handleItemClick(item)"
+            />
         </uni-list>
         <view class="btn-box">
             <button type="primary" class="btn" @click="showExitAlert">退出</button>
@@ -56,6 +72,7 @@ const settings = [
         },
         text: '意见反馈',
         showArrow: true,
+        pathName: 'SuggestionForm',
     },
     {
         id: '4',
@@ -68,7 +85,11 @@ const settings = [
         showArrow: true,
     },
 ];
-
+const handleItemClick = (item: Record<string, any>) => {
+    if (item.pathName) {
+        router.push({ name: item.pathName });
+    }
+};
 const showExitAlert = () => {
     alertDialog.value?.open();
 };
@@ -82,10 +103,10 @@ const dialogExit = () => {
 
 <style lang="scss" scoped>
 .btn-box {
-  padding: 40rpx 80rpx;
-  .btn {
-    background: linear-gradient(#fad25c, #f77b26);
-    border: 0;
-  }
+    padding: 40rpx 80rpx;
+    .btn {
+        background: linear-gradient(#fad25c, #f77b26);
+        border: 0;
+    }
 }
 </style>

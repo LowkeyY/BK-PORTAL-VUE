@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-15 15:57:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-07 13:23:14
+ * @LastEditTime: 2024-05-29 16:39:47
  * @FilePath: \BK-Portal-VUE\src\components\StatusBar\StatusBar.vue
  * @Description: 
 -->
@@ -16,7 +16,6 @@
 import { useSystem } from '@/hooks/app/useSystem';
 import { px2rpx } from '@/utils/uniapi';
 const height = `${px2rpx(useSystem().statusBarHeight || 0)}rpx`;
-console.log(height);
 defineProps({
     text: {
         type: String,

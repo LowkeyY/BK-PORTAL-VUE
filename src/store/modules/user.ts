@@ -2,20 +2,20 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-30 10:47:44
+ * @LastEditTime: 2024-05-22 12:50:34
  * @FilePath: \BK-Portal-VUE\src\store\modules\user.ts
  * @Description:
  */
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
-import {isBjouUser, setStorage} from '@/utils';
+import {isBjouUser, isTeacherUser,setStorage} from '@/utils';
 import {userRoleApi, portalUserInfoApi, userInfoApi, ouchnUserInfoApi} from '@/services/user';
 import { StorageEnum } from '@/enums/storageEnum';
 import { UserRoleEnums } from '@/enums/appEnum';
 import { Toast } from '@/utils/uniapi/prompt';
-import {bkStudentTabBar,gkStudentTabBar } from '@/utils/constants';
+import {bkStudentTabBar,gkStudentTabBar,teacherTabBar } from '@/utils/constants';
 import storage from '@/utils/storage';
-import {isArray} from "@/utils/is";
+import {isArray} from '@/utils/is';
 
 interface UserState {
     moodleUserId: string;
@@ -47,8 +47,10 @@ export const useUserStore = defineStore({
                 return bkStudentTabBar;
             }else if(state.orgCode===UserRoleEnums.OUCHN_STUDENT){
                 return gkStudentTabBar;
+            }else if(state.orgCode===UserRoleEnums.BJOU_TEACHER){
+                return teacherTabBar;
             }else{
-                return [];
+                return bkStudentTabBar;
             }
 
         }
@@ -120,7 +122,7 @@ export const useUserStore = defineStore({
                 // eslint-disable-next-line camelcase
                 access_token: useStore.portalToken,
             };
-            const { code, message, data } = isBjouUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
+            const { code, message, data } = isBjouUser()||isTeacherUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
             if (code===0) {
                 this.curUserInfo = data;
             } else {

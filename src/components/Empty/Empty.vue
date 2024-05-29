@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-13 19:11:32
+ * @LastEditTime: 2024-05-14 14:20:55
  * @FilePath: \BK-Portal-VUE\src\components\Empty\Empty.vue
  * @Description: 
 -->
@@ -20,33 +20,34 @@
 defineProps({
     loading: {
         type: Boolean,
-        default: false
+        default: false,
     },
     showImage: {
         type: Boolean,
-        default: true
+        default: true,
     },
     text: {
         type: String,
-        default: '没有数据!'
-    }
+        default: '没有数据!',
+    },
 });
 </script>
 
 <style scoped lang="scss">
 .empty {
-  text-align: center;
-  padding-top: 60rpx;
-  .img {
-    width: 280rpx;
-    height: 250rpx;
-  }
-  .loading-img {
-    width: 180rpx;
-    height: 100rpx;
-  }
-  .empty-text {
-    color: $uni-text-color-placeholder;
-  }
+    text-align: center;
+    padding-top: 60rpx;
+    .img {
+        width: 280rpx;
+        height: 250rpx;
+    }
+    .loading-img {
+        width: 180rpx;
+        height: 100rpx;
+    }
+    .empty-text {
+        color: $uni-text-color-placeholder;
+        margin-bottom: 20rpx;
+    }
 }
 </style>

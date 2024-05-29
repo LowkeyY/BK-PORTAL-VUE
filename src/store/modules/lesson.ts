@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-26 18:51:16
+ * @LastEditTime: 2024-05-23 19:13:12
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -68,6 +68,13 @@ export const useLessonStore = defineStore({
             }
             return [];
         },
+        getLessonGroups:(state)=>{
+            const {lessonData} =state;
+            if(!isEmpty(lessonData as {})){
+                return lessonData.groups.map(((item:Record<string,string>)=>({text:item.name,value:item.id})));
+            }
+            return [];
+        },
     },
     actions: {
         async queryCourseContent(payload:Record<string,string>,isRefresh?:boolean): Promise<any> {
@@ -79,7 +86,7 @@ export const useLessonStore = defineStore({
             const courseData = useApp.courseData;
             const {courseid=''} = payload;
             const coursename = findNameByCourses(courseData, courseid);
-            const devicetype = useSystem().uniPlatform;
+            const devicetype = useSystem().deviceModel;
             const params:CourseContentParams = {
                 courseid,
                 userid:useUser.moodleUserId,
@@ -157,7 +164,7 @@ export const useLessonStore = defineStore({
             const useApp = useAppStore();
             const courseData = useApp.courseData;
             const coursename = findNameByCourses(courseData, this.courseid);
-            const devicetype = useSystem().uniPlatform;
+            const devicetype = useSystem().deviceModel;
             const params:CourseContentParams = {
                 courseid:this.courseid,
                 userid:useUser.moodleUserId,

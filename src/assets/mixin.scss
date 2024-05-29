@@ -11,3 +11,10 @@
     word-break: break-all;
     word-wrap: break-word;
 }
+@mixin user-name {
+    font-size: 30rpx;
+}
+@mixin info {
+    font-size: 26rpx;
+    color: #555;
+}

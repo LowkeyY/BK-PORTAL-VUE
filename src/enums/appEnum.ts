@@ -1,5 +1,4 @@
 
-
 /**
  * @description: error 弹出提示语
  */
@@ -10,5 +9,6 @@ export enum ErrorPrompt {
 
 export enum UserRoleEnums {
     BJOU_STUDENT='bjou_student',
-    OUCHN_STUDENT='ouchn_student'
+    OUCHN_STUDENT='ouchn_student',
+    BJOU_TEACHER='bjou_teacher'
 }

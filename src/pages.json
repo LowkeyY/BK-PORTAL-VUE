@@ -150,7 +150,9 @@
                     "name": "achievementDetails",
                     "path": "achievement/details",
                     "style": {
-                        "navigationStyle": "custom"
+                        "navigationBarTitleText": "",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -251,6 +253,19 @@
                     "path": "messageCenter/index",
                     "style": {
                         "navigationBarTitleText": "消息中心",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "teacherMessage",
+                    "path": "messageCenter/teacherMessage",
+                    "style": {
+                        "navigationBarTitleText": "学习平台通知、消息",
                         "navigationBarBackgroundColor": "#2b83d7",
                         "navigationBarTextStyle": "white"
                     },
@@ -445,8 +460,51 @@
                         "ignoreAuth": true,
                         "tabBar": false
                     }
+                },
+                {
+                    "name": "Suggestion",
+                    "path": "suggestion/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "SuggestionForm",
+                    "path": "suggestion/suggestionForm",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "SuggestionContent",
+                    "path": "suggestion/suggestionContent",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "StudentSuggestions",
+                    "path": "suggestion/studentSuggestions",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
                 }
-
             ]
         },
         {
@@ -749,8 +807,63 @@
                     }
                 },
                 {
-                    "name": "TeacherMine",
-                    "path": "teacherMine/index",
+                    "name": "TeacherLessons",
+                    "path": "teacherLessons/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "EduReport",
+                    "path": "eduReport/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "AchievementReport",
+                    "path": "achievementReport/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "GroupMembers",
+                    "path": "groupMembers/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "LiveCourseReport",
+                    "path": "liveCourseReport/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "LiveCourseReportDetails",
+                    "path": "liveCourseReport/liveCourseReportDetails",
                     "style": {
                         "navigationStyle": "custom"
                     },

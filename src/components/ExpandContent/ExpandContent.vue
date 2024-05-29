@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-29 11:15:58
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-07 13:43:44
+ * @LastEditTime: 2024-05-29 16:02:04
  * @FilePath: \BK-Portal-VUE\src\components\ExpandContent\ExpandContent.vue
  * @Description: 
 -->
@@ -116,6 +116,7 @@ onMounted(() => {
     .btn {
         display: flex;
         align-items: center;
+        font-size: $uni-font-size-m;
     }
 }
 .hidden {

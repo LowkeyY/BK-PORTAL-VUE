@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-26 14:52:53
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-03 10:57:45
+ * @LastEditTime: 2024-05-29 15:56:59
  * @FilePath: \BK-Portal-VUE\src\services\quiz.ts
  * @Description: 
  */
@@ -13,7 +13,6 @@ import { StorageEnum } from '@/enums/storageEnum';
 
 const {CUNOVS_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
-
 const QUERY_QUIZ = `${CUNOVS_SERVER}/quiz/${moodleToken}`; // 查询测验
 const QUERY_QUIZ_PAGE = `${CUNOVS_SERVER}/quiz/page/${moodleToken}`; // 查询上次浏览测验问题 
 const QUERY_QUIZ_PAGE_FIRST = `${CUNOVS_SERVER}/quiz/start/${moodleToken}`; // 初次答题查询问题

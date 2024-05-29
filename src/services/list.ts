@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-1-5 12:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-13 16:06:58
+ * @LastEditTime: 2024-05-29 15:32:47
  * @FilePath: \BK-Portal-VUE\src\services\list.ts
  * @Description:
  */
@@ -12,16 +12,16 @@ import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 import storage from '@/utils/storage';
 import { StorageEnum } from '@/enums/storageEnum';
+import { useAuthStore } from '@/store/modules/auth';
 
 const {CUNOVS_SERVER,PORTAL_SERVER} =getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const userCode = storage.get(StorageEnum.USER_CODE);
-
 const TIMETABLE = `${PORTAL_SERVER}/mobile/bkcourse/list`; // 课程表
 const GRADE_LIST = `${CUNOVS_SERVER}/grade/courseList/${moodleToken}`; // 我的成绩
 const GRADE_DETAILS = `${CUNOVS_SERVER}/grade/${moodleToken}`; // 成绩详情列表
 const GRADE_DETAILS_REFRESH = `${CUNOVS_SERVER}/grade/refresh/${moodleToken}`; // 刷新成绩详情列表（从学习平台直接获取数据，不走同步，刷新请求减少学习平台压力）
-const TASK_LIST = `${CUNOVS_SERVER}/task/${moodleToken}`; // 学生本周任务列表
+const TASK_LIST = `${CUNOVS_SERVER}/task`; // 学生本周任务列表
 /**
  * @description: 课程表
  * @return {*}
@@ -123,8 +123,9 @@ export function attendanceCourseListApi(data:AttendanceCourseParams) {
  * @return {*}
  */
 export function studentTaskListApi(data:Record<string,any>) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:TASK_LIST,
+        url:`${TASK_LIST}/${moodleToken}`,
         data
     });
 }

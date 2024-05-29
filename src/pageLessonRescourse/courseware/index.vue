@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-02-26 16:35:33
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-13 12:12:44
+ * @LastEditTime: 2024-05-20 13:05:10
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\courseware\index.vue
  * @Description: 
 -->
@@ -39,7 +39,7 @@
                             class="image"
                             :src="`${mediaUrl}${item}`"
                             mode="scaleToFill"
-                            @tap="() => previewImage(item)"
+                            @tap="() => previewImage(index)"
                         />
                     </view>
                     <!-- <view v-else-if="wareData.coursewareType === 1">

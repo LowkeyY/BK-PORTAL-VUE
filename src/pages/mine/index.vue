@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { isBjouUser, isOuchnUser } from '@/utils';
-import { userInfoApi, ouchnUserInfoApi, portalUserInfoApi, userRoleApi } from '@/services/user';
+import { isBjouUser, isOuchnUser, isTeacherUser, getCommonDate } from '@/utils';
+import { userRoleApi } from '@/services/user';
 import { Toast } from '@/utils/uniapi/prompt';
 import { bkMineGirds, bkMineInfo } from '@/utils/mineConstants';
-import { useAuthStore } from '@/store/modules/auth';
 import { useUserStore } from '@/store/modules/user';
 import { UserRoleEnums } from '@/enums/appEnum';
 import { getPortalAvatar } from '@/utils';
@@ -18,7 +17,6 @@ const statusBarHeight = `${20 + px2rpx(useSystem().statusBarHeight || 0)}rpx`;
 
 const loading = ref(false);
 const router = useRouter();
-const useStore = useAuthStore();
 const useUser = useUserStore();
 const curUserInfo: Record<string, any> = ref({});
 const ouchnUserInfo: Record<string, any> = ref({});
@@ -31,34 +29,16 @@ const currentRole = computed(() => {
 const { PORTAL_SERVER } = getBaseUrl();
 const curFileUrl = `${PORTAL_SERVER}/file/downloadFile`;
 
+const renderEnrolDate = (date: null) => {
+    if (typeof date === 'number') {
+        return getCommonDate(date / 1000, false, false);
+    }
+    return date;
+};
 const goSettings = () => {
     router.push({ name: 'settings' });
 };
 
-// const queryInfo =async () =>{
-//     loading.value = true;
-//     const params = {
-//         // eslint-disable-next-line camelcase
-//         access_token: useStore.portalToken,
-//     };
-//     const { code, message, data } = isBjouUser()?await userInfoApi():await portalUserInfoApi(params as AccessTokenParams);
-//     if (code===0) {
-//         curUserInfo.value = data;
-//     } else {
-//         Toast(message);
-//     }
-//     loading.value = false;
-// };
-// const queryOuchnInfo =async () =>{
-//     loading.value = true;
-//     const { code, message, data } = await ouchnUserInfoApi();
-//     if (code===0) {
-//         ouchnUserInfo.value = isArray(data) ? data[0] : {};
-//     } else {
-//         Toast(message);
-//     }
-//     loading.value = false;
-// };
 const queryUserRole = async () => {
     try {
         const { data = [], message = '请稍后再试', code } = await userRoleApi();
@@ -83,6 +63,11 @@ const handleLoginByRole = (role: string) => {
         if (role === UserRoleEnums.OUCHN_STUDENT) {
             router.replace({
                 name: 'OuchnHome',
+            });
+        }
+        if (role === UserRoleEnums.BJOU_TEACHER) {
+            router.replace({
+                name: 'TeacherHome',
             });
         }
     }
@@ -119,17 +104,19 @@ onShow(async () => {
                             <uni-icons type="gear-filled" color="#fff" size="30" @click="goSettings"></uni-icons>
                         </view>
                         <view class="bottom-text">
-                            <view class="accountName"> 学号: {{ curUserInfo?.studentNumber || ouchnUserInfo?.studentNumber || '-' }} </view>
-                            <text class="text">{{ `层次：${curUserInfo?.arrangement || ouchnUserInfo?.majorLevel || '-'}` }}</text>
+                            <view class="accountName">
+                                {{ `${!isTeacherUser() ? '学号：' : '工号：'}${curUserInfo?.studentNumber || ouchnUserInfo?.studentNumber || '-'}` }}
+                            </view>
+                            <text v-if="!isTeacherUser()" class="text">{{ `层次：${curUserInfo?.arrangement || ouchnUserInfo?.majorLevel || '-'}` }}</text>
                         </view>
                     </view>
                 </view>
-                <view class="administrative">
+                <view v-if="!isTeacherUser()" class="administrative">
                     {{ ouchnUserInfo?.majorName || curUserInfo?.administrative || curUserInfo?.major }}
                 </view>
                 <view class="info">
-                    <span>
-                        {{ `招生年度：${curUserInfo?.enrollmentdate || ouchnUserInfo?.schoolYear || '-'}` }}
+                    <span v-if="!isTeacherUser()">
+                        {{ `招生年度：${renderEnrolDate(curUserInfo?.enrollmentdate) || renderEnrolDate(ouchnUserInfo?.schoolYear) || '-'}` }}
                     </span>
                     <span v-if="isBjouUser()">
                         {{ `学制：${curUserInfo?.educational || '-'}` }}
@@ -164,7 +151,7 @@ onShow(async () => {
             <image src="@/static/images/bgImages/mineBg.png" class="bg" mode="widthFix" />
             <view class="userinfo-operate" />
         </view>
-        <Menu v-if="isBjouUser()" :menu-list="bkMineGirds" :column="4" @handle-grids-click="handleGridsClick" />
+        <Menu v-if="isBjouUser()" :menu-list="bkMineGirds" :column="5" @handle-grids-click="handleGridsClick" />
         <uni-section v-if="useUser.roleList.length > 1" title="切换身份">
             <template #right>
                 <view style="display: flex; align-items: center" @click="selectRolesRef.toggle()">
@@ -283,7 +270,7 @@ onShow(async () => {
     }
     .text {
         margin-top: 20rpx;
-        font-size: 26rpx;
+        font-size: $uni-font-size-sm;
         color: $uni-text-color;
     }
 }

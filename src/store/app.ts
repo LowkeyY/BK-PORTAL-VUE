@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-04-29 17:46:23
+ * @LastEditTime: 2024-05-29 14:20:18
  * @FilePath: \BK-Portal-VUE\src\store\app.ts
  * @Description: 
  */
@@ -17,7 +17,7 @@ import { useOpenUrl } from '@/hooks/useOpenUrl';
 import {urlEncode} from '@/utils';
 // import {exceScript} from '@/utils/handle';
 import { isArray } from '@/utils/is';
-import { bkStudentGirds,moreGird,oauthUrl } from '@/utils/constants';
+import { bkStudentGirds,moreGird,oauthUrl,teacherPortalGirds } from '@/utils/constants';
 import storage from '@/utils/storage';
 interface AppState {
     courseid: string ;
@@ -27,6 +27,7 @@ interface AppState {
     groups:any[],
     contacts:any[],
     gridsSort:string,
+    teacherGrids:Grids[]
 }
 
 const getCourseId = (arr: any[]) => {
@@ -58,6 +59,7 @@ export const useAppStore = defineStore({
         groups:[],
         contacts:[],
         gridsSort:storage.get(StorageEnum.GRIDS_SORT) || '1,2,3,4,5,6,7',
+        teacherGrids:teacherPortalGirds
     }),
     getters: {
         getGrids:(state):any[]=>{
