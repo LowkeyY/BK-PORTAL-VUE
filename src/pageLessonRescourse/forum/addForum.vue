@@ -13,19 +13,12 @@
                     {{ getGroups(groups, params.course)[0].label }}
                 </view>
                 <view v-if="!parseInt(params.maxattachments, 10) < 1">
-                    <view class="warn-tip">
-                        {{
-                            params.maxbytes && params.maxattachments > 0
-                                ? `新文件的最大尺寸:${renderSize(params.maxbytes)},最多附件${params.maxattachments}`
-                                : null
-                        }}
-                    </view>
                     <file-picker
                         ref="fileRef"
                         :upload-file-list="fileList"
                         :max-size="Number(params.maxbytes)"
                         :max-files="Number(params.maxattachments)"
-                        :isShowMic="false"
+                        :is-show-mic="false"
                     />
                 </view>
                 <view style="padding: 20rpx 0">
@@ -50,6 +43,7 @@ const router = useRouter();
 const params = ref({});
 const submitParams = ref({});
 const fileList = ref([]);
+const fileRef = ref();
 const formData = reactive({
     subject: '',
     message: '',
@@ -57,6 +51,7 @@ const formData = reactive({
 const useApp = useAppStore();
 const useForum = useForumStore();
 const groups = computed(() => useApp.groups);
+
 
 /**
  * @description: 文件上传完成后提交回复话题
@@ -80,7 +75,7 @@ const doSubmitAfterUpload = (response: any[]) => {
             });
     }
 };
-const { doUpload } = useUploadFiles({ successCallback: doSubmitAfterUpload });
+const { doUpload ,successData} = useUploadFiles({ successCallback: doSubmitAfterUpload });
 
 const getGroups = (groups, id) => {
     const arr = [];
@@ -96,20 +91,22 @@ const getGroups = (groups, id) => {
     return arr;
 };
 
-const confirmSubmit = (data) => {
-    const { fileList, value } = data;
-    const { message = '' } = value;
-    const str = message.replace(/\n/g, '<br/>').replace(/( )/g, '\u3000');
-    if (fileList.lenth > 0) {
+
+const confirmSubmit =async (data) => {
+    if (fileRef.value?.uploadFiles.length > 0) {
         submitParams.value = {
-            ...value,
-            message: str,
+            ...data,
         };
-        doUpload(fileList.value);
+        await doUpload(fileRef.value.uploadFiles);
+        if(successData.value?.itemid){
+            submitParams.value = {
+                ...data,
+                itemid:successData.value.itemid
+            };
+        }
     } else {
         submitParams.value = {
-            ...value,
-            message: str,
+            ...data,
         };
         params.value.type === 'add'
             ? useForum.addForum(submitParams.value, () => {
@@ -131,25 +128,18 @@ const handelSubmit = async () => {
     }
     let curParam;
     if (params.value.type === 'add') {
-        const curGroup = getGroups(groups.value, params.value.course)?.length > 0 ? getGroups(groups.value, params.value.course)[0].value : undefined;
         curParam = {
-            fileList: fileList.value,
-            value: {
-                courseid: params.value.course ? params.value.course : '',
-                forumid: params.value.id,
-                discussion: params.value.discussionid ? params.value.discussionid : '',
-                groupid: params.value.course,
-                ...formData,
-            },
+            courseid: params.value.course ? params.value.course : '',
+            forumid: params.value.id,
+            discussion: params.value.discussionid ? params.value.discussionid : '',
+            groupid: params.value.course,
+            ...formData,
         };
     } else {
         curParam = {
-            fileList: fileList.value,
-            value: {
-                ...formData,
-                postid: params.value.id,
-                discussion: params.value.discussionid ? params.discussionid : '',
-            },
+            ...formData,
+            postid: params.value.id,
+            discussion: params.value.discussionid ? params.discussionid : '',
         };
     }
     await confirmSubmit(curParam);

@@ -57,7 +57,7 @@ const getQuestions = (arr:any) => {
     return result;
 };
 export const useFeedbackStore = defineStore({
-    id: 'quiz',
+    id: 'feedback',
     state: (): FeedbackState => ({
         feedbackData: {},
         loading: false,

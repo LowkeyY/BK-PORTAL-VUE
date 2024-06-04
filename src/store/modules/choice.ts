@@ -10,7 +10,7 @@ interface ChoiceState {
 }
 
 export const useChoiceStore = defineStore({
-    id: 'quiz',
+    id: 'choice',
     state: (): ChoiceState => ({
         choiceData: {},
         choiceLoading: false,

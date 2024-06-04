@@ -6,7 +6,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-05-17 18:59:15
  * @FilePath: \BK-Portal-VUE\src\hooks\useUploadFiles.ts
- * @Description: 
+ * @Description:
  */
 import storage from '@/utils/storage';
 import { CURRENT_PLATFORM ,PLATFORMS} from '@/enums/platformEnum';
@@ -30,13 +30,13 @@ export default function useUploadFiles (callback?:callback){
     const SUGGESTION_URL = `${MANAGE_SERVER}/file/upload`;
     const successData = ref<Record<string,any>>({});
     const itemid = ref(0);
-   
+
     /**
      * @description: uni.uploadFile封装Promise，执行同步上传
      * @param {Record} file
      * @param {*} any
      * @return {*}
-     */    
+     */
     const uploadFile = (file:Record<string,any>)=>{
         const {path} = file;
         const formData = {
@@ -65,13 +65,13 @@ export default function useUploadFiles (callback?:callback){
                     } else {
                         const { error = '上传失败，请稍后重试' } = resultData;
                         Toast(error);
-                              
+
                     }
                 },
                 fail: error => {
                     Toast('上传失败，请稍后重试');
                     reject(error);
-        
+
                 }
             });
         });
@@ -84,12 +84,12 @@ export default function useUploadFiles (callback?:callback){
             // 1上传分已上传的和新曾的 通过file.status==="ready" 判端
             // 2新增的直接使用uploadFile方法上传
             // 3已上传的需要下载后获取本地path在上传
-            if(file.status==='ready'){
-              
+            if(file.status==='ready' || file.type==='waiting'){
+
                 const result =  await uploadFile(file); // 同步上传文件
                 results.push(result);
             }else{
-              
+
                 // 先下载再上传
                const {tempFilePath} =  await uni.downloadFile({
                     url: `${file.path}?token=${moodleToken}`,
@@ -109,10 +109,10 @@ export default function useUploadFiles (callback?:callback){
                        };
                       const result =  await uploadFile(localFile);
                         results.push(result);
-              
+
             }
-      
-    
+
+
           } catch (error) {
             throw error;
             }finally{
@@ -127,7 +127,7 @@ export default function useUploadFiles (callback?:callback){
     };
     const uploadSuggestionFiles =  (file:Record<string,any>,name:string,formData:Record<string,any>)=>{
         const {path} = file;
-  
+
         return  new Promise((resolve,reject)=>{
             uni.uploadFile({
                 url: SUGGESTION_URL,
@@ -136,20 +136,20 @@ export default function useUploadFiles (callback?:callback){
                 timeout: 10000,
                 name,
                 formData,
-                success: resData => { 
+                success: resData => {
                    const { statusCode, data} = resData as any;
                    const resultData = parseJSON(data);
                    if(statusCode===200){
                     resolve(resultData.data);
                    } else {
                     Toast('上传失败，请稍后重试');
-                          
+
                 }
                 },
                 fail: error => {
                     Toast('上传失败，请稍后重试');
                     reject(error);
-        
+
                 }
             });
         });

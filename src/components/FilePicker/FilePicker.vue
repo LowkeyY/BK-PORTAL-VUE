@@ -64,14 +64,26 @@
         </view>
         <uni-popup ref="popupRef" background-color="#fff">
             <view class="popup-content">
-                <uni-file-picker return-type="object" :auto-upload="false" :limit="maxFiles" :file-mediatype="fileMediatype" :list-styles="{display:'none'}" @select="handleSelect">
-                    <template #default>
-                        <view class="action-item">
-                            <uni-icons type="folder-add-filled" size="36rpx" color="#555"></uni-icons>
-                            选择文件
-                        </view>
-                    </template>
-                </uni-file-picker>
+                <lsj-upload
+                    ref="uploadRef"
+                    child-id="upload1"
+                    width="600rpx"
+                    height="60rpx"
+                    :option="option"
+                    :count="maxFiles"
+                    :formats="allowTypes"
+                    :size="curFormatSize"
+                    :debug="true"
+                    :multiple="false"
+                    :instantly="false"
+                    :distinct="true"
+                    @change="handleChange"
+                >
+                    <view class="action-item">
+                        <uni-icons type="folder-add-filled" size="36rpx" color="#555"></uni-icons>
+                        选择文件
+                    </view>
+                </lsj-upload>
                 <view v-if="isShowMic" class="action-item">
                     <uni-icons type="mic-filled" size="36rpx" color="#555"></uni-icons>
                     录制音频
@@ -87,6 +99,7 @@ import {getCommonDate, getFileIcon,renderFileSize} from '@/utils';
 import { isString } from '@/utils/is';
 import {allowFileTypes} from '@/utils/constants';
 import { Toast } from '@/utils/uniapi/prompt';
+import {getBaseUrl} from '@/utils/env';
 const props = defineProps({
     maxSize: {
         type: Number,
@@ -117,8 +130,27 @@ const props = defineProps({
         default:true
     }
 });
+
 const popupRef = ref();
+const uploadRef = ref();
+
+
+const {MOODLE_SERVER} =getBaseUrl();
+const option= reactive({
+    // 上传服务器地址，需要替换为你的接口地址
+    url: `${MOODLE_SERVER}/webservice/upload.php`, // 该地址非真实路径，需替换为你项目自己的接口地址
+    // 上传附件的key
+    name: 'file',
+    formData: {}
+});
 const uploadFiles = ref<any[]>(props.uploadFileList);
+
+const curFormatSize=computed(()=>{
+    let temp: number | string = props.maxSize / (1024 * 1024);
+    temp = temp.toFixed(2);
+    return temp;
+});
+
 // 单选的文件格式
 const fileTypeItem = computed(()=>{
     const typeList = props.allowTypes.split(',');
@@ -146,7 +178,7 @@ const appendFiles = (files:any[]):any[]=>{
 };
 
 const deleteFile = (file:Record<string,any>)=>{
-    uploadFiles.value=uploadFiles.value.filter(item=> item.uuid!==file.uuid);
+    uploadFiles.value=uploadFiles.value.filter(item=> item.name!==file.name);
 };
 const handleSelect = (e:any)=>{
     popupRef.value.close();
@@ -206,9 +238,13 @@ const getAllowTypes = (kind:string)=>{
     return res;
 };
 
-// const change = (e)=>{
-//     // console.log(e);
-// };
+
+const handleChange = (files) => {
+    //以限制单选
+    popupRef.value.close();
+    uploadFiles.value= appendFiles([...files.values()]);
+
+};
 const toggle = ()=>{
     popupRef.value.open('bottom');
 };
