@@ -100,6 +100,8 @@ declare interface forumDataParmas {
     groupid?: string | number;
     discussion?: string | number;
     postid?: string | number;
+    itemid?: string | number;
+
 }
 
 declare interface queryQuizParams {

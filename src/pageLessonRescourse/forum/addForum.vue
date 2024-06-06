@@ -19,6 +19,7 @@
                         :max-size="Number(params.maxbytes)"
                         :max-files="Number(params.maxattachments)"
                         :is-show-mic="false"
+                        @upload-end-callback="doSubmitAfterUpload"
                     />
                 </view>
                 <view style="padding: 20rpx 0">
@@ -32,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { Toast } from '@/utils/uniapi/prompt';
+import { Modal, Toast } from '@/utils/uniapi/prompt';
 import { useAppStore } from '@/store/app';
 import { isArray } from '@/utils/is';
 import { renderSize } from '../../utils';
@@ -58,13 +59,11 @@ const groups = computed(() => useApp.groups);
  * @param {*} response
  * @return {*}
  */
-const doSubmitAfterUpload = (response: any[]) => {
-    const pageParams = { ...submitParams.value };
-    if (response.length) {
-        const { itemid } = response[0];
+const doSubmitAfterUpload = (val) => {
+    if(val){
         const subParams = {
-            ...pageParams,
-            itemid,
+            ...submitParams.value,
+            itemid:val,
         };
         params.value.type === 'add'
             ? useForum.addForum(subParams, () => {
@@ -73,6 +72,8 @@ const doSubmitAfterUpload = (response: any[]) => {
             : useForum.addPost(subParams, () => {
                 router.back();
             });
+    }else{
+        Toast( '上传附件时，发声未知错误，请稍候重试。');
     }
 };
 const { doUpload ,successData} = useUploadFiles({ successCallback: doSubmitAfterUpload });
@@ -92,22 +93,25 @@ const getGroups = (groups, id) => {
 };
 
 
-const confirmSubmit =async (data) => {
-    if (fileRef.value?.uploadFiles.length > 0) {
+const confirmSubmit =async () => {
+    if (params.value.type === 'add') {
         submitParams.value = {
-            ...data,
+            courseid: params.value.course ? params.value.course : '',
+            forumid: params.value.id,
+            discussion: params.value.discussionid ? params.value.discussionid : '',
+            groupid: params.value.course,
+            ...formData,
         };
-        await doUpload(fileRef.value.uploadFiles);
-        if(successData.value?.itemid){
-            submitParams.value = {
-                ...data,
-                itemid:successData.value.itemid
-            };
-        }
     } else {
         submitParams.value = {
-            ...data,
+            ...formData,
+            postid: params.value.id,
+            discussion: params.value.discussionid ?  params.value.discussionid : '',
         };
+    }
+    if (fileRef.value?.uploadFiles.length > 0&&fileRef.value?.hasFilesChange) {
+        fileRef.value?.handleUpload();
+    } else {
         params.value.type === 'add'
             ? useForum.addForum(submitParams.value, () => {
                 router.back();
@@ -118,31 +122,25 @@ const confirmSubmit =async (data) => {
     }
 };
 const handelSubmit = async () => {
-    if (!formData.subject) {
-        Toast('请输入主题', { icon: 'error' });
-        return;
-    }
-    if (!formData.message) {
-        Toast('请输入主题内容', { icon: 'error' });
-        return;
-    }
-    let curParam;
-    if (params.value.type === 'add') {
-        curParam = {
-            courseid: params.value.course ? params.value.course : '',
-            forumid: params.value.id,
-            discussion: params.value.discussionid ? params.value.discussionid : '',
-            groupid: params.value.course,
-            ...formData,
-        };
-    } else {
-        curParam = {
-            ...formData,
-            postid: params.value.id,
-            discussion: params.value.discussionid ? params.discussionid : '',
-        };
-    }
-    await confirmSubmit(curParam);
+    // if (!formData.subject) {
+    //     Toast('请输入主题', { icon: 'error' });
+    //     return;
+    // }
+    // if (!formData.message) {
+    //     Toast('请输入主题内容', { icon: 'error' });
+    //     return;
+    // }
+
+    Modal({
+        title: params.value.type === 'add'?'保存':'保存更改',
+        content: '确定保存？',
+        confirmText: '确定',
+        complete: function (res) {
+            if (res.confirm) {
+                confirmSubmit();
+            }
+        },
+    });
 };
 
 onLoad(async (options) => {

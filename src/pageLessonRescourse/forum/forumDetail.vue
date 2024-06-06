@@ -71,7 +71,7 @@
                         </view>
                         <view class="rating">
                             <score-combox style="width: 45%;height: 100%;" :rate-range="rateRange" />
-                            <button type="primary" class="reply-btn" @click="handleReply">回复</button>
+                            <button v-if="reply.canreply" type="primary" class="reply-btn" @click="handleReply">回复</button>
                         </view>
                     </view>
                     <render-children v-if="reply.children?.length > 0" :rate-range="rateRange" :list="reply.children" />

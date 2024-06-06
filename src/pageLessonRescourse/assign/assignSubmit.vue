@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-05-13 12:07:10
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\assignSubmit.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
@@ -25,7 +25,7 @@
                     :upload-file-list="uploadFileList"
                     :max-size="Number(maxsubmissionsizebytes)"
                     :max-files="Number(maxfilesubmissions)"
-                    :allow-types="filetypeslist"
+                    @upload-end-callback="doSubmitAfterUpload"
                 />
             </uni-section>
         </view>
@@ -38,7 +38,7 @@
 import useUploadFiles from '@/hooks/useUploadFiles';
 import { useAssignStore } from '@/store/modules/assign';
 import { getCurPageParam } from '@/utils';
-import { Modal } from '@/utils/uniapi/prompt';
+import { Modal, Toast } from "@/utils/uniapi/prompt";
 
 const useAssign = useAssignStore();
 const router = useRouter();
@@ -71,7 +71,7 @@ const getFileList = (arr: any[]) => {
                 name: item.filename,
                 path: `${item.fileurl}`,
                 type: item.mimetype,
-                file: { lastModified: item.timemodified * 1000 },
+                lastModified:item.timemodified * 1000,
                 size: item.filesize,
                 uuid: `-${i++}`, //uuid 为字符串代表已上传文件
             })
@@ -89,38 +89,43 @@ const fileRef = ref();
  * @param {*} response
  * @return {*}
  */
-const doSubmitAfterUpload = (response: any[]) => {
+const doSubmitAfterUpload = (val: any) => {
     const pageParams = getCurPageParam();
     const { instance } = pageParams;
-    if (response.length) {
-        const { itemid } = response[0];
+    if(val){
         const params = {
             onlinetext: content.value,
             assignmentid: instance,
-            filemanager: itemid,
+            filemanager: val,
         };
         useAssign.saveAssign(params, () => {
             router.back();
         });
+    }else{
+        Toast( '上传附件时，发声未知错误，请稍候重试。');
     }
 };
 const { doUpload } = useUploadFiles({ successCallback: doSubmitAfterUpload });
 
 const onSave = (): void => {
     const uploadFiles = fileRef.value?.uploadFiles;
-
-    if (uploadFiles?.length) {
-        doUpload(uploadFiles);
+    const hasFilesChange=fileRef.value?.hasFilesChange;
+    if(!hasFilesChange&&!content.value){
+        router.back();
+    }
+    if (uploadFiles?.length&&hasFilesChange) {
+        fileRef.value?.handleUpload();
     } else {
         // 没有文件直接提交不需要filemanager参数
-        const isRemoveAllFile: boolean = uploadFileList.value.length > 0;
-        const RemoveParams = isRemoveAllFile ? { itemid: 0, filemanager: 1 } : {}; // 是否删除了所有文件
+        // const isRemoveAllFile: boolean = uploadFileList.value.length > 0;
+        // const RemoveParams = isRemoveAllFile ? { itemid: 0, filemanager: 1 } : {}; // 是否删除了所有文件
+        const clearAllFile = hasFilesChange === true ? { itemid: 0, filemanager: 1 } : {};
         const pageParams = getCurPageParam();
         const { instance } = pageParams;
         const params = {
             onlinetext: content.value,
             assignmentid: instance,
-            ...RemoveParams,
+            ...clearAllFile,
         };
 
         useAssign.saveAssign(params, () => {

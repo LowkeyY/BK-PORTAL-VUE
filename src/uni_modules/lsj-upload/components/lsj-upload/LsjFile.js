@@ -165,8 +165,7 @@ export class LsjFile {
 					name = `${name.substring(0,name.lastIndexOf("."))}(${homonymIndex+1}).${suffix}`;
 				}
 			}
-
-			this.files.set(name,{file,path,name: name,size: file.size,progress: 0,type: 'waiting'});
+			this.files.set(name,{file,path,name: name,size: file.size,progress: 0,type: 'waiting',lastModified:file.lastModified,fileType:file.type});
 			return true;
 		}
 	}

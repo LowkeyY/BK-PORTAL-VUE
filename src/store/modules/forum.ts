@@ -110,7 +110,7 @@ export const useForumStore = defineStore({
                     callback && callback();
                     Toast('保存成功');
                 } else {
-                    Toast('保存失败');
+                    Toast(res.message||'保存失败');
                 }
             } catch (err: any) {
                 return Promise.reject(err);
@@ -126,7 +126,7 @@ export const useForumStore = defineStore({
                     callback && callback();
                     Toast('保存成功');
                 } else {
-                    Toast('保存失败');
+                    Toast(res.message||'保存失败');
                 }
             } catch (err: any) {
                 return Promise.reject(err);
