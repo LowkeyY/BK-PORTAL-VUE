@@ -11,7 +11,7 @@ declare interface PrivateMessageParams {
 }
 
 declare interface MessageConversationParams {
-    userId:string|number,
+    userid:string|number,
     fromuserid:string|number,
     nowpage:string|number,
 }

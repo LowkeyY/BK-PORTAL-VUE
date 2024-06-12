@@ -24,7 +24,6 @@ export const useChoiceStore = defineStore({
                 const res = await queryChoiceApi(params);
                 if (res.success) {
                     this.choiceData = res.data;
-                    console.log(this.choiceData,'this.choiceData')
                 } else {
                     Toast(res.message || ErrorPrompt.RESOURCE_ERROR);
                 }

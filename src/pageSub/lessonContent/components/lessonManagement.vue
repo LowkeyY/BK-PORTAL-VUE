@@ -4,7 +4,7 @@
  * @LastEditors: Lowkey
  * @LastEditTime: 2024-05-29 19:18:00
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\lessonManagement.vue
- * @Description: 
+ * @Description:
 -->
 
 <template>
@@ -31,7 +31,7 @@ import { useLessonStore } from '@/store/modules/lesson';
 import { reportList, afterReportList } from '@/utils/constants';
 import { getCurPageParam } from '@/utils';
 const pageParams = getCurPageParam();
-const { courseid } = pageParams;
+const { courseid ,attendanceType} = pageParams;
 const useLesson = useLessonStore();
 const report: any = computed(() => {
     if (useLesson.lessonData.openState === '0') {
@@ -65,7 +65,7 @@ const grids = [
 ];
 const handleReportList = (item: Record<string, string>) => {
     const { path = '' } = item;
-    handleJumpToPage(path, { courseid });
+    handleJumpToPage(path, { courseid,attendanceType });
 };
 </script>
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <template>
     <app-provider>
-        <nav-bar :title="curtTitle" />
+        <nav-bar title="修改密码" />
         <view class="container">
             <uni-list :border="false">
                 <uni-list-item style="border-bottom:2rpx solid #e5e5e5;">
@@ -75,7 +75,6 @@ import CryptoJS from 'crypto-js';
 
 const {type} = getCurPageParam();
 const useReset=useResetStore();
-const curtTitle=ref(type==='phone'?'修改手机号':'修改邮箱');
 const curCode=ref('');
 const phone=ref('');
 const password=ref();

@@ -9,6 +9,7 @@ const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 const ACTIVITY_MESSAGE = `${CUNOVS_SERVER}/msg/notices/${moodleToken}`; // 课程活动消息
 const PRIVATE_MESSAGE = `${CUNOVS_SERVER}/msg/messageList/${moodleToken}`; // 课程活动消息
 const MESSAGE_CONVERSATION = `${CUNOVS_SERVER}/msg/messages/${moodleToken}`; // 消息对话
+const MESSAGE_SEND = `${CUNOVS_SERVER}/msg/sendmessages/${moodleToken}`; // 发送消息
 
 /**
  * @description:课程活动消息
@@ -43,3 +44,14 @@ export function getConversationApi(data:MessageConversationParams) {
     });
 }
 
+/**
+ * @description:发送消息
+ * @return {*}
+ */
+export function sendConversationApi(data:any) {
+    return http.request({
+        url:MESSAGE_SEND,
+        method:'post',
+        data,
+    });
+}

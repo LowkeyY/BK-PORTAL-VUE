@@ -122,14 +122,14 @@ const confirmSubmit =async () => {
     }
 };
 const handelSubmit = async () => {
-    // if (!formData.subject) {
-    //     Toast('请输入主题', { icon: 'error' });
-    //     return;
-    // }
-    // if (!formData.message) {
-    //     Toast('请输入主题内容', { icon: 'error' });
-    //     return;
-    // }
+    if (!formData.subject) {
+        Toast('请输入主题', { icon: 'error' });
+        return;
+    }
+    if (!formData.message) {
+        Toast('请输入主题内容', { icon: 'error' });
+        return;
+    }
 
     Modal({
         title: params.value.type === 'add'?'保存':'保存更改',

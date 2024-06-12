@@ -285,17 +285,17 @@
                         "tabBar": false
                     }
                 },
-                // {
-                //     "name": "chatDetail",
-                //     "path": "chat/index",
-                //     "style": {
-                //         "navigationStyle": "custom"
-                //     },
-                //     "meta": {
-                //         "ignoreAuth": true,
-                //         "tabBar": false
-                //     }
-                // },
+                 {
+                     "name": "chatDetail",
+                     "path": "chat/index",
+                     "style": {
+                         "navigationStyle": "custom"
+                     },
+                     "meta": {
+                         "ignoreAuth": true,
+                         "tabBar": false
+                     }
+                 },
                 {
                     "name": "liveCourse",
                     "path": "liveCourse/index",
@@ -864,6 +864,50 @@
                 {
                     "name": "LiveCourseReportDetails",
                     "path": "liveCourseReport/liveCourseReportDetails",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "attendanceReportWeekly",
+                    "path": "attendanceReport/weekly",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "attendanceReportStatistics",
+                    "path": "attendanceReport/statistics",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "lessonEndingReport",
+                    "path": "lessonEndingReport/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "tutorshipReport",
+                    "path": "tutorshipReport/index",
                     "style": {
                         "navigationStyle": "custom"
                     },

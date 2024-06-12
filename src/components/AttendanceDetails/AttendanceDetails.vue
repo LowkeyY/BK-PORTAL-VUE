@@ -1,19 +1,19 @@
 <template>
     <view>
         <pull-refresh-list type="content" :loading="loading" :has-more="false" :is-refresh="isRefresh" @on-refresh="refresh">
+            <view class="refresh">
+                <text>
+                    数据更新时间：
+                    <text :style="{ color: `${getAttendanceTime(parseInt(attendanceData.update_timer, 10)).color}` || '' }">
+                        {{ getAttendanceTime(parseInt(attendanceData.update_timer, 10)).time || '未知' }}
+                    </text>
+                </text>
+                <text class="refresh-btn" @click="handleAttendanceRefresh">
+                    更新考勤状态
+                    <uni-icons type="refresh" size="14" color="#2b83d7"></uni-icons>
+                </text>
+            </view>
             <view v-if="curLesson.attendanceType === '1'">
-                <view class="refresh">
-                    <text>
-                        数据更新时间：
-                        <text :style="{ color: `${getAttendanceTime(parseInt(attendanceData.update_timer, 10)).color}` || '' }">
-                            {{ getAttendanceTime(parseInt(attendanceData.update_timer, 10)).time || '未知' }}
-                        </text>
-                    </text>
-                    <text class="refresh-btn" @click="handleAttendanceRefresh">
-                        更新考勤状态
-                        <uni-icons type="refresh" size="14" color="#2b83d7"></uni-icons>
-                    </text>
-                </view>
                 <view class="attendance-main">
                     <view v-if="curLesson.fullname" class="attendance-title">
                         <text>{{ curLesson.fullname }}</text>

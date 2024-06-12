@@ -539,15 +539,15 @@ export const teacherTabBar = [
 export const reportList = [
     {
         name: '学习平台考勤周报',
-        path: '',
+        path: 'attendanceReportWeekly',
     },
     {
         name: '学习平台考勤统计',
-        path: '',
+        path: 'attendanceReportStatistics',
     },
     {
         name: '辅导教师回帖情况统计',
-        path: '',
+        path: 'tutorshipReport',
     },
     {
         name: '辅导教师评分情况统计',
@@ -563,10 +563,10 @@ export const reportList = [
 export const afterReportList = [
     {
         name: '结课报告',
-        path: '',
+        path: 'lessonEndingReport',
     },
     {
         name: '辅导教师结课报告',
-        path: '',
+        path: 'lessonEndingReport',
     },
 ];

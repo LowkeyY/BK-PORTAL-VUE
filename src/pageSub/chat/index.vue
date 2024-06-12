@@ -3,7 +3,6 @@
         <nav-bar title="聊天详情" />
         <scroll-view
             id="scrollview"
-            :style="{height: `${windowHeight-inputHeight - 180}rpx`}"
             scroll-y="true"
             :scroll-top="scrollTop"
             class="scroll-view"
@@ -11,31 +10,26 @@
             <!-- 聊天主体 -->
             <view id="msglistview" class="chat-body">
                 <!-- 聊天记录 -->
-                <view v-for="(item,index) in msgList" :key="index">
+                <view v-for="(item,index) in msgList" :key="index" style="padding-bottom: 20rpx">
+                    <view class="time">{{ getShowTimer(index) }}</view>
                     <!-- 自己发的消息 -->
-                    <view v-if="item.userContent != ''" class="item self">
-                        <!-- 文字内容 -->
+                    <view v-if="item.useridfrom!=useridfrom" class="item self">
+                        <button :plain="true" :loading="!item.id" style="border: none"></button>
                         <view class="content right">
-                            {{ item.userContent }}
+                            {{ item.details }}
                         </view>
-                        <!-- 头像 -->
-                        <img class="avatar" :src="item.image" @error="el=>getErrorImg(el,'user')"/>
+                        <image class="avatar" :src="getPortalAvatar(curFileUrl, useUser.curUserInfo?.headImg || useUser.ouchnUserInfo?.headImg)" @error="el=>getErrorImg(el,'user')" />
                     </view>
-                    <!-- 机器人发的消息 -->
-                    <view v-if="item.botContent != ''" class="item Ai">
-                        <!-- 头像 -->
-                        <img class="avatar" :src="item.image" @error="el=>getErrorImg(el,'user')">
-                        </img>
-                        <!-- 文字内容 -->
+                    <view v-if="item.useridfrom==useridfrom" class="item">
+                        <image class="avatar" :src="getImages(curFormAvatar,'defaultUserIcon')" @error="el=>getErrorImg(el,'user')" />
                         <view class="content left">
-                            {{ item.botContent }}
+                            {{ item.details }}
                         </view>
                     </view>
                 </view>
             </view>
         </scroll-view>
         <!-- 底部消息发送栏 -->
-        <!-- 用来占位，防止聊天消息被发送框遮挡 -->
         <view class="chat-bottom" :style="{height: `${inputHeight}rpx`}">
             <view class="send-msg" :style="{bottom:`${keyboardHeight - 60}rpx`}">
                 <view class="uni-textarea">
@@ -43,13 +37,11 @@
                         v-model="chatMsg"
                         maxlength="300"
                         confirm-type="send"
-                        placeholder="快来聊天吧~"
                         :show-confirm-bar="false"
                         :adjust-position="false"
                         auto-height
-                        @confirm="handleSend"
                         @linechange="sendHeight" @focus="focus"
-                        @blur="blur"
+                        @keyboardheightchange="onkeyboardHeightChange"
                     ></textarea>
                 </view>
                 <button class="send-btn" @click="handleSend">发送</button>
@@ -59,9 +51,19 @@
 </template>
 <script lang="ts" setup>
 
-import {getErrorImg} from "@/utils";
+import { getCurPageParam, getErrorImg, getImages, getMessageTime, getPortalAvatar } from '@/utils';
+import { useConversationStore } from '@/store/modules/conversation';
+import { useUserStore } from '@/store/modules/user';
+import { getBaseUrl } from '@/utils/env';
 
-const fromPeople=ref({});
+const useConversation=useConversationStore();
+const useUser = useUserStore();
+const pageParams = getCurPageParam();
+const { PORTAL_SERVER } = getBaseUrl();
+const curFileUrl = `${PORTAL_SERVER}/file/downloadFile`;
+const { userName,useridfrom,avatar,token} = pageParams;
+const curFormAvatar=`${avatar}&token=${token}`;
+const windowHeight=uni.getSystemInfoSync().windowHeight;
 //键盘高度
 const keyboardHeight=ref(0);
 //底部消息发送高度
@@ -71,125 +73,87 @@ const scrollTop=ref(0);
 const userId=ref('');
 //发送的消息
 const chatMsg=ref('');
-const msgList=ref([]);
+const curIndex=ref(0);
+const msgList=computed(() => useConversation.conversationData);
+const inputHeight=computed(() => bottomHeight.value+keyboardHeight.value);
+const getShowTimer = (index) => {
+    const timeDifference = (msgList.value[index]?.timecreated-msgList.value[index-1]?.timecreated)*1000 ||0;
+    const threshold = 3 * 60 * 1000;
+    if(msgList.value[index]&&index===0){
+        return getMessageTime(msgList.value[index]?.timecreated);
+    }
+    if(msgList.value[index]?.timecreated&&msgList.value[index-1]?.timecreated&&(timeDifference>threshold)){
+        return getMessageTime(msgList.value[index]?.timecreated);
+    }else{
+        return '';
+    }
+};
 
-onLoad(async (option)=>{
-    fromPeople.value={...option};
-    console.log(fromPeople.value);
+// px转换成rpx
+const rpxTopx=(px)=>{
+    let deviceWidth = uni.getSystemInfoSync().windowWidth;
+    let rpx = ( 750 / deviceWidth ) * Number(px);
+    return Math.floor(rpx);
+};
+// 监视聊天发送栏高度
+const sendHeight=()=>{
+    setTimeout(()=>{
+        let query = uni.createSelectorQuery();
+        query.select('.send-msg').boundingClientRect();
+        query.exec(res =>{
+            bottomHeight.value = rpxTopx(res[0].height);
+        });
+    },10);
+};
+
+const onkeyboardHeightChange = (e) => {
+    const {height}=e.detail;
+    if(height){
+        keyboardHeight.value = rpxTopx(height);
+        if(keyboardHeight.value<0){
+            keyboardHeight.value=0;
+        }
+    }
+};
+const handleSend =async () => {
+    msgList.value.push({useridfrom: useUser.moodleUserId, useridto: useridfrom,details:chatMsg.value});
+    const curData={
+        text:chatMsg.value,
+        touserid:useridfrom,
+        key:curIndex.value,
+        isMySelf: `${curIndex.value++}`,
+        state: 1
+    };
+    await useConversation.sendConversation(curData);
+    const curParams={
+        fromuserid:useridfrom,
+        userid:useUser.moodleUserId,
+        nowpage:1
+    };
+    await useConversation.queryConversation(curParams);
+    chatMsg.value=true;
+};
+
+onLoad(async ()=>{
+    const curParams={
+        fromuserid:useridfrom,
+        userid:useUser.moodleUserId,
+        nowpage:1
+    };
+    await useConversation.queryConversation(curParams);
+    const query = uni.createSelectorQuery().in(this);
+    query.select('.scroll-view').boundingClientRect(data => {
+        if (data) {
+            uni.pageScrollTo({
+                scrollTop: data.bottom,
+                duration: 10
+            });
+        }
+    }).exec();
 });
-// export default{
-//     data() {
-//         return {
-//             //键盘高度
-//             keyboardHeight:0,
-//             //底部消息发送高度
-//             bottomHeight: 0,
-//             //滚动距离
-//             scrollTop: 0,
-//             userId:'',
-//             //发送的消息
-//             chatMsg:'',
-//             msgList:[
-//                 {
-//                     botContent: '你好啊，很高兴你可以关注我，请问我有什么可以帮助你的吗？',
-//                     userContent: '',
-//                     image:'/static/common/unname1.jpeg'
-//                 },
-//                 {
-//                     botContent: '',
-//                     userContent: '你好呀，非常高兴认识你',
-//                     image:'/static/common/unname2.jpg'
-//                 },
-//             ]
-//         };
-//     },
-//     computed: {
-//         windowHeight() {
-//             return this.rpxTopx(uni.getSystemInfoSync().windowHeight);
-//         },
-//         // 键盘弹起来的高度+发送框高度
-//         inputHeight(){
-//             return this.bottomHeight+this.keyboardHeight;
-//         }
-//     },
-//     updated(){
-//         //页面更新时调用聊天消息定位到最底部
-//         this.scrollToBottom();
-//     },
-//     onLoad(){
-//         uni.onKeyboardHeightChange(res => {
-//             //这里正常来讲代码直接写
-//             //this.keyboardHeight=this.rpxTopx(res.height)就行了
-//             //但是之前界面ui设计聊天框的高度有点高,为了不让键盘和聊天输入框之间距离差太大所以我改动了一下。
-//             this.keyboardHeight = this.rpxTopx(res.height);
-//             if(this.keyboardHeight<0)this.keyboardHeight = 0;
-//         });
-//     },
-//     onUnload(){
-//         // uni.offKeyboardHeightChange()
-//     },
-//     methods: {
-//         goback() {
-//             uni.switchTab({
-//                 url: '/pages/tutorship/tutorship'
-//             });
-//         },
-//         focus(){
-//             this.scrollToBottom();
-//         },
-//         blur(){
-//             this.scrollToBottom();
-//         },
-//         // px转换成rpx
-//         rpxTopx(px){
-//             let deviceWidth = uni.getSystemInfoSync().windowWidth;
-//             let rpx = ( 750 / deviceWidth ) * Number(px);
-//             return Math.floor(rpx);
-//         },
-//         // 监视聊天发送栏高度
-//         sendHeight(){
-//             setTimeout(()=>{
-//                 let query = uni.createSelectorQuery();
-//                 query.select('.send-msg').boundingClientRect();
-//                 query.exec(res =>{
-//                     this.bottomHeight = this.rpxTopx(res[0].height);
-//                 });
-//             },10);
-//         },
-//         // 滚动至聊天底部
-//         scrollToBottom(e){
-//             setTimeout(()=>{
-//                 let query = uni.createSelectorQuery().in(this);
-//                 query.select('#scrollview').boundingClientRect();
-//                 query.select('#msglistview').boundingClientRect();
-//                 query.exec((res) =>{
-//                     if(res[1].height > res[0].height){
-//                         this.scrollTop = this.rpxTopx(res[1].height - res[0].height);
-//                     }
-//                 });
-//             },15);
-//         },
-//         // 发送消息
-//         handleSend() {
-//             //如果消息不为空
-//             if(!this.chatMsg||!/^\s+$/.test(this.chatMsg)){
-//                 let obj = {
-//                     botContent: '',
-//                     userContent: this.chatMsg,
-//                     image:'/static/common/unname2.jpg'
-//                 };
-//                 this.msgList.push(obj);
-//                 this.chatMsg = '';
-//                 this.scrollToBottom();
-//             }else {
-//                 this.$modal.showToast('不能发送空白消息');
-//             }
-//         },
-//     }
-// };
 </script>
 <style lang="scss" scoped>
-$chatContentbgc: #c2dcff;
+$chatContentbgc: #9ee62a;
 $sendBtnbgc: #4f7df5;
 view,
 button,
@@ -224,6 +188,7 @@ textarea {
     }
   }
   .scroll-view {
+      height: calc(100% - 80rpx);
     ::-webkit-scrollbar {
       display: none;
       width: 0 !important;
@@ -238,15 +203,14 @@ textarea {
     .chat-body {
       display: flex;
       flex-direction: column;
-      padding-top: 23rpx;
-      // background-color:skyblue;
+      padding-top: 30rpx;
       .self {
         justify-content: flex-end;
       }
       .item {
         display: flex;
-        padding: 23rpx 30rpx;
-        // background-color: greenyellow;
+        padding: 12rpx 30rpx;
+        align-items: start;
         .right {
           background-color: $chatContentbgc;
         }
@@ -280,21 +244,18 @@ textarea {
           position: relative;
           max-width: 486rpx;
           word-wrap: break-word;
-          padding: 24rpx;
-          margin: 0 24rpx;
-          border-radius: 5px;
-          font-size: 32rpx;
-          font-family: 'PingFang SC';
+          padding:10rpx 20rpx;
+          margin:10rpx 20rpx;
+          border-radius: 10rpx;
+          font-size: $uni-font-size-base;
           font-weight: 500;
           color: #333;
-          line-height: 42rpx;
         }
         .avatar {
           display: flex;
           justify-content: center;
           width: 78rpx;
           height: 78rpx;
-          background: $sendBtnbgc;
           border-radius: 50rpx;
           overflow: hidden;
           image {
@@ -304,7 +265,12 @@ textarea {
       }
     }
   }
-
+.time{
+    width: 100%;
+    text-align: center;
+    font-size:$uni-font-size-sm;
+    color: #999
+}
   /* 底部聊天发送栏 */
   .chat-bottom {
     width: 100%;
@@ -346,7 +312,7 @@ textarea {
       margin-left: 25rpx;
       width: 120rpx;
       height: 75rpx;
-      background: #ed5a65;
+      background: #2b83d7;
       border-radius: 50rpx;
       font-size: 28rpx;
       font-family: 'PingFang SC';
@@ -355,5 +321,9 @@ textarea {
       line-height: 28rpx;
     }
   }
+}
+.loading-btn{
+    background-color: transparent;
+    border: null;
 }
 </style>

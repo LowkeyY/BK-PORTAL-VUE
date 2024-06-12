@@ -113,19 +113,18 @@ const onSave = (): void => {
     if(!hasFilesChange&&!content.value){
         router.back();
     }
-    if (uploadFiles?.length&&hasFilesChange) {
+    if (uploadFiles?.length>0&&hasFilesChange) {
         fileRef.value?.handleUpload();
     } else {
         // 没有文件直接提交不需要filemanager参数
-        // const isRemoveAllFile: boolean = uploadFileList.value.length > 0;
-        // const RemoveParams = isRemoveAllFile ? { itemid: 0, filemanager: 1 } : {}; // 是否删除了所有文件
-        const clearAllFile = hasFilesChange === true ? { itemid: 0, filemanager: 1 } : {};
+        const isRemoveAllFile: boolean = uploadFileList.value.length > 0;
+        const RemoveParams = isRemoveAllFile ? { itemid: 0, filemanager: 1 } : {}; // 是否删除了所有文件
         const pageParams = getCurPageParam();
         const { instance } = pageParams;
         const params = {
             onlinetext: content.value,
             assignmentid: instance,
-            ...clearAllFile,
+            ...RemoveParams,
         };
 
         useAssign.saveAssign(params, () => {
