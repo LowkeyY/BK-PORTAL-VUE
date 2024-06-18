@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-17 13:52:11
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-13 12:22:00
+ * @LastEditTime: 2024-05-30 18:20:13
  * @FilePath: \BK-Portal-VUE\src\pageSub\messageCenter\index.vue
  * @Description: 
 -->
@@ -23,7 +23,7 @@
 import Activity from './components/Activity.vue';
 import PrivateLetter from './components/PrivateLetter.vue';
 const current = ref(0);
-const courses = ref(['未读消息', '已读消息']);
+const courses = ref(['通知', '站内信']);
 const onClickItem = (e) => {
     if (current.value !== e.currentIndex) {
         current.value = e.currentIndex;
@@ -33,10 +33,10 @@ const onClickItem = (e) => {
 
 <style lang="scss" scoped>
 .uni-padding-wrap {
-    background-color: #fff;
-    margin-bottom: 10rpx;
+  background-color: #fff;
+  margin-bottom: 10rpx;
 }
 .list-container {
-    padding: 8rpx 20rpx 0;
+  padding: 8rpx 20rpx 0;
 }
 </style>

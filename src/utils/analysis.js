@@ -1,6 +1,7 @@
 
+// #ifdef APP || H5
 import cheerio, { load } from 'cheerio';
-
+// #endif
 const replaceFormItem = (str)=>{
     // uni-app 渲染html不支持原生表单 ，替换一下
     const regex =  /<(input|select)(?:(?!\btype\s*=\s*['"]?hidden\b)[^>])*?>/gi;
@@ -8,6 +9,7 @@ const replaceFormItem = (str)=>{
     return str.replace(regex, '____________');
 };
 export function getQuizInfo(html, type) {
+
     const $ = load(html);
     const obj = {};
     if (type === 'description') {

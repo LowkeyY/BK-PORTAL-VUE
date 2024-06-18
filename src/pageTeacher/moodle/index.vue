@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-05-13 16:56:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-29 19:17:56
+ * @LastEditTime: 2024-06-10 18:15:02
  * @FilePath: \BK-Portal-VUE\src\pageTeacher\moodle\index.vue
  * @Description: 
 -->
@@ -34,6 +34,19 @@
             </uni-list-item>
         </view>
         <uni-section type="line" title="本周未完成任务" />
+        <pull-refresh-list
+            :loading="loading"
+            :list-data="[1,2]"
+            :has-more="hasMore"
+            :has-more-loading="hasMoreLoading"
+            :is-refresh="isRefresh"
+            @on-refresh="refresh"
+            @load-more="loadMore"
+        >
+            <view class="task-list-container">
+                <view v-for="item in [1,2]" :key="item" class="task-list" @click="()=>handleTaskClick(item)">社会心理学</view>
+            </view>
+        </pull-refresh-list>
     </view>
     <tab-bar />
 </template>
@@ -70,6 +83,10 @@ const {
 const handleGoMessageCenter = (): void => {
     handleJumpToPage('teacherMessage');
 };
+const handleTaskClick = (item): void => {
+    const {courseid=''} = item;
+    handleJumpToPage('TeacherTask',{courseid});
+};
 const init = async () => {
     taskParams.searchData = { userid: useUser.moodleUserId };
     fetchTaskList(taskParams);
@@ -82,39 +99,49 @@ onShow(() => {
 </script>
 <style lang="scss" scoped>
 .grid-container {
-    background-color: #fff;
+  background-color: #fff;
 }
 .grid-item-box {
-    flex: 1;
-    // position: relative;
+  flex: 1;
+  // position: relative;
 
-    /* #ifndef APP-NVUE */
-    display: flex;
+  /* #ifndef APP-NVUE */
+  display: flex;
 
-    /* #endif */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16rpx 0;
-    .image {
-        width: 80rpx;
-        height: 80rpx;
-    }
-    .text {
-        margin-top: 20rpx;
-        font-size: $uni-font-size-sm;
-        color: $uni-text-color;
-    }
+  /* #endif */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 0;
+  .image {
+    width: 80rpx;
+    height: 80rpx;
+  }
+  .text {
+    margin-top: 20rpx;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color;
+  }
 }
 .notice-bar {
-    margin: $uni-spacing-col-sm 0;
-    .content {
-        display: flex;
-        align-items: center;
-        .icon {
-            width: 40rpx;
-            margin-right: $uni-spacing-col-lg;
-        }
+  margin: $uni-spacing-col-sm 0;
+  .content {
+    display: flex;
+    align-items: center;
+    .icon {
+      width: 40rpx;
+      margin-right: $uni-spacing-col-lg;
     }
+  }
 }
+.task-list-container {
+  padding: $uni-container-padding;
+  .task-list {
+    padding: 30rpx 20rpx;
+    background-color: #fff;
+    margin-bottom: $uni-spacing-col-lg;
+    border-radius: $uni-border-radius-lg;
+  }
+}
+
 </style>

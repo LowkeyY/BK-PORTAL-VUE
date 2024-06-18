@@ -1,5 +1,5 @@
 {
-    "name" : "bk_portal_app",
+    "name" : "北开门户",
     "appid" : "__UNI__F07B1CE",
     "description" : "",
     "versionName" : "0.0.1",
@@ -40,10 +40,29 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>"
                 ],
                 "minSdkVersion" : 21,
-                "debuggable":true
+                "debuggable":true,
+                "packagename":"com.bjou.mobile_portal", // Android平台云端打包的包名
+                "abiFilters":[
+                    "armeabi-v7a",
+                    "arm64-v8a",
+                    "x86"
+                ],
+                "permissionExternalStorage": {  //可选，JSON对象，Android平台应用启动时申请读写手机存储权限策略
+                "request": "always",                //必填，字符串类型，申请读写手机存储权限策略，可取值none、once、always
+                "prompt": ""                        //可选，字符串类型，当request设置为always值用户拒绝时弹出提示框上的内容
+            },
+            "permissionPhoneState": {       //可选，JSON对象，Android平台应用启动时申请读取设备信息权限配置
+                "request": "always",                //必填，字符串类型，申请读取设备信息权限策略，可取值none、once、always
+                "prompt": ""                        //可选，字符串类型，当request设置为always值用户拒绝时弹出提示框上的内容
+            },
+            "modules" : {
+                "VideoPlayer" : {},
+                "Camera" : {}
+            }
             },
             /* ios打包配置 */
             "ios" : {

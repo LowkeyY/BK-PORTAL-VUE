@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-24 18:48:45
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 17:00:15
+ * @LastEditTime: 2024-06-03 17:50:17
  * @FilePath: \BK-Portal-VUE\src\pageSub\lessonContent\components\LessonContent.vue
  * @Description:
 -->
@@ -11,7 +11,7 @@
 <template>
     <pull-refresh-list type="content" show-skeleton :loading="useLesson.loading" :has-more="false" :is-refresh="isRefresh" @on-refresh="refresh">
         <uni-collapse v-model="useLesson.collapseActiveIndex" @change="change">
-            <uni-collapse-item v-for="(item,index) in resources" :key="item.id" :show-animation="true" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
+            <uni-collapse-item v-for="(item,index) in resources" :key="item.id" :show-animation="false" class="collapse-item" :title="lessonData.format === 'buttons'?index+1:item.name">
                 <view class="content">
                     <view v-if="item.summary!==''" class="html">
                         <rich-text :nodes="item.summary" space />

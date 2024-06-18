@@ -2,24 +2,23 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-01-12 14:38:31
+ * @LastEditTime: 2024-06-11 10:28:10
  * @FilePath: \BK-Portal-VUE\src\services\login.ts
  * @Description:
  */
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
-import storage from '@/utils/storage';
-import { StorageEnum } from '@/enums/storageEnum';
+import { useAuthStore } from '@/store/modules/auth';
 
 const { SSO_SERVER, PORTAL_SERVER, CUNOVS_SERVER } = getBaseUrl();
-const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
+
 const SSO = `${PORTAL_SERVER}/sso`; // !!!!!!!!!!!!!!!!!!!!!!!!单点登录sso接口 PORTAL_SERVER !!!!!!!!!!!!!!!
 const LOGIN = `${PORTAL_SERVER}/login`;
 const PORTAL_TOKEN = `${PORTAL_SERVER}/oauth/userToken`;
 const CHECK_FIRST_LOGIN = `${SSO_SERVER}/current`;
 const MOODLE_TOKEN = `${CUNOVS_SERVER}/config/getBkUser`; // 获取学习平台Token
-const LOGIN_OUT = `/logout/${moodleToken}`; // 退出
+const LOGIN_OUT = '/logout'; // 退出
 const LOGIN_INFO = `${CUNOVS_SERVER}/login/info`; // 登录信息
 const GET_PCLOGIN_CODE = `${SSO_SERVER}/security/encodeFix`; // 集成单点登录，获取PC端登录密码
 const PC_LOGIN = `${SSO_SERVER}/security_check`; // 模拟PC登录获取pc端cookie 用于集成单点登录
@@ -65,6 +64,7 @@ export function portalTokenApi() {
  * @return {*}
  */
 export function moodleTokenApi(data: MoodleTokenParams) {
+   
     return http.request({
         url: MOODLE_TOKEN,
         data,
@@ -86,8 +86,9 @@ export function checkFirstLoginApi(data: AccessTokenParams) {
  * 登出
  */
 export function logout() {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url: LOGIN_OUT,
+        url: `${LOGIN_OUT}/${moodleToken}`,
     });
 }
 

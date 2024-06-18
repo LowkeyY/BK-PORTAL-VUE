@@ -1,7 +1,8 @@
+
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
 
-const { SSO_SERVER, PORTAL_SERVER, CUNOVS_SERVER } = getBaseUrl();
+const { SSO_SERVER} = getBaseUrl();
 
 /**
  * 通过账户获取userId

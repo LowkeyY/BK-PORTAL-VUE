@@ -86,6 +86,21 @@ onShow(async () => {
     }
     loading.value = false;
 });
+const toggleRole = ()=>{
+    if(isBjouUser()){
+        useUser.orgCode = UserRoleEnums.BJOU_TEACHER;
+        setStorage({ [StorageEnum.ORG_CODE]: UserRoleEnums.BJOU_TEACHER });
+        router.replace({
+            name: 'TeacherHome',
+        });
+    }else{
+        useUser.orgCode = UserRoleEnums.BJOU_STUDENT;
+        setStorage({ [StorageEnum.ORG_CODE]: UserRoleEnums.BJOU_STUDENT });
+        router.replace({
+            name: 'Home',
+        });
+    }
+};
 </script>
 
 <template>
@@ -98,7 +113,7 @@ onShow(async () => {
                     <view class="userinfo">
                         <view class="top-text">
                             <view class="name">
-                                <text style="margin-right: 10rpx">{{ curUserInfo?.userName }}</text>
+                                <text style="margin-right: 10rpx;">{{ curUserInfo?.userName }}</text>
                                 <uni-tag v-if="isOuchnUser()" :text="ouchnUserInfo?.studentState" size="small" type="primary" />
                             </view>
                             <uni-icons type="gear-filled" color="#fff" size="30" @click="goSettings"></uni-icons>
@@ -154,7 +169,7 @@ onShow(async () => {
         <Menu v-if="isBjouUser()" :menu-list="bkMineGirds" :column="5" @handle-grids-click="handleGridsClick" />
         <uni-section v-if="useUser.roleList.length > 1" title="切换身份">
             <template #right>
-                <view style="display: flex; align-items: center" @click="selectRolesRef.toggle()">
+                <view style="display: flex; align-items: center;" @click="selectRolesRef.toggle()">
                     <uni-icons type="staff-filled" size="22" color="#2979ff"></uni-icons>
                     <text color="#2979ff">{{ currentRole }}</text>
                 </view>
@@ -170,6 +185,12 @@ onShow(async () => {
         <uni-list v-for="(item, index) in bkMineInfo" :key="item.id" :index="index">
             <uni-list-item :show-extra-icon="true" :right-text="curUserInfo[item.key]" :extra-icon="item.extraIcon" :title="item.text" />
         </uni-list>
+        <uni-list-item
+            :title="isBjouUser()?'切换教师':'切换学生'"
+            :show-arrow="true"
+            clickable
+            @click="() => toggleRole()"
+        />
     </view>
     <select-roles ref="selectRolesRef" @select-role="handleLoginByRole" />
     <tab-bar />
@@ -177,105 +198,105 @@ onShow(async () => {
 
 <style lang="scss" scoped>
 .mypage-container {
-    font-size: $uni-font-size-base;
-    color: $uni-font-color-white;
-    box-sizing: border-box;
-    background-color: $uni-bg-color;
+  font-size: $uni-font-size-base;
+  color: $uni-font-color-white;
+  box-sizing: border-box;
+  background-color: $uni-bg-color;
 }
 .mypage-top-box {
-    margin: 0 auto;
-    padding: $uni-container-padding;
-    background-size: cover;
-    overflow: hidden;
-    position: relative;
+  margin: 0 auto;
+  padding: $uni-container-padding;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    .bg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-    .userinfo-operate {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 2;
-        background-color: $uni-bg-color;
-        border-radius: 40rpx 40rpx 0 0;
-        padding-top: 20rpx;
-    }
-    .mypage-top-content {
-        position: relative;
-        width: 100%;
-        z-index: 2;
-        padding-bottom: 20rpx;
-    }
+    z-index: 1;
+  }
+  .userinfo-operate {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-color: $uni-bg-color;
+    border-radius: 40rpx 40rpx 0 0;
+    padding-top: 20rpx;
+  }
+  .mypage-top-content {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+    padding-bottom: 20rpx;
+  }
 }
 .mypage-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .avatar {
-        width: 145rpx;
-        height: 145rpx;
-        border-radius: 90rpx;
-        margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .avatar {
+    width: 145rpx;
+    height: 145rpx;
+    border-radius: 90rpx;
+    margin-right: 20rpx;
+  }
+  .userinfo {
+    flex: 1;
+    .top-text {
+      font-size: 40rpx;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .name {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20rpx;
+        font-weight: bold;
+      }
     }
-    .userinfo {
-        flex: 1;
-        .top-text {
-            font-size: 40rpx;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            .name {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20rpx;
-                font-weight: bold;
-            }
-        }
-        .bottom-text {
-            display: flex;
-            width: 100%;
-            margin-top: 20rpx;
-            justify-content: space-between;
-        }
+    .bottom-text {
+      display: flex;
+      width: 100%;
+      margin-top: 20rpx;
+      justify-content: space-between;
     }
+  }
 }
 .administrative {
-    padding: $uni-list-padding;
+  padding: $uni-list-padding;
 }
 .info {
-    display: flex;
-    width: 90%;
-    padding-left: 16px;
-    justify-content: space-between;
-    margin-bottom: 20rpx;
+  display: flex;
+  width: 90%;
+  padding-left: 16px;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
 }
 .time {
-    padding-left: 16px;
+  padding-left: 16px;
 }
 .grid-item-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    .icon {
-        width: 56rpx;
-        height: 56rpx;
-    }
-    .text {
-        margin-top: 20rpx;
-        font-size: $uni-font-size-sm;
-        color: $uni-text-color;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  .icon {
+    width: 56rpx;
+    height: 56rpx;
+  }
+  .text {
+    margin-top: 20rpx;
+    font-size: $uni-font-size-sm;
+    color: $uni-text-color;
+  }
 }
 .userinfo-box {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 }
 </style>

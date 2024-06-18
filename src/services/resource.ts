@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-18 13:25:41
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-22 11:31:51
+ * @LastEditTime: 2024-06-04 11:28:44
  * @FilePath: \BK-Portal-VUE\src\services\resource.ts
  * @Description: 
  */
@@ -10,22 +10,21 @@
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
-import storage from '@/utils/storage';
-import { StorageEnum } from '@/enums/storageEnum';
+import { useAuthStore } from '@/store/modules/auth';
 
 const {CUNOVS_SERVER} =getBaseUrl();
-const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
 
-const QUERY_PAGE = `${CUNOVS_SERVER}/page/${moodleToken}`; // 查询网页资源
-const QUERY_SVP = `${CUNOVS_SERVER}/svp/${moodleToken}`; // 查询SVP（super class）资源
-const QUERY_FOLDER = `${CUNOVS_SERVER}/folder/list/${moodleToken}`; // 查询文件资源
+const QUERY_PAGE = `${CUNOVS_SERVER}/page`; // 查询网页资源
+const QUERY_SVP = `${CUNOVS_SERVER}/svp`; // 查询SVP（super class）资源
+const QUERY_FOLDER = `${CUNOVS_SERVER}/folder/list`; // 查询文件资源
 /**
  * @description:查询网页资源
  * @return {*}
  */
 export function queryPageApi(data:pageParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:`${QUERY_PAGE}`,
+        url:`${QUERY_PAGE}/${moodleToken}`,
         data
     });
 }
@@ -35,8 +34,9 @@ export function queryPageApi(data:pageParams) {
  * @return {*}
  */
 export function querySvpApi(data:svpParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:`${QUERY_SVP}`,
+        url:`${QUERY_SVP}/${moodleToken}`,
         data
     });
 }
@@ -47,8 +47,9 @@ export function querySvpApi(data:svpParams) {
  * @return {*}
  */
 export function queryFolderApi(data:folderParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:`${QUERY_FOLDER}`,
+        url:`${QUERY_FOLDER}/${moodleToken}`,
         data
     });
 }

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-05-21 15:30:14
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-21 16:43:35
+ * @LastEditTime: 2024-06-12 22:14:04
  * @FilePath: \BK-Portal-VUE\src\components\ExchangeRoles\ExchangeRoles.vue
  * @Description: 
 -->
@@ -21,7 +21,7 @@
 <script setup name="ExchangeRoles">
 defineProps({});
 const index = ref(0);
-const roles = ['中国', '美国', '巴西', '日本'];
+const roles = ['责任教师', '导学教师', '辅导教师', '学生'];
 const bindPickerChange = (e) => {
     console.log(e);
 };
@@ -29,20 +29,20 @@ const bindPickerChange = (e) => {
 
 <style scoped lang="scss">
 .container {
-    padding: 30rpx 20rpx 20rpx;
+  padding: 30rpx 20rpx 20rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: $uni-font-size-lg;
+  .exchange {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     font-size: $uni-font-size-lg;
-    .exchange {
-        display: flex;
-        align-items: center;
-        font-size: $uni-font-size-lg;
-        color: $uni-color-primary;
-    }
-    .icon {
-        width: 1em;
-        height: 1em;
-        margin-right: 10rpx;
-    }
+    color: $uni-color-primary;
+  }
+  .icon {
+    width: 1em;
+    height: 1em;
+    margin-right: 10rpx;
+  }
 }
 </style>

@@ -252,7 +252,7 @@
                     "name": "messageCenter",
                     "path": "messageCenter/index",
                     "style": {
-                        "navigationBarTitleText": "消息中心",
+                        "navigationBarTitleText": "学习平台消息通知",
                         "navigationBarBackgroundColor": "#2b83d7",
                         "navigationBarTextStyle": "white"
                     },
@@ -265,7 +265,20 @@
                     "name": "teacherMessage",
                     "path": "messageCenter/teacherMessage",
                     "style": {
-                        "navigationBarTitleText": "学习平台通知、消息",
+                        "navigationBarTitleText": "学习平台消息通知",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "portalMessage",
+                    "path": "messageCenter/portalMessage",
+                    "style": {
+                        "navigationBarTitleText": "门户消息",
                         "navigationBarBackgroundColor": "#2b83d7",
                         "navigationBarTextStyle": "white"
                     },
@@ -285,17 +298,17 @@
                         "tabBar": false
                     }
                 },
-                 {
-                     "name": "chatDetail",
-                     "path": "chat/index",
-                     "style": {
-                         "navigationStyle": "custom"
-                     },
-                     "meta": {
-                         "ignoreAuth": true,
-                         "tabBar": false
-                     }
-                 },
+                {
+                    "name": "chatDetail",
+                    "path": "chat/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
                 {
                     "name": "liveCourse",
                     "path": "liveCourse/index",
@@ -499,6 +512,18 @@
                     "path": "suggestion/studentSuggestions",
                     "style": {
                         "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "dealWith",
+                    "path": "dealWith/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": true
                     },
                     "meta": {
                         "ignoreAuth": true,
@@ -873,8 +898,32 @@
                     }
                 },
                 {
-                    "name": "attendanceReportWeekly",
-                    "path": "attendanceReport/weekly",
+                    "name": "TeacherTask",
+                    "path": "teacherTask/index",
+                    "style": {
+                        "navigationBarTitleText": "本周待完成任务",
+                        "navigationBarBackgroundColor": "#2b83d7",
+                        "navigationBarTextStyle": "white"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "RatingSituation",
+                    "path": "ratingSituation/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "ReplySituation",
+                    "path": "replySituation/index",
                     "style": {
                         "navigationStyle": "custom"
                     },
@@ -908,6 +957,17 @@
                 {
                     "name": "tutorshipReport",
                     "path": "tutorshipReport/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    },
+                    "meta": {
+                        "ignoreAuth": true,
+                        "tabBar": false
+                    }
+                },
+                {
+                    "name": "attendanceReportWeekly",
+                    "path": "attendanceReport/weekly",
                     "style": {
                         "navigationStyle": "custom"
                     },

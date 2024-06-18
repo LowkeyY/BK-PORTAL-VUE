@@ -2,17 +2,17 @@
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
-import storage from '@/utils/storage';
-import { StorageEnum } from '@/enums/storageEnum';
+import { useAuthStore } from '@/store/modules/auth';
 
 const {CUNOVS_SERVER} =getBaseUrl();
-const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
+
 
 /**
  * @description:在开课程
  * @return {*}
  */
 export function courseListOpenApi(data:courseListParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/courselist/open/${moodleToken}`,
         data,
@@ -24,6 +24,7 @@ export function courseListOpenApi(data:courseListParams) {
  * @return {*}
  */
 export function courseListDueApi(data:courseListParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/courselist/due/${moodleToken}`,
         data,
@@ -35,6 +36,7 @@ export function courseListDueApi(data:courseListParams) {
  * @return {*}
  */
 export function courseContentApi(data: CourseContentParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/course/${moodleToken}`,
         data,
@@ -46,6 +48,7 @@ export function courseContentApi(data: CourseContentParams) {
  * @return {*}
  */
 export function courseRefreshApi(data: CourseContentParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/course/refresh/${moodleToken}`,
         data,
@@ -57,6 +60,7 @@ export function courseRefreshApi(data: CourseContentParams) {
  * @return {*}
  */
 export function attendanceCourseApi(data:AttendanceCourseParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/attendance/course/${moodleToken}`,
         data,
@@ -64,6 +68,7 @@ export function attendanceCourseApi(data:AttendanceCourseParams) {
 }
 
 export function durationCourseApi(data:AttendanceCourseParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/duration/course/${moodleToken}`,
         data,
@@ -75,6 +80,7 @@ export function durationCourseApi(data:AttendanceCourseParams) {
  * @return {*}
  */
 export function attendanceRefreshApi(data:AttendanceCourseParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/attendance/refresh/${moodleToken}`,
         data,
@@ -87,6 +93,7 @@ export function attendanceRefreshApi(data:AttendanceCourseParams) {
  * @return {*}
  */
 export function completionApi(data:completionParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/cm/completion/${moodleToken}`,
         method:'post',

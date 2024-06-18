@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-27 15:57:23
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-17 12:32:13
+ * @LastEditTime: 2024-06-12 21:59:35
  * @FilePath: \BK-Portal-VUE\src\pageSub\settings\index.vue
  * @Description:
 -->
@@ -99,6 +99,9 @@ const cacheDialog = ref();
 const authStore = useAuthStore();
 const cache=ref('0');
 const versionNumber=ref('');
+const handleFeedback = ()=>{
+    router.push({ name: 'SuggestionForm' });
+};
 
 const showExitAlert = () => {
     alertDialog.value?.open();
@@ -182,10 +185,10 @@ onLoad(()=>{
 
 <style lang="scss" scoped>
 .btn-box {
-    padding: 40rpx 80rpx;
-    .btn {
-        background: linear-gradient(#fad25c, #f77b26);
-        border: 0;
-    }
+  padding: 40rpx 80rpx;
+  .btn {
+    background: linear-gradient(#fad25c, #f77b26);
+    border: 0;
+  }
 }
 </style>

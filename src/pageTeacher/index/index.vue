@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-05-13 16:56:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-29 19:17:46
+ * @LastEditTime: 2024-06-11 10:29:41
  * @FilePath: \BK-Portal-VUE\src\pageTeacher\index\index.vue
  * @Description: 
 -->
@@ -119,97 +119,97 @@ onShow(() => {
 </script>
 <style lang="scss" scoped>
 ::v-deep .uni-section-header {
-    padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 .message-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30rpx 20rpx;
-    .message-bar-item {
-        width: 30%;
-        background-color: #fff;
-        .top {
-            .count {
-                font-size: 32rpx;
-                padding: 0 20rpx 10rpx;
-                font-weight: bold;
-                text-align: center;
-                color: $uni-color-warning;
-                .count-unit {
-                    font-size: $uni-font-size-sm;
-                    color: $uni-color-subtitle;
-                    font-weight: normal;
-                }
-            }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 20rpx;
+  .message-bar-item {
+    width: 30%;
+    background-color: #fff;
+    .top {
+      .count {
+        font-size: 32rpx;
+        padding: 0 20rpx 10rpx;
+        font-weight: bold;
+        text-align: center;
+        color: $uni-color-warning;
+        .count-unit {
+          font-size: $uni-font-size-sm;
+          color: $uni-color-subtitle;
+          font-weight: normal;
         }
-        .message-title {
-            padding: 8rpx;
-            font-size: $uni-font-size-base;
-            text-align: center;
-            color: $uni-color-subtitle;
-        }
+      }
     }
-    .has-border {
-        border-left: 1px solid $uni-border-color;
-        border-right: 1px solid $uni-border-color;
+    .message-title {
+      padding: 8rpx;
+      font-size: $uni-font-size-base;
+      text-align: center;
+      color: $uni-color-subtitle;
     }
+  }
+  .has-border {
+    border-left: 1px solid $uni-border-color;
+    border-right: 1px solid $uni-border-color;
+  }
 }
 .dealt-content {
-    margin: $uni-spacing-col-lg 0;
-    .uni-section-header {
-        padding-bottom: 0 !important;
-    }
-    .dealt-bar {
-        .dealt-content {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
-            font-size: $uni-font-size-base;
-            .dealt-body {
-                display: flex;
-                align-items: center;
-                .icon {
-                    width: 40rpx;
-                    margin-right: $uni-spacing-col-lg;
-                }
-            }
-            .extra {
-                color: $uni-color-primary;
-            }
+  margin: $uni-spacing-col-lg 0;
+  .uni-section-header {
+    padding-bottom: 0 !important;
+  }
+  .dealt-bar {
+    .dealt-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      font-size: $uni-font-size-base;
+      .dealt-body {
+        display: flex;
+        align-items: center;
+        .icon {
+          width: 40rpx;
+          margin-right: $uni-spacing-col-lg;
         }
+      }
+      .extra {
+        color: $uni-color-primary;
+      }
     }
+  }
 }
 .grid-container {
-    background-color: #fff;
-    .grid-item-box {
-        flex: 1;
-        // position: relative;
+  background-color: #fff;
+  .grid-item-box {
+    flex: 1;
+    // position: relative;
 
-        /* #ifndef APP-NVUE */
-        display: flex;
+    /* #ifndef APP-NVUE */
+    display: flex;
 
-        /* #endif */
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 16rpx 0;
-        .image {
-            width: 56rpx;
-            height: 56rpx;
-        }
-        .text {
-            margin-top: 20rpx;
-            font-size: $uni-font-size-sm;
-            color: $uni-text-color;
-        }
+    /* #endif */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16rpx 0;
+    .image {
+      width: 56rpx;
+      height: 56rpx;
     }
+    .text {
+      margin-top: 20rpx;
+      font-size: $uni-font-size-sm;
+      color: $uni-text-color;
+    }
+  }
 }
 .application-content {
-    padding: 0 10rpx;
-    .portal {
-        margin-bottom: $uni-spacing-col-lg;
-    }
+  padding: 0 10rpx;
+  .portal {
+    margin-bottom: $uni-spacing-col-lg;
+  }
 }
 </style>

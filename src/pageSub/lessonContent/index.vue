@@ -1,29 +1,30 @@
 <template>
     <app-provider>
         <view class="header">
-            <view class="btn" :style="{ top: statusBarHeight }">
+            <view class="btn" :style="{ top: `${20+statusBarHeight}rpx` }">
                 <uni-icons class="back" type="left" size="24" color="#fff" @click="router.back"></uni-icons>
             </view>
-            <image class="course-img" :src="getImages(lessonData.courseImage)" mode="aspectFill" @error="(el) => getErrorImg(el, 'user')" />
-            <view class="course-info">
-                <view class="course-name">{{ lessonData.fullname }}</view>
-                <view v-if="!isTeacherUser()" class="course-tips">
-                    <view class="tips-item">
-                        <view class="item-title">成绩</view>
-                        <view>{{ lessonData.graderaw }}</view>
-                    </view>
-                    <view v-if="showAttendance" class="tips-item">
-                        <view class="item-title">{{ lessonData.openState === '1' ? '考勤' : '本周考勤' }}</view>
-                        <AttendanceState :state="attendanceState" />
-                    </view>
-                    <view class="tips-item">
-                        <view class="item-title">结课日期</view>
-                        <view>{{ changeLessonDate(lessonData.enddate) }}</view>
-                    </view>
+            <image class="course-img" :style="{ height: `${180+statusBarHeight}rpx` }" :src="getImages(lessonData.courseImage)" mode="aspectFill" @error="(el) => getErrorImg(el, 'user')" />
+            <view class="bottom" />
+        </view>
+        <view class="course-info">
+            <view class="course-name">{{ lessonData.fullname }}</view>
+            <view v-if="!isTeacherUser()" class="course-tips">
+                <view class="tips-item">
+                    <view class="item-title">成绩</view>
+                    <view>{{ lessonData.graderaw }}</view>
                 </view>
-                <view v-else>
-                    <exchange-roles />
+                <view v-if="showAttendance" class="tips-item">
+                    <view class="item-title">{{ lessonData.openState === '1' ? '考勤' : '本周考勤' }}</view>
+                    <AttendanceState :state="attendanceState" />
                 </view>
+                <view class="tips-item">
+                    <view class="item-title">结课日期</view>
+                    <view>{{ changeLessonDate(lessonData.enddate) }}</view>
+                </view>
+            </view>
+            <view v-else>
+                <exchange-roles />
             </view>
         </view>
         <uni-notice-bar v-if="lessonData._useScriptFlag || lessonData._useScriptFunc" scrollable :text="useApp._useJavaScriptMessage?.info" />
@@ -54,7 +55,7 @@ import { useLiveCourseStore } from '@/store/modules/liveCourse';
 import AttendanceDetails from '@/components/AttendanceDetails/AttendanceDetails.vue';
 import { useSystem } from '@/hooks/app/useSystem';
 import { px2rpx } from '@/utils/uniapi';
-const statusBarHeight = `${20 + px2rpx(useSystem().statusBarHeight || 0)}rpx`;
+const statusBarHeight = px2rpx(useSystem().statusBarHeight || 0);
 const { setLog, setCourseRecordLog } = useSetLog();
 const useLesson = useLessonStore();
 const useLiveCourse = useLiveCourseStore();
@@ -150,66 +151,72 @@ onLoad(async (options) => {
 </script>
 <style lang="scss" scoped>
 .header {
-    position: relative;
-    border-bottom: 1px solid $uni-border-color;
-    .btn {
-        width: 100%;
-        position: absolute;
-        top: 20rpx;
-        z-index: 2;
-        padding: 0 20rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .back {
-            background-color: rgb(0 0 0 / 50%);
-            border-radius: 50%;
-        }
+  position: relative;
+  .btn {
+    width: 100%;
+    position: absolute;
+    top: 20rpx;
+    z-index: 8;
+    padding: 0 20rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .back {
+      background-color: rgb(0 0 0 / 50%);
+      border-radius: 50%;
+      padding: 6rpx;
     }
-    .course-info {
-        position: absolute;
-        bottom: 0;
-        z-index: 2;
-        width: 100%;
-        background-color: #fff;
-        padding: 20rpx;
-        border-radius: 30px 30px 0 0;
-        .course-name {
-            font-size: $uni-font-size-lg;
-        }
-        .course-tips {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: $uni-font-size-m;
-            padding: 0 20rpx;
-            margin-top: 16rpx;
-            .tips-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                .item-title {
-                    margin-bottom: 8rpx;
-                    color: #065d87;
-                }
-            }
-        }
+  }
+  .course-img {
+    width: 100%;
+    height: 180rpx;
+  }
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 30rpx;
+    background-color: #fff;
+    border-radius: 20px 20px 0 0;
+  }
+}
+.course-info {
+  width: 100%;
+  background-color: #fff;
+  padding: 0 20rpx 20rpx;
+  border-radius: 30px 30px 0 0;
+  border-bottom: 1px solid $uni-border-color;
+  .course-name {
+    font-size: $uni-font-size-m;
+  }
+  .course-tips {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: $uni-font-size-m;
+    padding: 0 20rpx;
+    margin-top: 16rpx;
+    .tips-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .item-title {
+        margin-bottom: 8rpx;
+        color: #065d87;
+      }
     }
-    .course-img {
-        width: 100%;
-        height: 300rpx;
-    }
+  }
 }
 .uni-padding-wrap {
-    background-color: #fff;
+  background-color: #fff;
 }
 .lesson-content {
-    margin-top: 16rpx;
-    padding: 0 20rpx;
-    height: 100%;
+  margin-top: 16rpx;
+  padding: 0 20rpx;
+  height: 100%;
 }
 .live {
-    height: 100%;
-    background-color: $uni-bg-color-grey;
+  height: 100%;
+  background-color: $uni-bg-color-grey;
 }
 </style>

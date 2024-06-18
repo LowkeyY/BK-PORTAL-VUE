@@ -4,7 +4,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-11 12:50:29
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-17 18:59:15
+ * @LastEditTime: 2024-06-12 12:34:37
  * @FilePath: \BK-Portal-VUE\src\hooks\useUploadFiles.ts
  * @Description:
  */
@@ -85,7 +85,7 @@ export default function useUploadFiles (callback?:callback){
             // 2新增的直接使用uploadFile方法上传
             // 3已上传的需要下载后获取本地path在上传
             if(file.status==='ready' || file.type==='waiting'){
-
+              
                 const result =  await uploadFile(file); // 同步上传文件
                 results.push(result);
             }else{

@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-06 10:54:49
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-13 12:07:10
+ * @LastEditTime: 2024-06-12 12:12:19
  * @FilePath: \BK-Portal-VUE\src\pageLessonRescourse\assign\assignSubmit.vue
  * @Description:
 -->
@@ -11,7 +11,7 @@
     <app-provider>
         <nav-bar title="提交作业" :show-modal="true" />
         <view v-if="textConfigs.enabled">
-            <uni-section title="在线文本提交" type="line" style="background-color: transparent">
+            <uni-section title="在线文本提交" type="line" style="background-color: transparent;">
                 <template v-if="wordlimitenabled !== '0'" #right>
                     {{ `最大长度${wordlimit}` }}
                 </template>
@@ -19,7 +19,7 @@
             </uni-section>
         </view>
         <view v-if="fileConfigs.enabled && maxfilesubmissions && maxsubmissionsizebytes">
-            <uni-section title="文件提交" type="line" style="background-color: transparent">
+            <uni-section title="文件提交" type="line" style="background-color: transparent;">
                 <file-picker
                     ref="fileRef"
                     :upload-file-list="uploadFileList"
@@ -38,7 +38,7 @@
 import useUploadFiles from '@/hooks/useUploadFiles';
 import { useAssignStore } from '@/store/modules/assign';
 import { getCurPageParam } from '@/utils';
-import { Modal, Toast } from "@/utils/uniapi/prompt";
+import { Modal, Toast } from '@/utils/uniapi/prompt';
 
 const useAssign = useAssignStore();
 const router = useRouter();
@@ -152,6 +152,6 @@ const onConfirmSave = () => {
 </script>
 <style lang="scss" scoped>
 .btn {
-    padding: 0 50rpx;
+  padding: 0 50rpx;
 }
 </style>

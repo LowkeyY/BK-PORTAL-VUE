@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-05-13 16:56:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-20 17:21:01
+ * @LastEditTime: 2024-06-13 09:33:22
  * @FilePath: \BK-Portal-VUE\src\pageTeacher\teacherSchedule\index.vue
  * @Description: 
 -->
@@ -10,7 +10,7 @@
 <template>
     <view>
         <logo-header class="logo" />
-        <web-view
+        <!-- <web-view
             :style="{ top, height: elementHeight }"
             class="web-container"
             src="https://www.runoob.com/sass/sass-tutorial.html"
@@ -19,7 +19,7 @@
                     color: '#2b83d7',
                 },
             }"
-        ></web-view>
+        ></web-view> -->
     </view>
     <tab-bar class="tabbar" />
 </template>

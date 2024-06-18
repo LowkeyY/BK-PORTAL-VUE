@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-13 18:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-29 15:29:44
+ * @LastEditTime: 2024-06-11 10:29:11
  * @FilePath: \BK-Portal-VUE\src\store\modules\auth.ts
  * @Description:
  */
@@ -223,6 +223,7 @@ export const useAuthStore = defineStore({
                 username: queryName,
                 usersn: encryptMD5(`${queryName}${EncryptKey.KEY}`),
             };
+           
             try {
                 const { token = '', message = '学习平台Tokne获取失败', success } = await moodleTokenApi(params as MoodleTokenParams);
                 if (success) {

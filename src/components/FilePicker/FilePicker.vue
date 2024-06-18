@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-03-06 13:38:05
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-03-15 17:53:19
+ * @LastEditTime: 2024-06-12 17:16:03
  * @FilePath: \BK-Portal-VUE\src\components\FilePicker\FilePicker.vue
  * @Description:
 -->
@@ -13,7 +13,7 @@
                 <uni-list-item v-for="(file, index) in uploadFiles" :key="index" ellipsis="1">
                     <template #header>
                         <view class="icon">
-                            <image :src="getFileIcon(file.name)" style="width: 60rpx; height: 80rpx; padding-right: 20rpx" mode="scaleToFill" />
+                            <image :src="getFileIcon(file.name)" style="width: 60rpx; height: 80rpx; padding-right: 20rpx;" mode="scaleToFill" />
                         </view>
                     </template>
                     <template #body>
@@ -55,85 +55,42 @@
                 </view>
             </view>
         </view>
-        <view v-if="uploadFiles.length < maxFiles && isShowMic" class="btn">
-            <!--            <button type="primary" @click="toggle">添加文件</button>-->
-            <view class="action-btn">
-                <lsj-upload
-                    ref="uploadRef"
-                    child-id="upload1"
-                    width="100%"
-                    height="100%"
-                    :option="option"
-                    :count="maxFiles"
-                    :formats="allowTypes"
-                    :size="curFormatSize"
-                    :debug="true"
-                    :multiple="false"
-                    :instantly="false"
-                    :distinct="true"
-                    @change="handleChange"
-                    @upload-end="onuploadEnd"
-                >
-                    <view style="display: flex; justify-content: center; align-items: center; height: 100%">
-                        <uni-icons type="folder-add-filled" size="36rpx" color="#555"></uni-icons>
-                        选择文件
+        <view v-if="uploadFiles.length < maxFiles" class="btn">
+            <button type="primary" @click="toggle">添加文件</button>
+        </view>
+        <view v-show="popupShow" background-color="#fff" class="popup" @click="popupShow=false">
+            <view class="popup-content" @click.stop>
+                <view v-if="uploadShow&&popupType==='actions'" class="actions">
+                    <lsj-upload
+                        ref="uploadRef"
+                        child-id="upload1"
+                        width="600rpx"
+                        height="60rpx"
+                        :option="option"
+                        :count="maxFiles"
+                        :formats="allowTypes"
+                        :size="curFormatSize"
+                        :debug="true"
+                        :multiple="false"
+                        :instantly="false"
+                        :distinct="true"
+                        @change="handleChange"
+                        @upload-end="onuploadEnd"
+                    >
+                        <view class="action-item">
+                            <uni-icons type="folder-add-filled" size="36rpx" color="#555"></uni-icons>
+                            选择文件
+                        </view>
+                    </lsj-upload>
+                    <view class="action-item" @click="popupType='recorder'">
+                        <uni-icons type="mic-filled" size="36rpx" color="#555"></uni-icons>
+                        录制音频
                     </view>
-                </lsj-upload>
-            </view>
-            <view class="action-btn">
-                <uni-icons type="mic-filled" size="36rpx" color="#555"></uni-icons>
-                录制音频
+                    <view class="action-item cancel" @click="popupShow=false">取消</view>
+                </view>
+                <recorder-box v-else @close="popupType='actions'" @save-record="handlSaveRecord" />
             </view>
         </view>
-        <view v-if="uploadFiles.length < maxFiles && !isShowMic" class="btn">
-            <lsj-upload
-                ref="uploadRef"
-                child-id="upload1"
-                width="100%"
-                height="100%"
-                :option="option"
-                :count="maxFiles"
-                :formats="allowTypes"
-                :size="curFormatSize"
-                :debug="true"
-                :multiple="false"
-                :instantly="false"
-                :distinct="true"
-                @change="handleChange"
-                @upload-end="onuploadEnd"
-            >
-                <button type="primary">添加文件</button>
-            </lsj-upload>
-        </view>
-        <!--        <uni-popup ref="popupRef" background-color="#fff">-->
-        <!--            <view class="popup-content">-->
-        <!--                <lsj-upload-->
-        <!--                    ref="uploadRef"-->
-        <!--                    child-id="upload1"-->
-        <!--                    width="600rpx"-->
-        <!--                    height="60rpx"-->
-        <!--                    :option="option"-->
-        <!--                    :count="maxFiles"-->
-        <!--                    :formats="allowTypes"-->
-        <!--                    :size="curFormatSize"-->
-        <!--                    :debug="true"-->
-        <!--                    :multiple="false"-->
-        <!--                    :instantly="false"-->
-        <!--                    :distinct="true"-->
-        <!--                    @change="handleChange"-->
-        <!--                >-->
-        <!--                    <view class="action-item">-->
-        <!--                        <uni-icons type="folder-add-filled" size="36rpx" color="#555" ></uni-icons>-->
-        <!--                        选择文件-->
-        <!--                    </view>-->
-        <!--                </lsj-upload>-->
-        <!--                <view v-if="isShowMic" class="action-item">-->
-        <!--                    <uni-icons type="mic-filled" size="36rpx" color="#555"></uni-icons>-->
-        <!--                    录制音频-->
-        <!--                </view>-->
-        <!--                <view class="action-item cancel" @click="popupRef.close();">取消</view>-->
-        <!--            </view>-->
-        <!--        </uni-popup>-->
     </view>
 </template>
 
@@ -170,15 +127,13 @@ const props = defineProps({
         type: String,
         default: 'all',
     },
-    isShowMic: {
-        type: Boolean,
-        default: true,
-    },
 });
 
-const popupRef = ref();
-const uploadRef = ref();
 
+const uploadRef = ref();
+const popupShow = ref(false);
+const popupType = ref('actions');
+const uploadShow = ref(false); // 渲染条件
 const emit = defineEmits(['upload-end-callback']);
 const { MOODLE_SERVER } = getBaseUrl();
 const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
@@ -194,6 +149,12 @@ const option = reactive({
         itemid: curItemid.value,
         filearea: 'draft',
     },
+});
+watch(()=>popupShow.value,(val:Boolean)=>{
+    if(val===false){
+        popupType.value='actions';
+        
+    }
 });
 const uploadFiles = ref<any[]>(props.uploadFileList);
 const hasFilesChange = ref<boolean>(false);
@@ -232,47 +193,47 @@ const deleteFile = (file: Record<string, any>) => {
     uploadFiles.value = uploadFiles.value.filter((item) => item.name !== file.name);
     hasFilesChange.value = true;
 };
-const handleSelect = (e: any) => {
-    popupRef.value.close();
-    const file = e.tempFiles[0]; // 已限制文件单选
-    const { size, extname } = file;
-    if (!validateFileType(extname)) {
-        Toast(`不能上传${extname}类型的文件。`);
-        return;
-    }
-    if (size > props.maxSize) {
-        Toast('文件过大，不能上传。');
-        return;
-    }
-    nextTick(() => {
-        uploadFiles.value = appendFiles(e.tempFiles);
-    });
-};
+// const handleSelect = (e: any) => {
+//     popupRef.value.close();
+//     const file = e.tempFiles[0]; // 已限制文件单选
+//     const { size, extname } = file;
+//     if (!validateFileType(extname)) {
+//         Toast(`不能上传${extname}类型的文件。`);
+//         return;
+//     }
+//     if (size > props.maxSize) {
+//         Toast('文件过大，不能上传。');
+//         return;
+//     }
+//     nextTick(() => {
+//         uploadFiles.value = appendFiles(e.tempFiles);
+//     });
+// };
 
 /**
  * @description: 校验上传文件类型
  * @param {*} string
  * @return {*}
  */
-const validateFileType = (string: string): boolean => {
-    const extname = `.${string}`;
-    if (fileTypeItem.value.length === 0) {
-        return true;
-    }
-    if (fileTypeItem.value.includes(extname)) {
-        return true;
-    }
-    if (fileTypeKind.value.length) {
-        fileTypeKind.value.forEach((item) => {
-            const typeList = getAllowTypes(item).value;
-            if (typeList.includes(extname)) {
-                return true;
-            }
-            return false;
-        });
-    }
-    return false;
-};
+// const validateFileType = (string: string): boolean => {
+//     const extname = `.${string}`;
+//     if (fileTypeItem.value.length === 0) {
+//         return true;
+//     }
+//     if (fileTypeItem.value.includes(extname)) {
+//         return true;
+//     }
+//     if (fileTypeKind.value.length) {
+//         fileTypeKind.value.forEach((item) => {
+//             const typeList = getAllowTypes(item).value;
+//             if (typeList.includes(extname)) {
+//                 return true;
+//             }
+//             return false;
+//         });
+//     }
+//     return false;
+// };
 
 /**
  * @description: 获取提交文件类型
@@ -291,44 +252,48 @@ const getAllowTypes = (kind: string) => {
 
 const handleChange = (files) => {
     hasFilesChange.value = true;
+    popupShow.value=false;
     uploadFiles.value = appendFiles([...files.values()]);
 };
-
+const uploadFile = (filePath:string)=>{
+    console.log(filePath);
+    uni.uploadFile({
+        url: `${MOODLE_SERVER}/webservice/upload.php`,
+        filePath,
+        method: 'POST',
+        timeout: 10000,
+        name: 'file',
+        formData: {
+            token: String(moodleToken),
+            itemid: curItemid.value,
+            filearea: 'draft',
+        },
+        success: (resData) => {
+            const { data, statusCode, errMsg } = resData;
+            if (statusCode == 200) {
+                const { itemid } = JSON.parse(data)[0];
+                if (itemid) {
+                    curItemid.value = itemid;
+                }
+                curIndex.value++;
+                handleUpload();
+            } else {
+                HideLoading();
+                Toast(errMsg || '上传附件时，发声未知错误，请稍候重试。');
+            }
+        },
+        fail: (error) => {
+            HideLoading();
+            Toast('上传失败，请稍后重试');
+        },
+    });
+};
 const downloadFile = async (file) => {
     // 先下载再上传
     const { statusCode, tempFilePath, errMsg } = await uni.downloadFile({ url: `${file.path}?token=${moodleToken}` });
     if (statusCode == 200) {
         const { savedFilePath } = await uni.saveFile({ tempFilePath: tempFilePath });
-        uni.uploadFile({
-            url: `${MOODLE_SERVER}/webservice/upload.php`,
-            filePath: savedFilePath,
-            method: 'POST',
-            timeout: 10000,
-            name: 'file',
-            formData: {
-                token: String(moodleToken),
-                itemid: curItemid.value,
-                filearea: 'draft',
-            },
-            success: (resData) => {
-                const { data, statusCode, errMsg } = resData;
-                if (statusCode == 200) {
-                    const { itemid } = JSON.parse(data)[0];
-                    if (itemid) {
-                        curItemid.value = itemid;
-                    }
-                    curIndex.value++;
-                    handleUpload();
-                } else {
-                    HideLoading();
-                    Toast(errMsg || '上传附件时，发声未知错误，请稍候重试。');
-                }
-            },
-            fail: (error) => {
-                HideLoading();
-                Toast('上传失败，请稍后重试');
-            },
-        });
+        uploadFile(savedFilePath);
     } else {
         HideLoading();
         Toast(errMsg || '上传附件时，发声未知错误，请稍候重试。');
@@ -342,6 +307,9 @@ const handleUpload = () => {
         emit('upload-end-callback', curItemid.value);
         return;
     }
+    if (curFile.type === 'record') {
+        uploadFile(curFile.fullPath);
+    } 
     if (curFile.type !== 'waiting') {
         downloadFile(curFile);
     } else {
@@ -349,15 +317,36 @@ const handleUpload = () => {
             uploadRef.value.setData('formData.itemid', curItemid.value);
             uploadRef.value.upload(curFile.name);
         } else {
+           
             uploadRef.value.upload(curFile.name);
         }
     }
 };
+
+const appGetFile =(src:string)=> {
+    plus.io.resolveLocalFileSystemURL(src, function( entry ) {
+        entry.file( function(file){
+            console.log('getFile:' + JSON.stringify(file));
+            uploadFiles.value = appendFiles([{...file,fileType:file.type,type:'record'}]);
+           
+        } );
+    }, function ( e ) {
+        console.log( 'Resolve file URL failed: ' + e.message );
+    } );  
+};
+const handlSaveRecord = (path:string)=>{
+    // #ifdef APP
+    appGetFile(path);
+    // #endif
+    hasFilesChange.value=true;
+    popupShow.value = false;
+    popupType.value='actions';
+};
 const onuploadEnd = (item) => {
-    const { type, responseText } = item;
+    const {type,responseText}=item;
     if (type === 'success') {
         const { itemid } = JSON.parse(responseText)[0];
-        if (itemid && itemid != 0) {
+        if (itemid && itemid !== 0) {
             curItemid.value = itemid;
             curIndex.value++;
             handleUpload();
@@ -367,8 +356,12 @@ const onuploadEnd = (item) => {
         Toast('上传附件时，发声未知错误，请稍候重试。');
     }
 };
+
+
 const toggle = () => {
-    popupRef.value.open('bottom');
+    popupShow.value = true;
+    uploadShow.value=true;
+    // popupRef.value.open('bottom');
 };
 
 defineExpose({
@@ -380,66 +373,84 @@ defineExpose({
 
 <style scoped lang="scss">
 ::v-deep .uni-file-picker__lists {
-    display: none;
+  display: none;
 }
 .list-item {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .left {
     width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .left {
-        width: 90%;
-        .name {
-            width: 100%;
-            font-size: $uni-font-size-lg;
-            margin-bottom: 10rpx;
-        }
-        .info {
-            display: flex;
-            justify-content: space-between;
-            font-size: $uni-font-size-base;
-            color: $uni-color-subtitle;
-            .size {
-                color: #fdb121;
-            }
-        }
+    .name {
+      width: 100%;
+      font-size: $uni-font-size-lg;
+      margin-bottom: 10rpx;
     }
+    .info {
+      display: flex;
+      justify-content: space-between;
+      font-size: $uni-font-size-base;
+      color: $uni-color-subtitle;
+      .size {
+        color: #fdb121;
+      }
+    }
+  }
 }
 .tips {
-    margin-bottom: 20rpx;
-    padding: 20rpx;
-    background: #fff;
-    font-size: $uni-font-size-base;
-    color: #ff9a1b;
-    border-bottom: 4rpx solid #ff9a1b;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background: #fff;
+  font-size: $uni-font-size-base;
+  color: #ff9a1b;
+  border-bottom: 4rpx solid #ff9a1b;
 }
 .btn {
-    padding: 0 50rpx;
-    margin-bottom: 30rpx;
-    display: flex;
-    justify-content: space-between;
+  padding: 0 50rpx;
+  margin: 30rpx 0;
 }
-.popup-content {
+.popup {
+  opacity: 1;
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 40%);
+  transition: opacity 300ms ease 0ms, -webkit-transform 300ms ease 0ms, transform 300ms ease 0ms;
+  transform-origin: 50% 50%;
+  z-index: 99;
+  .popup-content {
+    transform: translateY(0);
+    opacity: 1;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255 255 255);
+    border-radius: 0;
+    transition: -webkit-transform 300ms ease 0ms, transform 300ms ease 0ms;
+    transform-origin: 50% 50%;
     padding: 40rpx;
+    z-index: 100;
     .action-item {
-        font-size: $uni-font-size-lg;
-        color: $uni-color-subtitle;
-        padding: 0 0 30rpx;
+      font-size: $uni-font-size-lg;
+      color: $uni-color-subtitle;
+      padding: 0 0 30rpx;
     }
     .cancel {
-        padding-top: 30rpx;
-        border-top: 1px solid $uni-border-color;
-        color: #ca3120;
+      padding-top: 30rpx;
+      border-top: 1px solid $uni-border-color;
+      color: #ca3120;
     }
+  }
 }
 .action-btn {
-    width: 45%;
-    height: 60rpx;
-    border: 2rpx solid #ddd;
-    background-color: #f3f0f0;
-    border-radius: 10rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 45%;
+  height: 60rpx;
+  border: 2rpx solid #ddd;
+  background-color: #f3f0f0;
+  border-radius: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

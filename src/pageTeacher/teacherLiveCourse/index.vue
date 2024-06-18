@@ -94,22 +94,22 @@ onLoad(async () => {
 </script>
 <style lang="scss" scoped>
 .uni-padding-wrap {
-    background-color: #fff;
-    padding: 10rpx 20rpx;
+  background-color: #fff;
+  padding: 10rpx 20rpx;
 }
 .course {
-    background-color: #fff;
-    padding: $uni-list-padding;
-    margin-bottom: 20rpx;
+  background-color: #fff;
+  padding: $uni-list-padding;
+  margin-bottom: 20rpx;
 }
 .courseTime {
-    color: $uni-text-color-placeholder;
-    font-size: $uni-font-size-m;
+  color: $uni-text-color-placeholder;
+  font-size: $uni-font-size-m;
 }
 .teacher-info {
-    display: flex;
-    justify-content: space-between;
-    padding-top: $uni-spacing-col-lg;
-    font-size: $uni-font-size-m;
+  display: flex;
+  justify-content: space-between;
+  padding-top: $uni-spacing-col-lg;
+  font-size: $uni-font-size-m;
 }
 </style>

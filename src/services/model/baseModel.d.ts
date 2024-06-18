@@ -1,4 +1,5 @@
 
+
 declare interface MoodleBaseInfoParams {
     token: string;
     userId:string
@@ -23,12 +24,12 @@ declare interface CourseContentParams {
 }
 
 declare interface SetGridsParams {
-    userConfig:string,
+    userConfig:string;
     userId:string|number
 }
 
 declare interface SetPageParams {
-    currentPage:number,
+    currentPage:number;
     pageSize:number
 }
 

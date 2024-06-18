@@ -1,4 +1,3 @@
-import {queryChoiceApi} from "@/services/choice";
 
 declare interface AssignParams {
     cmid: string | number;

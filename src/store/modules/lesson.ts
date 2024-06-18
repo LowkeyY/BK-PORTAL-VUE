@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-01-22 15:26:38
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-23 19:13:12
+ * @LastEditTime: 2024-06-11 15:03:19
  * @FilePath: \BK-Portal-VUE\src\store\modules\lesson.ts
  * @Description:
  */
@@ -72,6 +72,13 @@ export const useLessonStore = defineStore({
             const {lessonData} =state;
             if(!isEmpty(lessonData as {})){
                 return lessonData.groups.map(((item:Record<string,string>)=>({text:item.name,value:item.id})));
+            }
+            return [];
+        },
+        getLessonSections:(state)=>{
+            const {lessonData} =state;
+            if(!isEmpty(lessonData as {})){
+                return lessonData.contents.map(((item:Record<string,string>)=>({text:item.name,value:item.id})));
             }
             return [];
         },

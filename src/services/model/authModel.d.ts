@@ -1,3 +1,4 @@
+
 declare interface CaptchaImgParams {
     capatcaKey: string;
 }
@@ -14,7 +15,7 @@ declare interface AccessTokenParams {
    access_token:string
 }
 declare interface MoodleTokenParams {
-    username:string,
+    username:string;
     usersn:string
  }
 declare interface LoginModel {

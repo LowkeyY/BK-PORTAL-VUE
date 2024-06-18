@@ -2,7 +2,7 @@
  * @Author: Lowkey
  * @Date: 2024-1-5 12:09:46
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-29 15:32:47
+ * @LastEditTime: 2024-06-04 11:17:40
  * @FilePath: \BK-Portal-VUE\src\services\list.ts
  * @Description:
  */
@@ -10,17 +10,14 @@
 
 import http from '@/utils/request';
 import { getBaseUrl } from '@/utils/env';
-import storage from '@/utils/storage';
-import { StorageEnum } from '@/enums/storageEnum';
 import { useAuthStore } from '@/store/modules/auth';
-
+import { useUserStore } from '@/store/modules/user';
 const {CUNOVS_SERVER,PORTAL_SERVER} =getBaseUrl();
-const moodleToken = storage.get(StorageEnum.MOODLE_TOKEN);
-const userCode = storage.get(StorageEnum.USER_CODE);
+
 const TIMETABLE = `${PORTAL_SERVER}/mobile/bkcourse/list`; // 课程表
-const GRADE_LIST = `${CUNOVS_SERVER}/grade/courseList/${moodleToken}`; // 我的成绩
-const GRADE_DETAILS = `${CUNOVS_SERVER}/grade/${moodleToken}`; // 成绩详情列表
-const GRADE_DETAILS_REFRESH = `${CUNOVS_SERVER}/grade/refresh/${moodleToken}`; // 刷新成绩详情列表（从学习平台直接获取数据，不走同步，刷新请求减少学习平台压力）
+const GRADE_LIST = `${CUNOVS_SERVER}/grade/courseList`; // 我的成绩
+const GRADE_DETAILS = `${CUNOVS_SERVER}/grade`; // 成绩详情列表
+const GRADE_DETAILS_REFRESH = `${CUNOVS_SERVER}/grade/refresh`; // 刷新成绩详情列表（从学习平台直接获取数据，不走同步，刷新请求减少学习平台压力）
 const TASK_LIST = `${CUNOVS_SERVER}/task`; // 学生本周任务列表
 /**
  * @description: 课程表
@@ -38,8 +35,9 @@ export function timetableApi() {
  * @return {*}
  */
 export function gradeListApi(data:{userid:string} ) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:GRADE_LIST,
+        url:`${GRADE_LIST}/${moodleToken}`,
         data
     });
 }
@@ -50,8 +48,9 @@ export function gradeListApi(data:{userid:string} ) {
  * @return {*}
  */
 export function gradeDetailsApi(data:GradeDetailsParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:GRADE_DETAILS,
+        url:`${GRADE_DETAILS}/${moodleToken}`,
         data
     });
 }
@@ -62,8 +61,9 @@ export function gradeDetailsApi(data:GradeDetailsParams) {
  * @return {*}
  */
 export function gradeDetailsRefreshApi(data:GradeDetailsParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
-        url:GRADE_DETAILS_REFRESH,
+        url:`${GRADE_DETAILS_REFRESH}/${moodleToken}`,
         data
     });
 }
@@ -76,6 +76,7 @@ export function gradeDetailsRefreshApi(data:GradeDetailsParams) {
  * @return {*}
  */
 export function groupListApi(data:GradeDetailsParams,params:SetPageParams) {
+    const moodleToken = useAuthStore().moodleToken;
     const {currentPage=1,pageSize=10}=params;
     return http.request({
         url:`${CUNOVS_SERVER}/group/users/${moodleToken}?nowPage=${currentPage}&rowCount=${pageSize}`,
@@ -90,6 +91,7 @@ export function groupListApi(data:GradeDetailsParams,params:SetPageParams) {
  * @return {*}
  */
 export function myTeacherListApi(data:GradeDetailsParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/mentors/${moodleToken}`,
         data
@@ -101,6 +103,7 @@ export function myTeacherListApi(data:GradeDetailsParams) {
  * @return {*}
  */
 export function liveCourseListApi() {
+    const userCode = useUserStore().userCode;
     return http.request({
         url:`${PORTAL_SERVER}/workbench/courseSchedule/list?userId=${userCode}`,
     });
@@ -112,6 +115,7 @@ export function liveCourseListApi() {
  * @return {*}
  */
 export function attendanceCourseListApi(data:AttendanceCourseParams) {
+    const moodleToken = useAuthStore().moodleToken;
     return http.request({
         url:`${CUNOVS_SERVER}/attendance/courseList/${moodleToken}`,
         data

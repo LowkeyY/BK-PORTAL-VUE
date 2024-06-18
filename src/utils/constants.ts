@@ -3,7 +3,7 @@
  * @Author: Lowkey
  * @Date: 2023-12-21 11:03:16
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-28 13:26:45
+ * @LastEditTime: 2024-06-12 15:37:36
  * @FilePath: \BK-Portal-VUE\src\utils\constants.ts
  * @Description:
  */
@@ -185,17 +185,17 @@ export const bkStudentGirds: Grids[] = [
         text: '我的直播',
         path: 'liveCourse',
     },
-    // {
-    //     id: '12',
-    //     icon: 'calendar',
-    //     text: '学生日历',
-    //     path: 'timetable'
-    // },
     {
         id: '12',
         icon: 'plan',
         text: '培养方案',
         path: 'achievement',
+    },
+    {
+        id: '13',
+        icon: 'deal',
+        text: '我的办理',
+        path: 'dealWith',
     },
 ];
 
@@ -232,6 +232,34 @@ export const gkStudentGirds = [
         path: 'OuchnList',
         queryType: 'gkcjwt',
     },
+    {
+        id: '6',
+        icon: 'archivesGK',
+        text: '我的课表',
+        path: 'OuchnList',
+        queryType: 'gkcjwt',
+    },
+    {
+        id: '7',
+        icon: 'archivesGK',
+        text: '注册课程',
+        path: 'OuchnList',
+        queryType: 'gkcjwt',
+    },
+    {
+        id: '8',
+        icon: 'archivesGK',
+        text: '考试安排',
+        path: 'OuchnList',
+        queryType: 'gkcjwt',
+    },
+    {
+        id: '9',
+        icon: 'archivesGK',
+        text: '考试成绩',
+        path: 'OuchnList',
+        queryType: 'gkcjwt',
+    },
 ];
 
 export const moreGird = {
@@ -246,31 +274,37 @@ export const teacherPortalGirds: any[] = [
     {
         id: '2',
         text: '通知公告',
-        path: 'schoolCalendar',
+        icon:'/static/images/teacherGrids/notice.png',
+        path: '',
     },
     {
         id: '4',
         text: '校历',
+        icon:'/static/images/teacherGrids/schoolCalendar.png',
         path: 'oauth'
     },
     {
         id: '5',
         text: '意见反馈',
+        icon:'/static/images/teacherGrids/feedback.png',
         path: 'oauth',
     },
     {
         id: '6',
         text: '规章制度',
+        icon:'/static/images/teacherGrids/regulations.png',
         path: 'oauth',
     },
     {
         id: '8',
         text: '常用文档',
+        icon:'/static/images/teacherGrids/file.png',
         path: 'oauth',
     },
     {
         id: '9',
         text: '问卷调查',
+        icon:'/static/images/teacherGrids/questionnaire.png',
         path: 'oauth',
     },
 ];
@@ -547,11 +581,15 @@ export const reportList = [
     },
     {
         name: '辅导教师回帖情况统计',
-        path: 'tutorshipReport',
+        path: 'ReplySituation',
+    },
+    {
+        name: '辅导教师辅导情况',
+        path: 'ReplySituation',
     },
     {
         name: '辅导教师评分情况统计',
-        path: '',
+        path: 'RatingSituation',
     },
     {
         name: '直播课堂统计',

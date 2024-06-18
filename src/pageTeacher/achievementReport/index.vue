@@ -80,41 +80,41 @@ const goDetail = (item) => {};
 </script>
 <style lang="scss" scoped>
 .achievement-container {
-    padding: 10rpx 20rpx;
+  padding: 10rpx 20rpx;
 }
 .achievement-list {
-    background-color: #fff;
-    padding: $uni-list-padding;
-    margin-bottom: $uni-spacing-col-lg;
-    border-radius: $uni-border-radius-base;
-    .title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  background-color: #fff;
+  padding: $uni-list-padding;
+  margin-bottom: $uni-spacing-col-lg;
+  border-radius: $uni-border-radius-base;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $uni-spacing-col-base;
+    .userName {
+      @include user-name;
+    }
+    .student-number {
+      @include info;
+    }
+  }
+  .achievement-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .user-info {
+      font-size: $uni-font-size-base;
+      color: $uni-color-subtitle;
+      .phone {
         margin-bottom: $uni-spacing-col-base;
-        .userName {
-            @include user-name;
-        }
-        .student-number {
-            @include info;
-        }
+      }
     }
-    .achievement-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .user-info {
-            font-size: $uni-font-size-base;
-            color: $uni-color-subtitle;
-            .phone {
-                margin-bottom: $uni-spacing-col-base;
-            }
-        }
-        .grade {
-            font-size: $uni-font-size-lg;
-            color: $uni-color-primary;
-            text-align: right;
-        }
+    .grade {
+      font-size: $uni-font-size-lg;
+      color: $uni-color-primary;
+      text-align: right;
     }
+  }
 }
 </style>

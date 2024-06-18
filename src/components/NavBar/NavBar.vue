@@ -2,18 +2,18 @@
  * @Author: Lowkey
  * @Date: 2023-10-30 13:42:48
  * @LastEditors: Lowkey
- * @LastEditTime: 2024-05-29 19:21:43
+ * @LastEditTime: 2024-06-04 12:37:16
  * @FilePath: \BK-Portal-VUE\src\components\NavBar\NavBar.vue
  * @Description: 
 -->
 <template>
-    <view class="contaner" :style="{ height: `${88 + px2rpx(useSystem().statusBarHeight || 0)}rpx` }">
+    <view class="contaner" :style="{ height: `${88+statusBarHeight }rpx` }">
         <view class="nav-status">
             <status-bar />
         </view>
         <uni-nav-bar
             class="nav-bar"
-            :style="{ top: height }"
+            :style="{ top: `${statusBarHeight}rpx` }"
             :dark="dark"
             color="#fff"
             background-color="#2b83d7"
@@ -49,7 +49,7 @@
 <script setup name="Nav">
 import { useSystem } from '@/hooks/app/useSystem';
 import { px2rpx } from '@/utils/uniapi';
-const height = `${px2rpx(useSystem().statusBarHeight || 0)}rpx`;
+const statusBarHeight = px2rpx(useSystem().statusBarHeight || 0);
 const router = useRouter();
 const props = defineProps({
     dark: {
@@ -107,21 +107,21 @@ const dialogClose = () => {
 
 <style lang="scss" scoped>
 .contaner {
+  width: 100%;
+  //   height: 88rpx;
+  .nav-status {
     width: 100%;
-    //   height: 88rpx;
-    .nav-status {
-        width: 100%;
-        position: fixed;
-        z-index: 99;
-        top: 0;
-        left: 0;
-    }
-    .nav-bar {
-        width: 100%;
-        position: fixed;
-        z-index: 99;
-        top: 0;
-        left: 0;
-    }
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+  }
+  .nav-bar {
+    width: 100%;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+  }
 }
 </style>

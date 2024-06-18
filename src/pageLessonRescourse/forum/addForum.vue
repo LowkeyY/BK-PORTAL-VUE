@@ -1,7 +1,7 @@
 <template>
     <app-provider>
         <nav-bar :title="params.type === 'add' ? '开启一个新话题' : '回复'" />
-        <view class="container">
+        <view class="content">
             <uni-forms ref="baseForm" :model-value="formData">
                 <uni-forms-item label="主题" class="form-item">
                     <uni-easyinput v-model="formData.subject" placeholder="请输入主题" :input-border="false" />
@@ -18,12 +18,11 @@
                         :upload-file-list="fileList"
                         :max-size="Number(params.maxbytes)"
                         :max-files="Number(params.maxattachments)"
-                        :is-show-mic="false"
                         @upload-end-callback="doSubmitAfterUpload"
                     />
                 </view>
-                <view style="padding: 20rpx 0">
-                    <button type="primary" :loading="useForum.submitLoading" style="backgroundcolor: #2b83d7; bordercolor: #2b83d7" @click="handelSubmit()">
+                <view style="padding: 20rpx 50rpx;">
+                    <button type="primary" :loading="useForum.submitLoading" style="backgroundcolor: #2b83d7; bordercolor: #2b83d7;" @click="handelSubmit()">
                         提交
                     </button>
                 </view>
@@ -154,26 +153,26 @@ onLoad(async (options) => {
 </script>
 
 <style scoped lang="scss">
-.container {
-    padding: 20rpx;
+.content {
+  padding: 20rpx;
 }
 .form-item {
-    border-bottom: 2rpx solid #e0e0e0;
+  border-bottom: 2rpx solid #e0e0e0;
 }
 ::v-deep .uni-easyinput__content-textarea {
-    line-height: 1.5;
-    font-size: 28rpx;
-    height: 500rpx;
+  line-height: 1.5;
+  font-size: 28rpx;
+  height: 500rpx;
 
-    /* #ifndef APP-NVUE */
-    min-height: 500rpx;
-    width: auto;
+  /* #ifndef APP-NVUE */
+  min-height: 500rpx;
+  width: auto;
 
-    /* #endif */
+  /* #endif */
 }
 .warn-tip {
-    color: #ef2828;
-    font-size: 30rpx;
-    padding: 10rpx 0;
+  color: #ef2828;
+  font-size: 30rpx;
+  padding: 10rpx 0;
 }
 </style>
